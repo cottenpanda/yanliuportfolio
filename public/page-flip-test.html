@@ -1,0 +1,715 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Paper-like Book — 5 spreads</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#FAFAF9;
+      --paper:#f2f1ee;
+      --edge:rgba(0,0,0,.06);
+      --shadow:rgba(0,0,0,.18);
+      --w:min(980px, 92vw);
+      --h:min(620px, 72vh);
+      --r:22px;
+      --paper-noise:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='120' height='120' filter='url(%23n)' opacity='0.18'/></svg>");
+    }
+    html,body{height:100%}
+    body{
+      margin:0;
+      background:var(--bg);
+      display:grid;
+      place-items:center;
+      font-family:'Noto Sans',system-ui,-apple-system,sans-serif;
+      overflow:hidden;
+    }
+    .stage{
+      width:var(--w);
+      height:var(--h);
+      perspective:1400px;
+      position:relative;
+    }
+
+    /* Back stack (decorative) */
+    .stack{position:absolute; inset:0; pointer-events:none;}
+    .sheet{
+      position:absolute;
+      top:14px; bottom:14px;
+      width:52%;
+      background-color:var(--paper);
+      background-image:
+        var(--paper-noise);
+      border-radius:var(--r);
+      box-shadow:0 22px 55px var(--shadow);
+      opacity:.86;
+    }
+    .sheet.left{left:0}
+    .sheet.right{right:0}
+    .sheet.s1.left  {transform:translateX(-34px) translateY(10px); opacity:.62;}
+    .sheet.s1.right {transform:translateX( 34px) translateY(10px); opacity:.62;}
+    .sheet.s2.left  {transform:translateX(-20px) translateY( 6px); opacity:.74;}
+    .sheet.s2.right {transform:translateX( 20px) translateY( 6px); opacity:.74;}
+
+    .book{
+      position:absolute;
+      inset:0;
+      transform-style:preserve-3d;
+      display:flex;
+      align-items:stretch;
+    }
+    .page{
+      flex:1;
+      margin:14px 0;
+      background-color:var(--paper);
+      background-image:
+        var(--paper-noise);
+      border-radius:var(--r);
+      box-shadow:0 22px 55px var(--shadow);
+      position:relative;
+      overflow:hidden;
+      pointer-events:auto;
+    }
+    .page.left{
+      border-top-right-radius:0;
+      border-bottom-right-radius:0;
+    }
+    .page.right{
+      border-top-left-radius:0;
+      border-bottom-left-radius:0;
+    }
+    .page-content{
+      position:absolute;
+      inset:0;
+      pointer-events:auto;
+    }
+    .flip .page-content{
+      pointer-events:none;
+    }
+    .right-media{
+      position:absolute;
+      inset:0;
+      opacity:0;
+      transition:opacity .18s ease;
+      pointer-events:none;
+    }
+    .right-media.active{
+      opacity:1;
+    }
+
+    .crease{
+      position:absolute;
+      left:50%;
+      top:14px; bottom:14px;
+      width:2px;
+      transform:translateX(-1px);
+      background:linear-gradient(to bottom,
+        transparent,
+        rgba(0,0,0,.07) 18%,
+        rgba(0,0,0,.03) 50%,
+        rgba(0,0,0,.07) 82%,
+        transparent
+      );
+      opacity:.42;
+      pointer-events:none;
+      z-index:5;
+    }
+
+    /* Flip leaves */
+    .flip{
+      position:absolute;
+      top:14px; bottom:14px;
+      width:50%;
+      transform-style:preserve-3d;
+      will-change:transform;
+      user-select:none;
+      touch-action:none;
+      z-index:10;
+      pointer-events:none;
+    }
+    .flip.right{
+      left:50%;
+      transform-origin:left center;
+      cursor:grab;
+      border-radius:var(--r);
+      border-top-left-radius:0;
+      border-bottom-left-radius:0;
+    }
+    .flip.left{
+      left:0;
+      transform-origin:right center;
+      cursor:grab;
+      border-radius:var(--r);
+      border-top-right-radius:0;
+      border-bottom-right-radius:0;
+      z-index:6;
+      opacity:0;
+    }
+    .flip.left.visible{
+      opacity:1;
+    }
+    .flip-hit{
+      position:absolute;
+      top:14px; bottom:14px;
+      width:64px;
+      background:transparent;
+      cursor:grab;
+      z-index:11;
+      pointer-events:auto;
+    }
+    .flip-hit.left{left:0;}
+    .flip-hit.right{right:0;}
+    .flip-hit:active{cursor:grabbing}
+    .flip.left.active{
+      z-index:12;
+    }
+    .flip:active{cursor:grabbing}
+    .face{
+      position:absolute;
+      inset:0;
+      background-color:var(--paper);
+      background-image:
+        var(--paper-noise);
+      backface-visibility:hidden;
+      overflow:hidden;
+      border-radius:var(--r);
+    }
+
+    /* Right leaf faces */
+    .flip.right .front{
+      border-top-left-radius:0;
+      border-bottom-left-radius:0;
+      box-shadow:inset -1px 0 0 var(--edge);
+    }
+    .flip.right .back{
+      transform:rotateY(180deg);
+      border-top-right-radius:0;
+      border-bottom-right-radius:0;
+      box-shadow:inset 1px 0 0 var(--edge);
+    }
+
+    /* Left leaf faces */
+    .flip.left .front{
+      border-top-right-radius:0;
+      border-bottom-right-radius:0;
+      box-shadow:inset 1px 0 0 var(--edge);
+    }
+    .flip.left .back{
+      transform:rotateY(180deg);
+      border-top-left-radius:0;
+      border-bottom-left-radius:0;
+      box-shadow:inset -1px 0 0 var(--edge);
+    }
+
+    .shade{
+      position:absolute;
+      inset:0;
+      pointer-events:none;
+      opacity:0;
+      mix-blend-mode:multiply;
+    }
+    .highlight{
+      position:absolute;
+      inset:0;
+      pointer-events:none;
+      opacity:0;
+      mix-blend-mode:screen;
+    }
+
+    .ui{
+      position:absolute;
+      left:50%;
+      bottom:-44px;
+      transform:translateX(-50%);
+      color:#A8A29E;
+      font-family:'Noto Sans',sans-serif;
+      font-size:13px;
+      text-align:center;
+      white-space:nowrap;
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+    .dots{display:flex;gap:6px;margin-right:12px;}
+    .dot{width:7px;height:7px;border-radius:50%;background:#D6D3D1;transition:background .3s;}
+    .dot.active{background:#1C1917;}
+    .disabled{
+      pointer-events:none;
+      opacity:.55;
+      filter:saturate(.9);
+    }
+
+    /* Typography — all Source Code Pro */
+    .page-content{
+      font-family:'Noto Sans',sans-serif;
+      display:flex;
+      flex-direction:column;
+      padding:32px 40px;
+    }
+    .page-num{font-size:11px;color:#A8A29E;text-transform:uppercase;letter-spacing:.15em;margin-bottom:10px;}
+    .page-title{font-size:22px;font-weight:600;color:#1C1917;line-height:1.3;margin-bottom:16px;}
+    .page-desc{font-size:13px;color:#57534E;line-height:1.8;margin-bottom:16px;}
+    .page-desc strong{font-weight:600;color:#1C1917;}
+    .page-highlights{margin-bottom:16px;}
+    .highlight-text{font-size:13px;color:#57534E;line-height:1.8;margin-bottom:8px;}
+    .highlight-text strong{font-weight:600;color:#1C1917;}
+    .right-figure{
+      position:absolute;
+      inset:0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:28px;
+    }
+    .right-figure img{
+      max-width:90%;
+      max-height:90%;
+      object-fit:contain;
+      border-radius:14px;
+      box-shadow:0 12px 26px rgba(0,0,0,.12);
+      transform:rotate(6deg);
+    }
+    .right-figure video{
+      max-width:90%;
+      max-height:90%;
+      object-fit:contain;
+      border-radius:14px;
+      box-shadow:0 12px 26px rgba(0,0,0,.12);
+      transform:rotate(2deg);
+    }
+    .cta{
+      display:inline-block;
+      font-size:12px;
+      color:#1C1917;
+      font-weight:500;
+      text-decoration:none;
+      border:1.5px solid #1C1917;
+      border-radius:6px;
+      padding:8px 16px;
+      margin-top:auto;
+      align-self:flex-start;
+      transition:background .2s,color .2s;
+    }
+    .cta:hover{background:#1C1917;color:#f2f1ee;}
+  </style>
+</head>
+<body>
+
+<div class="stage" id="stage">
+  <div class="stack">
+    <div class="sheet s1 left"></div>
+    <div class="sheet s1 right"></div>
+    <div class="sheet s2 left"></div>
+    <div class="sheet s2 right"></div>
+  </div>
+
+  <div class="book">
+    <div class="page left"><div class="page-content" id="leftStatic"></div></div>
+    <div class="page right"><div class="page-content" id="rightStatic"></div></div>
+    <div class="crease"></div>
+
+    <!-- Right leaf: forward -->
+    <div class="flip right" id="flipRight">
+      <div class="face front">
+        <div class="page-content" id="rightFront"></div>
+        <div class="shade" id="shadeR"></div>
+        <div class="highlight" id="hiR"></div>
+      </div>
+      <div class="face back">
+        <div class="page-content" id="rightBack"></div>
+      </div>
+    </div>
+
+    <!-- Left leaf: backward -->
+    <div class="flip left" id="flipLeft">
+      <div class="face front">
+        <div class="page-content" id="leftFront"></div>
+        <div class="shade" id="shadeL"></div>
+        <div class="highlight" id="hiL"></div>
+      </div>
+      <div class="face back">
+        <div class="page-content" id="leftBack"></div>
+      </div>
+    </div>
+    <div class="flip-hit left" id="leftHit" aria-hidden="true"></div>
+    <div class="flip-hit right" id="rightHit" aria-hidden="true"></div>
+
+    <div class="ui">
+      <div class="dots" id="dots"></div>
+      Drag or click pages · ← / →
+    </div>
+  </div>
+</div>
+
+<script>
+  const sections = [
+    {
+      title: "Projects at Work",
+      description: 'Senior Product Designer with <strong>7+ years</strong> across B2B and B2C.<br><br>I lead end-to-end design of AI-driven products, bringing ideas from 0→1 and turning ambiguity into clear direction.',
+      highlights: [],
+      cta: { label: "🔒 Projects at work", url: "https://yanliu.design" }
+    },
+    {
+      title: "Design with AI",
+      description: 'I explore new tools to boost creativity and productivity, learning through hands-on experimentation.<br><br>Recently, I\'ve been vibe-coding with AI at the intersection of design and technology.<br><br><strong>Cozy Journaling</strong> won the Built with Claude Sonnet 4.5 Challenge – "Keep Creating" Award.',
+      highlights: [],
+      cta: { label: "Vibe coding projects", url: "https://cottenpanda.github.io/vibecodingplaylist" }
+    },
+    {
+      title: "Community Impact",
+      description: 'My Figma Community files have over <strong>500K+</strong> uses.<br><br><strong>100+ Abstract Shapes / Elements</strong> was a finalist for Favorite Graphic Resources in the <strong>2022 Figma Community Awards</strong>.<br><br><strong>50+ Abstract Geometric Shapes</strong> was featured during the Day 2 virtual broadcast at <strong>Config 2024</strong>.',
+      highlights: [],
+      cta: { label: "Figma designs", url: "https://www.figma.com/@yanliu" }
+    },
+    {
+      title: "Through My Lens",
+      description: 'Nature helps me step away from daily routines and reset my perspective.<br><br>My photography has reached <strong>19M+ views</strong> and <strong>150K+ downloads</strong>, and has been used across platforms including BuzzFeed, Notion, Trello, Mailchimp, Fever, and Figma.',
+      highlights: [],
+      cta: { label: "Photos on Unsplash", url: "https://unsplash.com/@yl1980s" }
+    },
+    {
+      title: "From Sketch to Merch",
+      description: 'I create illustrations and black-and-white doodles as a way to unwind and explore visual ideas.<br><br>In 2022, I collaborated with SHEIN X Artist to launch my merchandise collection, <strong>YANLIU</strong>.<br><br>I share work on Instagram and RED Book.',
+      highlights: [],
+      cta: { label: "instagram+red", url: "#" }
+    }
+  ];
+
+  const TOTAL = sections.length;
+  let spreadIndex = 0;
+
+  const stage = document.getElementById("stage");
+  const leftStatic  = document.getElementById("leftStatic");
+  const rightStatic = document.getElementById("rightStatic");
+  const flipRight = document.getElementById("flipRight");
+  const rightFront = document.getElementById("rightFront");
+  const rightBack  = document.getElementById("rightBack");
+  const shadeR = document.getElementById("shadeR");
+  const hiR = document.getElementById("hiR");
+  const flipLeft = document.getElementById("flipLeft");
+  const leftFront = document.getElementById("leftFront");
+  const leftBack  = document.getElementById("leftBack");
+  const shadeL = document.getElementById("shadeL");
+  const hiL = document.getElementById("hiL");
+  const leftHit = document.getElementById("leftHit");
+  const rightHit = document.getElementById("rightHit");
+  const dotsEl = document.getElementById("dots");
+
+  const rightHtmlByIndex = Array.from({ length: TOTAL }, (_, i) => renderRight(i));
+  const rightHasMedia = rightHtmlByIndex.map((h) => h.trim().length > 0);
+  const rightLayers = [];
+  rightStatic.innerHTML = '';
+  for (let i = 0; i < TOTAL; i++) {
+    const layer = document.createElement('div');
+    layer.className = 'right-media';
+    layer.innerHTML = rightHtmlByIndex[i];
+    rightStatic.appendChild(layer);
+    rightLayers.push(layer);
+  }
+  let rightActiveIndex = 0;
+  function showRight(idx){
+    rightActiveIndex = idx;
+    for (let i = 0; i < rightLayers.length; i++) {
+      const active = i === idx;
+      const layer = rightLayers[i];
+      layer.classList.toggle('active', active);
+      const vid = layer.querySelector('video');
+      if (vid){
+        if (active) {
+          vid.play().catch(() => {});
+        } else {
+          vid.pause();
+        }
+      }
+    }
+  }
+
+  // Build dots
+  for (let i = 0; i < TOTAL; i++) {
+    const d = document.createElement('div');
+    d.className = 'dot' + (i === 0 ? ' active' : '');
+    dotsEl.appendChild(d);
+  }
+
+  const clamp = (v,a,b) => Math.min(b, Math.max(a, v));
+  let leftActive = false;
+  const setLeftActive = (active)=>{
+    leftActive = active;
+    flipLeft.classList.toggle('active', active);
+    flipLeft.classList.toggle('visible', active);
+  };
+
+  function renderLeft(idx) {
+    const s = sections[idx];
+    let h = s.highlights.map(t =>
+      '<p class="highlight-text">' + t + '</p>'
+    ).join('');
+    let ctaHtml;
+    if (idx === 4) {
+      ctaHtml = '<div style="display:flex;gap:10px;margin-top:auto;align-self:flex-start;">'
+        + '<a class="cta" href="https://www.instagram.com/yanliudesign" target="_blank" rel="noopener noreferrer" style="display:flex;align-items:center;gap:6px;">'
+        + '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg>'
+        + ' Instagram</a>'
+        + '<a class="cta" href="https://www.xiaohongshu.com/user/profile/5cf87836000000001803f1b3?xhsshare=CopyLink&appuid=5cf87836000000001803f1b3&apptime=1654372327" target="_blank" rel="noopener noreferrer" style="display:flex;align-items:center;gap:6px;">'
+        + '<img src="Rednote.png" alt="RedNote" style="width:16px;height:16px;object-fit:contain;">'
+        + ' RedNote</a>'
+        + '</div>';
+    } else {
+      ctaHtml = '<a class="cta" href="' + s.cta.url + '" target="_blank" rel="noopener noreferrer">' + s.cta.label + '</a>';
+    }
+    return '<p class="page-num">' + String(idx+1).padStart(2,'0') + ' / ' + String(TOTAL).padStart(2,'0') + '</p>'
+      + '<h3 class="page-title">' + s.title + '</h3>'
+      + '<p class="page-desc">' + s.description + '</p>'
+      + '<div class="page-highlights">' + h + '</div>'
+      + ctaHtml;
+  }
+
+  function renderRight(idx) {
+    if (idx === 0) {
+      return '<div class="right-figure"><img src="Projects at work.jpg" alt="Projects at work"></div>';
+    }
+    if (idx === 1) {
+      return '<div class="right-figure"><img src="design with AI.jpg" alt="Design with AI"></div>';
+    }
+    if (idx === 2) {
+      return '<div class="right-figure"><img src="Community impact.jpg" alt="Community impact"></div>';
+    }
+    if (idx === 3) {
+      return '<div class="right-figure"><img src="lens.jpg" alt="Through my lens"></div>';
+    }
+    if (idx === 4) {
+      return '<div class="right-figure"><img src="sketch.jpg" alt="Sketch to merch"></div>';
+    }
+    return '';
+  }
+
+  function updateDots() {
+    dotsEl.querySelectorAll('.dot').forEach((d, i) => {
+      d.classList.toggle('active', i === spreadIndex);
+    });
+  }
+
+  let rDeg = 0, lDeg = 0;
+
+  function setRightDeg(d, instant){
+    rDeg = clamp(d, -180, 0);
+    if (instant) flipRight.style.transition = 'none';
+    flipRight.style.transform = 'rotateY(' + rDeg + 'deg)';
+    const t = Math.abs(rDeg)/180;
+    shadeR.style.opacity = (0.08 + 0.55*t).toFixed(3);
+    shadeR.style.background = 'radial-gradient(circle at ' + Math.round(8+68*t) + '% 50%, rgba(0,0,0,0.28), transparent 62%)';
+    hiR.style.opacity = (0.02 + 0.22*t).toFixed(3);
+    hiR.style.background = 'linear-gradient(90deg, rgba(255,255,255,.55), transparent 35%)';
+  }
+
+  function setLeftDeg(d, instant){
+    lDeg = clamp(d, 0, 180);
+    if (instant) flipLeft.style.transition = 'none';
+    const z = leftActive ? 0 : -1;
+    flipLeft.style.transform = 'translateZ(' + z + 'px) rotateY(' + lDeg + 'deg)';
+    const t = Math.abs(lDeg)/180;
+    shadeL.style.opacity = (0.08 + 0.55*t).toFixed(3);
+    shadeL.style.background = 'radial-gradient(circle at ' + Math.round(92-68*t) + '% 50%, rgba(0,0,0,0.28), transparent 62%)';
+    hiL.style.opacity = (0.02 + 0.22*t).toFixed(3);
+    hiL.style.background = 'linear-gradient(270deg, rgba(255,255,255,.55), transparent 35%)';
+  }
+
+  function halfWidth(){
+    return stage.getBoundingClientRect().width / 2;
+  }
+
+  function refreshContent(){
+    const cur = spreadIndex;
+    const next = Math.min(cur + 1, TOTAL - 1);
+    const prev = Math.max(cur - 1, 0);
+
+    leftStatic.innerHTML = renderLeft(cur);
+    showRight(cur);
+    rightFront.innerHTML = rightHtmlByIndex[cur];
+    rightBack.innerHTML = renderLeft(next);
+    leftFront.innerHTML = renderLeft(cur);
+    leftBack.innerHTML = '';
+
+    flipRight.classList.toggle('disabled', cur >= TOTAL - 1);
+    flipLeft.classList.toggle('disabled', cur <= 0);
+    leftHit.classList.toggle('disabled', cur <= 0);
+    updateDots();
+  }
+
+  function refresh(){
+    refreshContent();
+    setRightDeg(0, true);
+    setLeftDeg(0, true);
+    setLeftActive(false);
+  }
+
+  let isTurning = false;
+  let leftStaticCache = '';
+
+  function waitTransformEnd(el){
+    return new Promise((resolve) => {
+      let done = false;
+      const finish = () => {
+        if (done) return;
+        done = true;
+        el.removeEventListener('transitionend', onEnd);
+        resolve();
+      };
+      const onEnd = (e) => {
+        if (e.propertyName !== 'transform') return;
+        finish();
+      };
+      el.addEventListener('transitionend', onEnd);
+      // Safety: resolve after 500ms even if transitionend didn't fire
+      setTimeout(finish, 500);
+    });
+  }
+
+  function resetSpread(){
+    const cur = spreadIndex;
+    const next = Math.min(cur + 1, TOTAL - 1);
+    const prev = Math.max(cur - 1, 0);
+    // Update everything in one go
+    leftStatic.innerHTML = renderLeft(cur);
+    showRight(cur);
+    rightFront.innerHTML = rightHtmlByIndex[cur];
+    rightBack.innerHTML = renderLeft(next);
+    leftFront.innerHTML = renderLeft(cur);
+    leftBack.innerHTML = '';
+    setRightDeg(0, true);
+    setLeftDeg(0, true);
+    flipRight.classList.toggle('disabled', cur >= TOTAL - 1);
+    flipLeft.classList.toggle('disabled', cur <= 0);
+    leftHit.classList.toggle('disabled', cur <= 0);
+    updateDots();
+  }
+
+  async function commitForward(){
+    if (isTurning || spreadIndex >= TOTAL - 1) return;
+    isTurning = true;
+    const next = Math.min(spreadIndex + 1, TOTAL - 1);
+    showRight(next);
+    flipRight.style.transition = 'transform 420ms cubic-bezier(.2,.85,.2,1)';
+    setRightDeg(-180, false);
+    await waitTransformEnd(flipRight);
+    spreadIndex += 1;
+    // Use double-rAF to guarantee everything updates in a single paint
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        resetSpread();
+        isTurning = false;
+      });
+    });
+  }
+
+  async function commitBackward(){
+    if (isTurning || spreadIndex <= 0) return;
+    isTurning = true;
+    setLeftActive(true);
+    leftStaticCache = leftStatic.innerHTML;
+    leftStatic.innerHTML = renderLeft(spreadIndex - 1);
+    leftBack.innerHTML = rightHtmlByIndex[spreadIndex - 1];
+    flipLeft.style.transition = 'transform 420ms cubic-bezier(.2,.85,.2,1)';
+    setLeftDeg(180, false);
+    await waitTransformEnd(flipLeft);
+    spreadIndex -= 1;
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        resetSpread();
+        setLeftActive(false);
+        isTurning = false;
+      });
+    });
+  }
+
+  // Drag — right leaf
+  let dragR=false, rStartX=0, rStartDeg=0;
+  rightHit.addEventListener('pointerdown', (e) => {
+    if (flipRight.classList.contains('disabled') || isTurning) return;
+    dragR = true;
+    rStartX = e.clientX;
+    rStartDeg = rDeg;
+    const next = Math.min(spreadIndex + 1, TOTAL - 1);
+    showRight(next);
+    rightHit.setPointerCapture && rightHit.setPointerCapture(e.pointerId);
+    flipRight.style.transition = 'none';
+  });
+
+  // Drag — left leaf
+  let dragL=false, lStartX=0, lStartDeg=0;
+  leftHit.addEventListener('pointerdown', (e) => {
+    if (flipLeft.classList.contains('disabled') || isTurning) return;
+    setLeftActive(true);
+    leftStaticCache = leftStatic.innerHTML;
+    leftStatic.innerHTML = renderLeft(spreadIndex - 1);
+    leftBack.innerHTML = rightHtmlByIndex[spreadIndex - 1];
+    dragL = true;
+    lStartX = e.clientX;
+    lStartDeg = lDeg;
+    flipLeft.setPointerCapture && flipLeft.setPointerCapture(e.pointerId);
+    flipLeft.style.transition = 'none';
+  });
+
+  window.addEventListener('pointermove', (e) => {
+    if (dragR){
+      const dx = e.clientX - rStartX;
+      const delta = (dx / halfWidth()) * 180;
+      setRightDeg(rStartDeg + delta, false);
+    }
+    if (dragL){
+      const dx = e.clientX - lStartX;
+      const delta = (dx / halfWidth()) * 180;
+      setLeftDeg(lStartDeg + delta, false);
+    }
+  });
+
+  window.addEventListener('pointerup', async () => {
+    if (dragR){
+      dragR = false;
+      if (Math.abs(rDeg) > 90){
+        await commitForward();
+      } else {
+        flipRight.style.transition = 'transform 260ms cubic-bezier(.2,.85,.2,1)';
+        setRightDeg(0, false);
+        waitTransformEnd(flipRight).then(() => {
+          showRight(spreadIndex);
+        });
+      }
+    }
+    if (dragL){
+      dragL = false;
+      if (Math.abs(lDeg) > 90){
+        await commitBackward();
+      } else {
+        flipLeft.style.transition = 'transform 260ms cubic-bezier(.2,.85,.2,1)';
+        setLeftDeg(0, false);
+        waitTransformEnd(flipLeft).then(() => {
+          setLeftActive(false);
+          leftStatic.innerHTML = leftStaticCache;
+          leftBack.innerHTML = '';
+        });
+      }
+    }
+  });
+
+  // Click to flip
+  rightHit.addEventListener('click', () => {
+    if (dragR || isTurning || flipRight.classList.contains('disabled')) return;
+    commitForward();
+  });
+  leftHit.addEventListener('click', () => {
+    if (dragL || isTurning || flipLeft.classList.contains('disabled')) return;
+    commitBackward();
+  });
+
+  // Keyboard
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight') commitForward();
+    if (e.key === 'ArrowLeft') commitBackward();
+  });
+
+  refresh();
+</script>
+</body>
+</html>

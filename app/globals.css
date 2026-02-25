@@ -129,3 +129,12 @@ body {
 .tabs-scroll::-webkit-scrollbar {
   height: 0;
 }
+
+/* Page flip snap transition */
+.flip-snap {
+  transition: transform 0.6s cubic-bezier(0.2, 0.85, 0.2, 1);
+}
+
+.flip-leaf {
+  will-change: transform;
+}

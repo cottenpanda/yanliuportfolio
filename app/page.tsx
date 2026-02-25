@@ -631,6 +631,28 @@ export default function Home() {
         </p>
       </div>
 
+      {/* Arrow between hero and flip book */}
+      <div className="flex justify-center pt-32 pb-0">
+        <img src="/Arrow.svg" alt="" className="w-56" draggable={false} />
+      </div>
+
+      {/* Page flip book — portfolio sections */}
+      <div className="w-full flex justify-center pt-0 pb-24">
+        <iframe
+          src="/page-flip-test.html"
+          className="w-full max-w-[1200px] border-none"
+          style={{ height: "800px" }}
+          title="Portfolio flip book"
+        />
+      </div>
+
+      {/* Footer */}
+      <footer className="w-full text-center py-12">
+        <p className="text-sm text-text-muted">
+          Vibe-coded by Yan Liu · Learning by building
+        </p>
+      </footer>
+
       {/* Sections — hidden for now */}
       <div className="hidden flex-col items-center px-4 pb-24 relative z-10">
         {/* Navigation pills */}
