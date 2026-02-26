@@ -9,6 +9,10 @@ html {
 body {
   background-color: #FAFAF9;
   color: #1C1917;
+  background-image:
+    linear-gradient(rgba(140, 170, 200, 0.5) 1.5px, transparent 1.5px),
+    linear-gradient(90deg, rgba(140, 170, 200, 0.5) 1.5px, transparent 1.5px);
+  background-size: 28px 28px;
 }
 
 ::selection {
@@ -137,4 +141,19 @@ body {
 
 .flip-leaf {
   will-change: transform;
+}
+
+@keyframes burst-particle {
+  0% {
+    transform: translate(0, 0) scale(0);
+    opacity: 1;
+  }
+  50% {
+    opacity: 1;
+    transform: translate(var(--burst-x), var(--burst-y)) scale(1);
+  }
+  100% {
+    transform: translate(var(--burst-x), calc(var(--burst-y) - 20px)) scale(0.5);
+    opacity: 0;
+  }
 }

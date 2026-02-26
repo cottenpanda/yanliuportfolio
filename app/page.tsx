@@ -551,6 +551,7 @@ function StartMenu() {
 
 
 
+
 /* ── Animated arrow ── */
 const arrowPaths = [
   "M187.418 100.888C184.669 115.245 168.05 99.4773 166.62 94.4026C168.046 80.7408 185.173 94.7285 187.418 100.888Z",
@@ -606,6 +607,55 @@ function ArrowAnimated() {
   );
 }
 
+/* ── Click burst particles ── */
+const particleColors = ["#e8445a", "#f4a8b5", "#ffb347", "#a78bfa", "#67e8f9", "#fbbf24", "#f9a8d4"];
+
+function ClickBurst({ x, y, onDone }: { x: number; y: number; onDone: () => void }) {
+  const particles = useRef(
+    Array.from({ length: 8 }, (_, i) => ({
+      id: i,
+      type: i % 2 === 0 ? "heart" : "sparkle",
+      color: particleColors[Math.floor(Math.random() * particleColors.length)],
+      angle: (Math.PI * 2 * i) / 8 + (Math.random() - 0.5) * 0.5,
+      distance: 40 + Math.random() * 50,
+      size: 8 + Math.random() * 6,
+    }))
+  ).current;
+
+  useEffect(() => {
+    const timer = setTimeout(onDone, 800);
+    return () => clearTimeout(timer);
+  }, [onDone]);
+
+  return (
+    <div className="fixed pointer-events-none" style={{ left: x, top: y, zIndex: 50 }}>
+      {particles.map((p) => (
+        <div
+          key={p.id}
+          className="absolute"
+          style={{
+            left: 0,
+            top: 0,
+            animation: "burst-particle 0.7s ease-out forwards",
+            ["--burst-x" as string]: `${Math.cos(p.angle) * p.distance}px`,
+            ["--burst-y" as string]: `${Math.sin(p.angle) * p.distance - 30}px`,
+          }}
+        >
+          {p.type === "heart" ? (
+            <svg width={p.size} height={p.size} viewBox="0 0 24 24" fill={p.color}>
+              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+            </svg>
+          ) : (
+            <svg width={p.size} height={p.size} viewBox="0 0 24 24" fill={p.color}>
+              <path d="M12 0l3 9h9l-7.5 5.5L19.5 24 12 18l-7.5 6 3-9.5L0 9h9z" />
+            </svg>
+          )}
+        </div>
+      ))}
+    </div>
+  );
+}
+
 /* ── Tab definitions ── */
 const tabs = siteConfig.sections.map((s) => ({
   id: s.id,
@@ -620,6 +670,9 @@ export default function Home() {
   const [activeTab, setActiveTab] = useState(0);
   const { displayed, done } = useTypingEffect(siteConfig.name, 80);
   const activeSection = siteConfig.sections[activeTab];
+  const [bursts, setBursts] = useState<{ id: number; x: number; y: number }[]>([]);
+  const [imgZIndex, setImgZIndex] = useState<number[]>([1, 1, 1, 1, 3, 1, 1, 2, 1, 1]);
+  const zCounterRef = useRef(10);
 
   return (
     <div className="bg-background relative overflow-x-hidden">
@@ -687,6 +740,94 @@ export default function Home() {
         <p className="font-[family-name:var(--font-noto)] text-xs md:text-sm text-text-secondary max-w-lg text-center leading-relaxed tracking-[0.08em] mt-2">
           {siteConfig.tagline}
         </p>
+      </div>
+
+      {/* Bulletin board */}
+      <div className="w-full flex justify-center px-6 pt-96 pb-16">
+        <div className="w-full max-w-[1000px]">
+          {/* Dark frame */}
+          <div className="rounded-3xl p-[14px]" style={{
+            background: "linear-gradient(160deg, #3a3a3a 0%, #2a2a2a 20%, #1c1c1c 80%, #111111 100%)",
+            boxShadow: "0 10px 30px rgba(0,0,0,0.35), 0 24px 70px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.1), inset 0 -1px 0 rgba(0,0,0,0.4)",
+            borderTop: "1px solid rgba(255,255,255,0.12)",
+            borderLeft: "1px solid rgba(255,255,255,0.06)",
+            borderRight: "1px solid rgba(0,0,0,0.3)",
+            borderBottom: "2px solid rgba(0,0,0,0.5)",
+          }}>
+          <div className="min-h-[578px] rounded-xl relative" style={{
+            background: "linear-gradient(150deg, #2a2a2a 0%, #1a1a1a 35%, #111111 100%)",
+            border: "1px solid rgba(0,0,0,0.4)",
+            boxShadow: "inset 0 2px 6px rgba(0,0,0,0.4), inset 0 -1px 0 rgba(255,255,255,0.05)",
+          }}>
+            {/* Paper texture noise */}
+            <div className="absolute inset-0 pointer-events-none opacity-[0.18]" style={{
+              backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
+              backgroundSize: "200px 200px",
+            }} />
+            {/* Grid pattern */}
+            <div className="absolute inset-0 pointer-events-none" style={{
+              backgroundImage: `
+                linear-gradient(rgba(200, 170, 120, 0.12) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(200, 170, 120, 0.12) 1px, transparent 1px)
+              `,
+              backgroundSize: "36px 36px",
+            }} />
+            {/* Row numbers */}
+            <div className="absolute top-0 left-0 bottom-0 w-[24px] flex flex-col pointer-events-none select-none">
+              {Array.from({ length: 16 }).map((_, i) => (
+                <span key={i} className="font-mono text-[9px] text-stone-600 text-right pr-1" style={{ height: "36px", lineHeight: "36px" }}>
+                  {i + 1}
+                </span>
+              ))}
+            </div>
+            {/* Showcase images — draggable */}
+            {[
+              { src: "/bulletin/1.jpg", top: "4%", left: "8%", rotate: "-5deg", w: 220, z: 1 },
+              { src: "/bulletin/2.jpg", top: "6%", left: "58%", rotate: "3deg", w: 210, z: 1 },
+              { src: "/bulletin/3.jpg", top: "3%", left: "31%", rotate: "-2deg", w: 250, z: 1 },
+              { src: "/bulletin/4.jpg", top: "38%", left: "5%", rotate: "4deg", w: 215, z: 1 },
+              { src: "/bulletin/5.jpg", top: "35%", left: "38%", rotate: "6deg", w: 240, z: 3 },
+              { src: "/bulletin/6.jpg", top: "40%", left: "68%", rotate: "2deg", w: 210, z: 1 },
+              { src: "/bulletin/7.jpg", top: "74%", left: "12%", rotate: "-3deg", w: 240, z: 1 },
+              { src: "/bulletin/8.jpg", top: "70%", left: "42%", rotate: "5deg", w: 215, z: 2 },
+              { src: "/bulletin/9.jpg", top: "65%", left: "72%", rotate: "-4deg", w: 205, z: 1 },
+              { src: "/bulletin/10.jpg", top: "12%", left: "80%", rotate: "6deg", w: 235, z: 1 },
+            ].map((img, i) => (
+              <motion.img
+                key={i}
+                src={img.src}
+                alt={`Showcase ${i + 1}`}
+                drag
+                dragMomentum={false}
+                whileHover={{ scale: 1.05 }}
+                whileDrag={{ scale: 1.08 }}
+                onDragStart={() => {
+                  zCounterRef.current += 1;
+                  setImgZIndex((prev) => { const next = [...prev]; next[i] = zCounterRef.current; return next; });
+                }}
+                onTap={(e) => {
+                  const evt = e as unknown as MouseEvent;
+                  setBursts((prev) => [...prev, { id: Date.now(), x: evt.clientX, y: evt.clientY }]);
+                }}
+                className="absolute rounded-md shadow-lg cursor-grab active:cursor-grabbing"
+                style={{
+                  top: img.top,
+                  left: img.left,
+                  width: img.w,
+                  rotate: img.rotate,
+                  zIndex: imgZIndex[i],
+                }}
+                draggable={false}
+              />
+            ))}
+
+            {/* Click burst particles */}
+            {bursts.map((b) => (
+              <ClickBurst key={b.id} x={b.x} y={b.y} onDone={() => setBursts((prev) => prev.filter((p) => p.id !== b.id))} />
+            ))}
+          </div>
+          </div>
+        </div>
       </div>
 
       {/* Arrow between hero and flip book */}
