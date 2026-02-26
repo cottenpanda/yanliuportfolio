@@ -141,7 +141,7 @@ function MacFolder() {
         />
         {/* Laptop — right */}
         <img
-          src="/Laptop.svg"
+          src="/laptop.svg"
           alt="Laptop"
           className="absolute left-1/2 bottom-[30%] w-[90px] -translate-x-1/2 transition-all duration-500 ease-out delay-150 opacity-0 group-hover:opacity-100 group-hover:-translate-y-[65px] group-hover:translate-x-[40px] group-hover:rotate-[10deg] z-10"
           style={{ filter: "drop-shadow(0 6px 12px rgba(0,0,0,0.25))" }}
