@@ -237,10 +237,10 @@ function VinylCard() {
 
         {/* Info */}
         <div className="mt-4 text-center">
-          <p className="font-mono text-[10px] text-text-muted uppercase tracking-widest mb-1">Playlist</p>
-          <h3 className="font-mono text-text-primary font-bold text-lg leading-tight mb-1">Vibe Coding</h3>
-          <p className="font-mono text-text-muted text-xs mb-1">18 projects</p>
-          <p className="font-mono text-text-muted/70 text-[11px] leading-snug">Built with creativity<br/>and curiosity.</p>
+          <p className="font-[family-name:var(--font-noto)] text-[10px] text-text-muted uppercase tracking-widest mb-1">Playlist</p>
+          <h3 className="font-[family-name:var(--font-noto)] text-text-primary font-bold text-lg leading-tight mb-1">Vibe Coding</h3>
+          <p className="font-[family-name:var(--font-noto)] text-text-muted text-xs mb-1">18 projects</p>
+          <p className="font-[family-name:var(--font-noto)] text-text-muted/70 text-[11px] leading-snug">Built with creativity<br/>and curiosity.</p>
         </div>
       </div>
     </a>
@@ -620,16 +620,16 @@ export default function Home() {
             />
           </div>
         </a>
-        <h1 className="font-mono text-5xl md:text-7xl font-bold text-text-primary mb-4">
+        <h1 className="font-[family-name:var(--font-noto)] text-5xl md:text-7xl font-bold text-text-primary mb-4">
           {displayed}
           {!done && (
             <span className="inline-block w-[3px] h-[0.7em] bg-text-primary align-text-bottom ml-[2px] cursor-blink" />
           )}
         </h1>
-        <p className="font-mono text-xs md:text-sm text-text-secondary uppercase tracking-[0.25em] mb-1">
+        <p className="font-[family-name:var(--font-noto)] text-xs md:text-sm text-text-secondary uppercase tracking-[0.25em] mb-1">
           {siteConfig.subtitle}
         </p>
-        <p className="font-mono text-xs md:text-sm text-text-secondary max-w-lg text-center leading-relaxed">
+        <p className="font-[family-name:var(--font-noto)] text-xs md:text-sm text-text-secondary max-w-lg text-center leading-relaxed tracking-[0.08em] mt-2">
           {siteConfig.tagline}
         </p>
       </div>
