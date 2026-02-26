@@ -111,10 +111,10 @@ function FloatingDecorations() {
 function MacFolder() {
   return (
     <div
-      className="hidden lg:block absolute left-[30%] bottom-[10%] z-30 group cursor-pointer rotate-[6deg] transition-all duration-300 hover:scale-110 hover:-translate-y-2 hover:rotate-[2deg]"
+      className="hidden lg:block absolute left-[36.5%] bottom-[7%] z-30 group cursor-pointer rotate-[6deg] transition-all duration-300 hover:scale-110 hover:-translate-y-2 hover:rotate-[2deg]"
       style={{ perspective: "500px" }}
     >
-      <div className="relative w-[120px] h-[120px] transition-all duration-300 group-hover:drop-shadow-[0_8px_16px_rgba(0,0,0,0.25)]">
+      <div className="relative w-[130px] h-[130px] transition-all duration-300 group-hover:drop-shadow-[0_8px_16px_rgba(0,0,0,0.25)]">
         {/* Back panel — stays in place */}
         <img
           src="/mac-folder-back.svg"
@@ -122,27 +122,31 @@ function MacFolder() {
           className="absolute inset-0 w-full h-full z-0"
           draggable={false}
         />
-        {/* Sticky note — between front and back, slides up on hover */}
-        <div
-          className="absolute left-1/2 -translate-x-1/2 bottom-[20%] transition-all duration-500 ease-out opacity-0 group-hover:opacity-100 group-hover:-translate-y-[120px] z-10"
-        >
-          <div className="relative w-[150px] h-[150px] shadow-md overflow-hidden" style={{
-            background: "#f8f6f1",
-            backgroundImage: "repeating-linear-gradient(0deg, transparent, transparent 19px, #c8d4dc 19px, #c8d4dc 20px)",
-            transform: "rotate(-3deg)",
-          }}>
-            {/* Red margin line */}
-            <div className="absolute top-0 bottom-0 left-[28px] w-[1.5px] z-0" style={{ background: "#e8a0a0" }} />
-            {/* Curled corner — bottom right */}
-            <div className="absolute bottom-0 right-0 w-[30px] h-[30px]" style={{
-              background: "linear-gradient(315deg, #d0cec8 0%, #e8e6e0 30%, #f8f6f1 60%, transparent 60%)",
-              boxShadow: "-2px -2px 4px rgba(0,0,0,0.1)",
-              borderTopLeftRadius: "18px",
-            }} />
-            {/* Animal SVGs — scattered randomly */}
-            <img src="/coffee.png" alt="coffee doodle" className="absolute inset-0 w-full h-full object-contain p-3 z-10" draggable={false} />
-          </div>
-        </div>
+        {/* Items that pop out on hover */}
+        {/* iPad + notebook — left */}
+        <img
+          src="/Ipad and notebook.svg"
+          alt="iPad and notebook"
+          className="absolute left-1/2 bottom-[30%] w-[90px] -translate-x-1/2 transition-all duration-500 ease-out opacity-0 group-hover:opacity-100 group-hover:-translate-y-[75px] group-hover:-translate-x-[140px] group-hover:rotate-[-15deg] z-10"
+          style={{ filter: "drop-shadow(0 6px 12px rgba(0,0,0,0.25))" }}
+          draggable={false}
+        />
+        {/* Claude logo — upper center-right */}
+        <img
+          src="/Claude logo.svg"
+          alt="Claude"
+          className="absolute left-1/2 bottom-[30%] w-[55px] -translate-x-1/2 transition-all duration-500 ease-out delay-75 opacity-0 group-hover:opacity-100 group-hover:-translate-y-[95px] group-hover:-translate-x-[30px] group-hover:rotate-[5deg] z-10"
+          style={{ filter: "drop-shadow(0 6px 12px rgba(0,0,0,0.25))" }}
+          draggable={false}
+        />
+        {/* Laptop — right */}
+        <img
+          src="/Laptop.svg"
+          alt="Laptop"
+          className="absolute left-1/2 bottom-[30%] w-[90px] -translate-x-1/2 transition-all duration-500 ease-out delay-150 opacity-0 group-hover:opacity-100 group-hover:-translate-y-[65px] group-hover:translate-x-[40px] group-hover:rotate-[10deg] z-10"
+          style={{ filter: "drop-shadow(0 6px 12px rgba(0,0,0,0.25))" }}
+          draggable={false}
+        />
         {/* Front panel — rotates open on hover */}
         <img
           src="/mac-folder-front.svg"
@@ -221,7 +225,7 @@ function DotMatrixBoard() {
 /* ── Vinyl playlist card (floating decoration) ── */
 function VinylCard() {
   return (
-    <a href="https://cottenpanda.github.io/vibecodingplaylist/" target="_blank" rel="noopener noreferrer" className="hidden lg:block absolute left-[8%] bottom-[-5%] z-30 transition-all duration-300 -rotate-[5deg] hover:rotate-[2deg] hover:scale-110 hover:-translate-y-5 cursor-pointer">
+    <a href="https://cottenpanda.github.io/vibecodingplaylist/" target="_blank" rel="noopener noreferrer" className="hidden lg:block absolute left-[8%] bottom-[-1%] z-30 transition-all duration-300 -rotate-[5deg] hover:rotate-[2deg] hover:scale-110 hover:-translate-y-5 cursor-pointer">
       <div className="bg-white border border-editor-border rounded-2xl p-6 shadow-sm flex flex-col items-center w-[240px]">
         {/* Vinyl record */}
         <img
@@ -388,7 +392,7 @@ function RetroWindows() {
   );
 
   return (
-    <div className="hidden lg:block absolute bottom-[1%] right-[33%] z-20" onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}>
+    <div className="hidden lg:block absolute bottom-[-4%] right-[21%] z-20" onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}>
       <div className="relative w-[300px] h-[240px]">
         {windows.map((win, i) => (
           <div
@@ -574,7 +578,6 @@ export default function Home() {
         <VinylCard />
         <NameBadge />
         <RetroWindows />
-        <StartMenu />
         {/* Ripped paper + ice coffee + plant */}
         <div className="hidden lg:block absolute top-[3%] left-[45%] -translate-x-1/2 z-20 rotate-[-2deg] transition-all duration-300 hover:scale-110 hover:rotate-[1deg] group/paper">
           <img

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Caveat, Source_Code_Pro } from "next/font/google";
+import { Inter, Caveat, Source_Code_Pro, Noto_Sans } from "next/font/google";
 import "./globals.css";
 
 const inter = Inter({
@@ -17,6 +17,11 @@ const sourceCodePro = Source_Code_Pro({
   variable: "--font-mono",
 });
 
+const notoSans = Noto_Sans({
+  subsets: ["latin"],
+  variable: "--font-noto",
+});
+
 export const metadata: Metadata = {
   title: "Yan Liu — Product Designer",
   description:
@@ -29,7 +34,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${inter.variable} ${caveat.variable} ${sourceCodePro.variable}`}>
+    <html lang="en" className={`${inter.variable} ${caveat.variable} ${sourceCodePro.variable} ${notoSans.variable}`}>
       <body className="font-sans antialiased">{children}</body>
     </html>
   );
