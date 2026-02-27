@@ -610,7 +610,7 @@ function ArrowAnimated() {
 /* ── Ripped paper with tape ── */
 function RippedPaperNote() {
   return (
-    <div className="w-full flex justify-center px-6 -mt-8 pb-8">
+    <div className="w-full flex justify-center px-6 -mt-14 pb-8">
       <div className="relative" style={{ transform: "rotate(-1.5deg)" }}>
         {/* Tape — top left */}
         <div className="absolute -top-3 -left-4 w-[70px] h-[22px] z-10" style={{
@@ -761,13 +761,13 @@ export default function Home() {
             className="w-[520px] opacity-100 drop-shadow-[0_6px_20px_rgba(0,0,0,0.25)] transition-all duration-300"
             draggable={false}
           />
-          <div className="absolute top-[50%] left-[62%] -translate-x-1/2 -translate-y-1/2">
+          <div className="absolute top-[50%] left-[55%] -translate-x-1/2 -translate-y-1/2">
             <img src="/ice-coffee.png" alt="Ice coffee" className="w-[70px] drop-shadow-[0_4px_8px_rgba(0,0,0,0.2)] transition-all duration-300 hover:scale-125 hover:rotate-[6deg] hover:-translate-y-3" draggable={false} />
           </div>
-          <div className="absolute top-[70%] left-[35%] -translate-x-1/2 -translate-y-1/2">
-            <img src="/plant.png" alt="Plant" className="w-[120px] drop-shadow-[0_4px_8px_rgba(0,0,0,0.2)] transition-all duration-300 hover:scale-125 hover:rotate-[-5deg] hover:-translate-y-3" draggable={false} />
+          <div className="absolute top-[70%] left-[23%] -translate-x-1/2 -translate-y-1/2">
+            <img src="/plant.png" alt="Plant" className="w-[150px] drop-shadow-[0_4px_8px_rgba(0,0,0,0.2)] transition-all duration-300 hover:scale-125 hover:rotate-[-5deg] hover:-translate-y-3" draggable={false} />
           </div>
-          <div className="absolute top-1/2 left-[88%] -translate-x-1/2 -translate-y-1/2">
+          <div className="absolute top-1/2 left-[80%] -translate-x-1/2 -translate-y-1/2">
             <img src="/apple-pencil.png" alt="Apple Pencil" className="w-[70px] drop-shadow-[0_4px_8px_rgba(0,0,0,0.2)] transition-all duration-300 hover:scale-125 hover:rotate-[4deg] hover:-translate-y-3" draggable={false} />
           </div>
         </div>
@@ -916,10 +916,12 @@ export default function Home() {
       <RippedPaperNote />
 
       {/* Footer */}
-      <footer className="w-full text-center py-12">
+      <footer className="w-full flex justify-center items-center gap-3 py-12">
+        <img src="/star.svg" alt="" className="w-5 h-5" draggable={false} />
         <p className="text-sm text-text-muted">
           Vibe-coded by Yan Liu · Learning by building
         </p>
+        <img src="/star.svg" alt="" className="w-5 h-5" draggable={false} />
       </footer>
 
       {/* Sections — hidden for now */}
