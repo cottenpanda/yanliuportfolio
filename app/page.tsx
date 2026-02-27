@@ -200,35 +200,19 @@ function getFigmaColor(i: number) {
   return "#0ACF83";
 }
 
-// Pre-compute the order that "on" dots appear (top-left to bottom-right)
+// Pre-compute sequence index for each dot (for staggered transition-delay)
 const figmaDotOrder = figmaGrid.reduce<number[]>((acc, val, i) => { if (val) acc.push(i); return acc; }, []);
+const dotSequenceMap = new Map<number, number>();
+figmaDotOrder.forEach((dotIndex, seqIndex) => dotSequenceMap.set(dotIndex, seqIndex));
 
 function DotMatrixBoard() {
-  const [hovered, setHovered] = useState(false);
-  const [visibleCount, setVisibleCount] = useState(0);
-
-  useEffect(() => {
-    if (!hovered) { setVisibleCount(0); return; }
-    let count = 0;
-    const interval = setInterval(() => {
-      count++;
-      setVisibleCount(count);
-      if (count >= figmaDotOrder.length) clearInterval(interval);
-    }, 25);
-    return () => clearInterval(interval);
-  }, [hovered]);
-
-  // Set of dot indices that are currently "revealed" during animation
-  const revealedSet = new Set(figmaDotOrder.slice(0, visibleCount));
-
   return (
     <a
       href={siteConfig.links.figma}
       target="_blank"
       rel="noopener noreferrer"
-      className="hidden lg:block absolute right-[200px] top-[80px] z-20 cursor-pointer transition-transform duration-300 rotate-[8deg] scale-[0.65] hover:scale-[0.72] hover:rotate-[3deg]"
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
+      className="hidden lg:block absolute right-[250px] top-[80px] z-20 cursor-pointer transition-transform duration-300 ease-out rotate-[8deg] scale-[0.65] hover:scale-[0.72] hover:rotate-[3deg] group/matrix"
+      style={{ willChange: "transform" }}
     >
       {/* Display panel */}
       <div className="rounded-2xl p-3" style={{
@@ -238,22 +222,16 @@ function DotMatrixBoard() {
         {/* LED grid */}
         <div className="grid gap-[3px]" style={{ gridTemplateColumns: `repeat(${FIGMA_COLS}, 1fr)` }}>
           {figmaGrid.map((on, i) => {
-            const isRevealed = hovered && revealedSet.has(i);
-            const isOn = on && (!hovered || isRevealed);
-            const color = isRevealed ? getFigmaColor(i) : "#ffffff";
+            const seq = dotSequenceMap.get(i) ?? 0;
+            const color = on ? getFigmaColor(i) : "";
             return (
               <div
                 key={i}
-                className="w-[7px] h-[7px] rounded-full transition-all duration-200"
+                className={`dot-led w-[7px] h-[7px] rounded-full${on ? " dot-on" : ""}`}
                 style={{
-                  background: isOn
-                    ? `radial-gradient(circle at 40% 35%, ${color}, ${color}cc 50%, ${color}88 100%)`
-                    : "radial-gradient(circle at 40% 35%, #3a3a3a, #2a2a2a 60%, #222 100%)",
-                  boxShadow: isOn
-                    ? `0 0 4px ${color}cc, 0 0 8px ${color}99, 0 0 16px ${color}66, 0 0 24px ${color}33`
-                    : "inset 0 1px 2px rgba(0,0,0,0.6), 0 0.5px 0 rgba(255,255,255,0.05)",
-                  border: isOn ? "none" : "0.5px solid rgba(80,80,80,0.5)",
-                }}
+                  "--dot-color": color,
+                  "--dot-delay": `${seq * 12}ms`,
+                } as React.CSSProperties}
               />
             );
           })}
@@ -279,15 +257,21 @@ function VinylCard() {
           />
         </div>
         {/* Card */}
-        <div className="bg-white border border-editor-border rounded-2xl shadow-sm flex flex-col items-center w-[240px] pt-6 pb-6">
+        <div className="relative bg-white border border-editor-border rounded-2xl shadow-sm flex flex-col items-center w-[240px] pt-6 pb-6 overflow-hidden">
+          {/* Animated blobs */}
+          <div className="absolute inset-0 pointer-events-none">
+            <div className="vinyl-blob vinyl-blob-1" />
+            <div className="vinyl-blob vinyl-blob-2" />
+            <div className="vinyl-blob vinyl-blob-3" />
+          </div>
           {/* Spacer matching default vinyl size */}
-          <div className="w-36 h-36" />
+          <div className="relative z-[1] w-36 h-36" />
           {/* Info */}
-          <div className="mt-4 text-center">
-            <p className="font-[family-name:var(--font-noto)] text-[10px] text-text-muted uppercase tracking-widest mb-1">Playlist</p>
+          <div className="relative z-[1] mt-4 text-center">
+            <p className="font-[family-name:var(--font-noto)] text-[10px] text-text-primary uppercase tracking-widest mb-1">Playlist</p>
             <h3 className="font-[family-name:var(--font-noto)] text-text-primary font-bold text-lg leading-tight mb-1">Vibe Coding</h3>
-            <p className="font-[family-name:var(--font-noto)] text-text-muted text-xs mb-1">18 projects</p>
-            <p className="font-[family-name:var(--font-noto)] text-text-muted/70 text-[11px] leading-snug">Built with creativity<br/>and curiosity.</p>
+            <p className="font-[family-name:var(--font-noto)] text-text-primary text-xs mb-1">18 projects</p>
+            <p className="font-[family-name:var(--font-noto)] text-text-primary text-[11px] leading-snug">Built with creativity<br/>and curiosity.</p>
           </div>
         </div>
       </div>
@@ -841,17 +825,20 @@ export default function Home() {
         <img
           src="/milk-tea.png"
           alt="Milk tea"
-          className="hidden lg:block absolute right-[30px] top-[70px] z-30 w-[160px] rotate-[6deg] opacity-90 transition-all duration-300 hover:scale-[1.3] hover:rotate-[2deg]"
+          className="hidden lg:block absolute right-[30px] top-[70px] z-30 w-[160px] rotate-[6deg] opacity-90 transition-transform duration-300 ease-out hover:scale-[1.3] hover:rotate-[2deg]"
+          style={{ willChange: "transform" }}
           draggable={false}
         />
 
         {/* Image collage */}
-        <a href="https://unsplash.com/@yl1980s" target="_blank" rel="noopener noreferrer" className="hidden lg:block absolute right-[-20px] top-[200px] z-10 rotate-[6deg] transition-transform duration-300 hover:rotate-[2deg] hover:scale-105 cursor-pointer group/collage overflow-visible">
+        <a href="https://unsplash.com/@yl1980s" target="_blank" rel="noopener noreferrer" className="hidden lg:block absolute right-[-20px] top-[200px] z-10 rotate-[6deg] transition-transform duration-300 ease-out hover:rotate-[2deg] hover:scale-105 cursor-pointer group/collage overflow-visible"
+      style={{ willChange: "transform" }}>
           <div className="relative overflow-visible">
             <img
               src="/cat.png"
               alt="Cat peeking"
-              className="absolute top-[30%] right-[15%] w-[180px] z-20 transition-all duration-500 ease-out scale-0 opacity-0 origin-center group-hover/collage:scale-100 group-hover/collage:opacity-100 group-hover/collage:rotate-[8deg] drop-shadow-[0_8px_20px_rgba(0,0,0,0.35)] group-hover/collage:-translate-y-3"
+              className="absolute top-[30%] right-[15%] w-[180px] z-20 transition-[transform,opacity] duration-500 ease-out scale-0 opacity-0 origin-center group-hover/collage:scale-100 group-hover/collage:opacity-100 group-hover/collage:rotate-[8deg] drop-shadow-[0_8px_20px_rgba(0,0,0,0.35)] group-hover/collage:-translate-y-3"
+              style={{ willChange: "transform, opacity" }}
             />
             <img
               src="/image-collage.png"

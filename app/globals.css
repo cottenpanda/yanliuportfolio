@@ -100,6 +100,28 @@ body {
   50% { opacity: 1; }
 }
 
+/* Dot matrix LEDs */
+.dot-led {
+  background: radial-gradient(circle at 40% 35%, #3a3a3a, #2a2a2a 60%, #222 100%);
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.6), 0 0.5px 0 rgba(255,255,255,0.05);
+  border: 0.5px solid rgba(80,80,80,0.5);
+}
+
+.dot-on {
+  background: radial-gradient(circle at 40% 35%, #fff, #ffffffcc 50%, #ffffff88 100%);
+  box-shadow: 0 0 4px #ffffffcc, 0 0 8px #ffffff99, 0 0 16px #ffffff66, 0 0 24px #ffffff33;
+  border: none;
+  transition: background 0ms, box-shadow 0ms;
+  transition-delay: 0ms;
+}
+
+.group\/matrix:hover .dot-on {
+  background: radial-gradient(circle at 40% 35%, var(--dot-color), var(--dot-color) 50%, transparent 100%);
+  box-shadow: 0 0 4px var(--dot-color), 0 0 8px var(--dot-color), 0 0 16px var(--dot-color);
+  transition-duration: 0ms;
+  transition-delay: 0ms;
+}
+
 /* Editor window */
 .editor-window {
   background-color: #F5F5F4;
@@ -131,6 +153,67 @@ body {
 
 .code-decoration {
   animation: code-float 6s ease-in-out infinite;
+}
+
+/* Vinyl card animated blobs */
+@keyframes blob-drift-1 {
+  0% { transform: translate(0, 0) scale(1); }
+  25% { transform: translate(100px, 120px) scale(1.1); }
+  50% { transform: translate(80px, 200px) scale(0.95); }
+  75% { transform: translate(-10px, 100px) scale(1.05); }
+  100% { transform: translate(0, 0) scale(1); }
+}
+
+@keyframes blob-drift-2 {
+  0% { transform: translate(0, 0) scale(1); }
+  25% { transform: translate(-80px, -120px) scale(1.05); }
+  50% { transform: translate(-100px, -200px) scale(1.1); }
+  75% { transform: translate(-20px, -80px) scale(0.95); }
+  100% { transform: translate(0, 0) scale(1); }
+}
+
+@keyframes blob-drift-3 {
+  0% { transform: translate(0, 0) scale(1); }
+  25% { transform: translate(60px, -80px) scale(1.1); }
+  50% { transform: translate(-70px, 40px) scale(0.95); }
+  75% { transform: translate(50px, 80px) scale(1.05); }
+  100% { transform: translate(0, 0) scale(1); }
+}
+
+.vinyl-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(40px);
+  opacity: 0.8;
+}
+
+.vinyl-blob-1 {
+  width: 200px;
+  height: 200px;
+  background: #d4e8b0;
+  top: -50px;
+  left: -40px;
+  animation: blob-drift-1 8s ease-in-out infinite;
+}
+
+.vinyl-blob-2 {
+  width: 200px;
+  height: 200px;
+  background: #fef0a0;
+  bottom: -50px;
+  right: -40px;
+  animation: blob-drift-2 8s ease-in-out infinite;
+}
+
+.vinyl-blob-3 {
+  width: 180px;
+  height: 180px;
+  background: #b8ddb9;
+  top: 50%;
+  left: 50%;
+  margin-top: -90px;
+  margin-left: -90px;
+  animation: blob-drift-3 8s ease-in-out infinite;
 }
 
 /* Vinyl spin */
