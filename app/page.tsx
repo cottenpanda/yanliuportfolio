@@ -797,16 +797,11 @@ export default function Home() {
         </a>
         {/* Center text */}
         <div className="absolute top-[42%] left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center z-10">
-          <h1 className="font-[family-name:var(--font-noto)] text-5xl md:text-7xl font-bold text-text-primary mb-4">
-            {displayed}
-            {!done && (
-              <span className="inline-block w-[3px] h-[0.7em] bg-text-primary align-text-bottom ml-[2px] cursor-blink" />
-            )}
-          </h1>
+          <img src="/yan-liu.svg" alt="Yan Liu" className="h-[80px] md:h-[100px] mb-4" draggable={false} />
           <p className="font-[family-name:var(--font-noto)] text-xs md:text-sm text-text-secondary uppercase tracking-[0.25em] mb-1">
             {siteConfig.subtitle}
           </p>
-          <p className="font-[family-name:var(--font-noto)] text-xs md:text-sm text-text-secondary max-w-lg text-center leading-relaxed tracking-[0.08em] mt-2">
+          <p className="font-[family-name:var(--font-noto)] text-xs md:text-sm text-text-secondary max-w-lg text-center leading-relaxed tracking-[0.15em] mt-2">
             {siteConfig.tagline}
           </p>
         </div>
