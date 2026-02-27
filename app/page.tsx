@@ -186,13 +186,49 @@ const figmaGrid = [
   0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 ];
 
+// Figma brand colors mapped by row + column (matching actual logo)
+function getFigmaColor(i: number) {
+  const row = Math.floor(i / FIGMA_COLS);
+  const col = i % FIGMA_COLS;
+  const isLeft = col < 9; // left half of the grid
+
+  // Row 1: top section (rows 2-6) — red left, red/orange right
+  if (row <= 6) return isLeft ? "#F24E1E" : "#FF7262";
+  // Row 2: middle section (rows 7-10) — purple left, blue right
+  if (row <= 10) return isLeft ? "#A259FF" : "#1ABCFE";
+  // Row 3: bottom section (rows 11+) — green (left only in logo)
+  return "#0ACF83";
+}
+
+// Pre-compute the order that "on" dots appear (top-left to bottom-right)
+const figmaDotOrder = figmaGrid.reduce<number[]>((acc, val, i) => { if (val) acc.push(i); return acc; }, []);
+
 function DotMatrixBoard() {
+  const [hovered, setHovered] = useState(false);
+  const [visibleCount, setVisibleCount] = useState(0);
+
+  useEffect(() => {
+    if (!hovered) { setVisibleCount(0); return; }
+    let count = 0;
+    const interval = setInterval(() => {
+      count++;
+      setVisibleCount(count);
+      if (count >= figmaDotOrder.length) clearInterval(interval);
+    }, 25);
+    return () => clearInterval(interval);
+  }, [hovered]);
+
+  // Set of dot indices that are currently "revealed" during animation
+  const revealedSet = new Set(figmaDotOrder.slice(0, visibleCount));
+
   return (
     <a
       href={siteConfig.links.figma}
       target="_blank"
       rel="noopener noreferrer"
       className="hidden lg:block absolute right-[200px] top-[80px] z-20 cursor-pointer transition-transform duration-300 rotate-[8deg] scale-[0.65] hover:scale-[0.72] hover:rotate-[3deg]"
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
     >
       {/* Display panel */}
       <div className="rounded-2xl p-3" style={{
@@ -201,21 +237,26 @@ function DotMatrixBoard() {
       }}>
         {/* LED grid */}
         <div className="grid gap-[3px]" style={{ gridTemplateColumns: `repeat(${FIGMA_COLS}, 1fr)` }}>
-          {figmaGrid.map((on, i) => (
-            <div
-              key={i}
-              className="w-[7px] h-[7px] rounded-full"
-              style={{
-                background: on
-                  ? "radial-gradient(circle at 40% 35%, #ffffff, #e0e0e0 50%, #aaa 100%)"
-                  : "radial-gradient(circle at 40% 35%, #3a3a3a, #2a2a2a 60%, #222 100%)",
-                boxShadow: on
-                  ? "0 0 6px rgba(255,255,255,0.5), 0 0 2px rgba(255,255,255,0.8)"
-                  : "inset 0 1px 2px rgba(0,0,0,0.6), 0 0.5px 0 rgba(255,255,255,0.05)",
-                border: on ? "none" : "0.5px solid rgba(80,80,80,0.5)",
-              }}
-            />
-          ))}
+          {figmaGrid.map((on, i) => {
+            const isRevealed = hovered && revealedSet.has(i);
+            const isOn = on && (!hovered || isRevealed);
+            const color = isRevealed ? getFigmaColor(i) : "#ffffff";
+            return (
+              <div
+                key={i}
+                className="w-[7px] h-[7px] rounded-full transition-all duration-200"
+                style={{
+                  background: isOn
+                    ? `radial-gradient(circle at 40% 35%, ${color}, ${color}cc 50%, ${color}88 100%)`
+                    : "radial-gradient(circle at 40% 35%, #3a3a3a, #2a2a2a 60%, #222 100%)",
+                  boxShadow: isOn
+                    ? `0 0 4px ${color}cc, 0 0 8px ${color}99, 0 0 16px ${color}66, 0 0 24px ${color}33`
+                    : "inset 0 1px 2px rgba(0,0,0,0.6), 0 0.5px 0 rgba(255,255,255,0.05)",
+                  border: isOn ? "none" : "0.5px solid rgba(80,80,80,0.5)",
+                }}
+              />
+            );
+          })}
         </div>
       </div>
     </a>
@@ -782,8 +823,17 @@ export default function Home() {
           <div className="absolute top-[70%] left-[23%] -translate-x-1/2 -translate-y-1/2">
             <img src="/plant.png" alt="Plant" className="w-[150px] drop-shadow-[0_4px_8px_rgba(0,0,0,0.2)] transition-all duration-300 hover:scale-125 hover:rotate-[-5deg] hover:-translate-y-3" draggable={false} />
           </div>
-          <div className="absolute top-1/2 left-[80%] -translate-x-1/2 -translate-y-1/2">
-            <img src="/apple-pencil.png" alt="Apple Pencil" className="w-[70px] drop-shadow-[0_4px_8px_rgba(0,0,0,0.2)] transition-all duration-300 hover:scale-125 hover:rotate-[4deg] hover:-translate-y-3" draggable={false} />
+          <div className="absolute top-1/2 left-[80%] -translate-x-1/2 -translate-y-1/2 group/pencil">
+            <img src="/apple-pencil.png" alt="Apple Pencil" className="pencil-img w-[70px] drop-shadow-[0_4px_8px_rgba(0,0,0,0.2)] transition-all duration-300 group-hover/pencil:scale-110 group-hover/pencil:-translate-y-2" draggable={false} />
+            {/* Hand drawn line that reveals on hover */}
+            <div className="absolute -bottom-[6px] left-[0px] w-[90px] h-[12px] pointer-events-none overflow-hidden">
+              <img
+                src="/hand-drawn-line.svg"
+                alt=""
+                className="w-full h-full object-contain pencil-line"
+                draggable={false}
+              />
+            </div>
           </div>
         </div>
 

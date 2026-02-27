@@ -30,6 +30,51 @@ body {
   animation: cursor-blink 1s step-end infinite;
 }
 
+/* Pencil doodle draw */
+@keyframes pencil-draw {
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes pencil-write {
+  0% { transform: translateX(0px) rotate(0deg); }
+  10% { transform: translateX(7px) rotate(1deg); }
+  20% { transform: translateX(15px) rotate(-1deg); }
+  30% { transform: translateX(22px) rotate(1deg); }
+  40% { transform: translateX(30px) rotate(-1deg); }
+  50% { transform: translateX(37px) rotate(1deg); }
+  60% { transform: translateX(45px) rotate(-1deg); }
+  70% { transform: translateX(52px) rotate(1deg); }
+  80% { transform: translateX(60px) rotate(-1deg); }
+  90% { transform: translateX(67px) rotate(1deg); }
+  100% { transform: translateX(75px) rotate(-1deg); }
+}
+
+@keyframes pencil-line-reveal {
+  0% { clip-path: inset(0 100% 0 0); }
+  10% { clip-path: inset(0 90% 0 0); }
+  20% { clip-path: inset(0 80% 0 0); }
+  30% { clip-path: inset(0 70% 0 0); }
+  40% { clip-path: inset(0 60% 0 0); }
+  50% { clip-path: inset(0 50% 0 0); }
+  60% { clip-path: inset(0 40% 0 0); }
+  70% { clip-path: inset(0 30% 0 0); }
+  80% { clip-path: inset(0 20% 0 0); }
+  90% { clip-path: inset(0 10% 0 0); }
+  100% { clip-path: inset(0 0% 0 0); }
+}
+
+.pencil-line {
+  clip-path: inset(0 100% 0 0);
+}
+
+.group\/pencil:hover .pencil-line {
+  animation: pencil-line-reveal 1s linear forwards;
+}
+
+.group\/pencil:hover .pencil-img {
+  animation: pencil-write 1s linear forwards;
+}
+
 /* Animations */
 @keyframes fade-in {
   from { opacity: 0; }
