@@ -111,10 +111,10 @@ function FloatingDecorations() {
 function MacFolder() {
   return (
     <div
-      className="hidden lg:block absolute left-[36.5%] bottom-[7%] z-30 group cursor-pointer rotate-[6deg] transition-all duration-300 hover:scale-110 hover:-translate-y-2 hover:rotate-[2deg]"
+      className="hidden lg:block absolute left-[440px] top-[540px] z-30 group cursor-pointer rotate-[6deg] transition-all duration-300 hover:scale-110 hover:-translate-y-2 hover:rotate-[2deg]"
       style={{ perspective: "500px" }}
     >
-      <div className="relative w-[130px] h-[130px] transition-all duration-300 group-hover:drop-shadow-[0_8px_16px_rgba(0,0,0,0.25)]">
+      <div className="relative w-[155px] h-[155px] transition-all duration-300 group-hover:drop-shadow-[0_8px_16px_rgba(0,0,0,0.25)]">
         {/* Back panel — stays in place */}
         <img
           src="/mac-folder-back.svg"
@@ -192,7 +192,7 @@ function DotMatrixBoard() {
       href={siteConfig.links.figma}
       target="_blank"
       rel="noopener noreferrer"
-      className="hidden lg:block absolute right-[18%] top-[12%] z-20 cursor-pointer transition-transform duration-300 rotate-[8deg] scale-[0.55] hover:scale-[0.62] hover:rotate-[3deg]"
+      className="hidden lg:block absolute right-[200px] top-[80px] z-20 cursor-pointer transition-transform duration-300 rotate-[8deg] scale-[0.65] hover:scale-[0.72] hover:rotate-[3deg]"
     >
       {/* Display panel */}
       <div className="rounded-2xl p-3" style={{
@@ -225,7 +225,7 @@ function DotMatrixBoard() {
 /* ── Vinyl playlist card (floating decoration) ── */
 function VinylCard() {
   return (
-    <a href="https://cottenpanda.github.io/vibecodingplaylist/" target="_blank" rel="noopener noreferrer" className="hidden lg:block absolute left-[8%] bottom-[-1%] z-30 transition-all duration-300 -rotate-[5deg] hover:rotate-[2deg] hover:scale-110 hover:-translate-y-5 cursor-pointer">
+    <a href="https://cottenpanda.github.io/vibecodingplaylist/" target="_blank" rel="noopener noreferrer" className="hidden lg:block absolute left-[80px] top-[410px] z-30 transition-all duration-300 -rotate-[5deg] hover:rotate-[2deg] hover:scale-110 hover:-translate-y-5 cursor-pointer">
       <div className="bg-white border border-editor-border rounded-2xl p-6 shadow-sm flex flex-col items-center w-[240px]">
         {/* Vinyl record */}
         <img
@@ -250,7 +250,7 @@ function VinylCard() {
 /* ── Hanging name badge ── */
 function NameBadge() {
   return (
-    <div className="hidden lg:flex flex-col items-center absolute left-[4%] top-[-80px] z-20 badge-drop">
+    <div className="hidden lg:flex flex-col items-center absolute left-[40px] top-[-80px] z-20 badge-drop">
      <a href="https://www.linkedin.com/in/uwyanliudesign" target="_blank" rel="noopener noreferrer" className="badge-swing flex flex-col items-center cursor-pointer">
       {/* Lanyard strap — extra tall to avoid gap when swinging */}
       <div className="w-[26px] h-[240px] bg-stone-800 relative shadow-sm z-0">
@@ -392,7 +392,7 @@ function RetroWindows() {
   );
 
   return (
-    <div className="hidden lg:block absolute bottom-[-4%] right-[21%] z-20" onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}>
+    <div className="hidden lg:block absolute top-[500px] right-[280px] z-20" onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}>
       <div className="relative w-[300px] h-[240px]">
         {windows.map((win, i) => (
           <div
@@ -485,7 +485,7 @@ function StartMenu() {
   ];
 
   return (
-    <div className="hidden lg:block absolute bottom-[4%] right-[24%] z-25" style={{ transform: "scale(0.75)", transformOrigin: "bottom left" }}>
+    <div className="hidden lg:block absolute top-[600px] right-[320px] z-25" style={{ transform: "scale(0.75)", transformOrigin: "bottom left" }}>
       <div style={{ background: "#c0c0c0", ...bevel, boxShadow: "3px 4px 12px rgba(0,0,0,0.25)" }}>
         <div className="flex">
           {/* Vertical sidebar */}
@@ -607,6 +607,72 @@ function ArrowAnimated() {
   );
 }
 
+/* ── Ripped paper with tape ── */
+function RippedPaperNote() {
+  return (
+    <div className="w-full flex justify-center px-6 -mt-8 pb-8">
+      <div className="relative" style={{ transform: "rotate(-1.5deg)" }}>
+        {/* Tape — top left */}
+        <div className="absolute -top-3 -left-4 w-[70px] h-[22px] z-10" style={{
+          background: "linear-gradient(135deg, rgba(240,218,130,0.7) 0%, rgba(230,200,100,0.5) 100%)",
+          transform: "rotate(-32deg)",
+          boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
+          backdropFilter: "blur(1px)",
+          clipPath: "polygon(2% 0%, 6% 2%, 12% 0%, 18% 1%, 25% 0%, 32% 2%, 38% 0%, 45% 1%, 52% 0%, 58% 2%, 65% 0%, 72% 1%, 78% 0%, 85% 2%, 92% 0%, 98% 1%, 100% 0%, 100% 100%, 97% 98%, 91% 100%, 85% 98%, 78% 100%, 72% 99%, 65% 100%, 58% 98%, 52% 100%, 45% 99%, 38% 100%, 32% 98%, 25% 100%, 18% 99%, 12% 100%, 6% 98%, 0% 100%)",
+        }} />
+        {/* Tape — top right */}
+        <div className="absolute -top-3 -right-4 w-[70px] h-[22px] z-10" style={{
+          background: "linear-gradient(135deg, rgba(240,218,130,0.7) 0%, rgba(230,200,100,0.5) 100%)",
+          transform: "rotate(28deg)",
+          boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
+          backdropFilter: "blur(1px)",
+          clipPath: "polygon(3% 0%, 8% 2%, 15% 0%, 22% 1%, 28% 0%, 35% 2%, 42% 0%, 48% 1%, 55% 0%, 62% 2%, 68% 0%, 75% 1%, 82% 0%, 88% 2%, 95% 0%, 100% 1%, 100% 100%, 96% 98%, 90% 100%, 83% 99%, 76% 100%, 70% 98%, 63% 100%, 56% 99%, 50% 100%, 43% 98%, 36% 100%, 30% 99%, 23% 100%, 16% 98%, 10% 100%, 4% 99%, 0% 100%)",
+        }} />
+        {/* Tape — bottom left */}
+        <div className="absolute -bottom-3 -left-3 w-[65px] h-[22px] z-10" style={{
+          background: "linear-gradient(135deg, rgba(240,218,130,0.7) 0%, rgba(230,200,100,0.5) 100%)",
+          transform: "rotate(25deg)",
+          boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
+          backdropFilter: "blur(1px)",
+          clipPath: "polygon(1% 0%, 7% 2%, 14% 0%, 20% 1%, 27% 0%, 34% 2%, 40% 0%, 47% 1%, 53% 0%, 60% 2%, 67% 0%, 73% 1%, 80% 0%, 87% 2%, 93% 0%, 100% 2%, 100% 100%, 95% 98%, 88% 100%, 82% 99%, 75% 100%, 68% 98%, 62% 100%, 55% 99%, 48% 100%, 42% 98%, 35% 100%, 28% 99%, 22% 100%, 15% 98%, 8% 100%, 2% 99%, 0% 100%)",
+        }} />
+        {/* Tape — bottom right */}
+        <div className="absolute -bottom-3 -right-4 w-[65px] h-[22px] z-10" style={{
+          background: "linear-gradient(135deg, rgba(240,218,130,0.7) 0%, rgba(230,200,100,0.5) 100%)",
+          transform: "rotate(-30deg)",
+          boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
+          backdropFilter: "blur(1px)",
+          clipPath: "polygon(0% 1%, 5% 0%, 11% 2%, 18% 0%, 24% 1%, 31% 0%, 38% 2%, 44% 0%, 51% 1%, 57% 0%, 64% 2%, 70% 0%, 77% 1%, 84% 0%, 90% 2%, 97% 0%, 100% 1%, 100% 100%, 94% 98%, 87% 100%, 81% 99%, 74% 100%, 67% 98%, 61% 100%, 54% 99%, 47% 100%, 41% 98%, 34% 100%, 27% 99%, 21% 100%, 14% 98%, 7% 100%, 1% 99%, 0% 100%)",
+        }} />
+
+        {/* Paper */}
+        <div className="relative w-[380px] md:w-[460px] px-10 py-12 overflow-hidden" style={{
+          background: "linear-gradient(175deg, #f8f7f4 0%, #f0eeea 100%)",
+          boxShadow: "0 4px 20px rgba(0,0,0,0.1), 0 1px 4px rgba(0,0,0,0.08)",
+          clipPath: "polygon(0% 0%, 100% 0%, 100% calc(100% - 8px), 97% 100%, 93% calc(100% - 5px), 88% 100%, 83% calc(100% - 3px), 78% 100%, 72% calc(100% - 6px), 67% 100%, 61% calc(100% - 4px), 55% 100%, 49% calc(100% - 7px), 43% 100%, 37% calc(100% - 3px), 31% 100%, 25% calc(100% - 5px), 19% 100%, 13% calc(100% - 4px), 7% 100%, 2% calc(100% - 6px), 0% 100%)",
+        }}>
+          {/* Grid lines */}
+          <div className="absolute inset-0 pointer-events-none" style={{
+            backgroundImage: "linear-gradient(rgba(180,200,220,0.25) 1px, transparent 1px), linear-gradient(90deg, rgba(180,200,220,0.25) 1px, transparent 1px)",
+            backgroundSize: "24px 24px",
+          }} />
+          {/* Red margin line */}
+          <div className="absolute top-0 bottom-0 left-[38px] w-[1px] pointer-events-none" style={{
+            background: "rgba(220,120,120,0.3)",
+          }} />
+
+          {/* Quote */}
+          <p className="relative z-10 text-center font-mono text-lg md:text-xl text-stone-700 leading-relaxed" style={{
+            fontStyle: "italic",
+          }}>
+            &ldquo;Just keep moving forward&rdquo;
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 /* ── Click burst particles ── */
 const particleColors = ["#e8445a", "#f4a8b5", "#ffb347", "#a78bfa", "#67e8f9", "#fbbf24", "#f9a8d4"];
 
@@ -680,18 +746,19 @@ export default function Home() {
       <FloatingDecorations />
 
       {/* Hero — full viewport, centered */}
-      <div className="min-h-screen flex flex-col items-center justify-center px-4 relative z-10 animate-fade-in">
+      <div className="min-h-screen flex items-center justify-center px-4 relative z-10 animate-fade-in">
+      <div className="relative w-[1400px] h-[900px] overflow-visible" style={{ maxWidth: "100vw" }}>
         <MacFolder />
         <DotMatrixBoard />
         <VinylCard />
         <NameBadge />
         <RetroWindows />
         {/* Ripped paper + ice coffee + plant */}
-        <div className="hidden lg:block absolute top-[3%] left-[45%] -translate-x-1/2 z-20 rotate-[-2deg] transition-all duration-300 hover:scale-110 hover:rotate-[1deg] group/paper">
+        <div className="hidden lg:block absolute top-[20px] left-[600px] -translate-x-1/2 z-20 rotate-[-5deg] transition-all duration-300 hover:scale-110 hover:rotate-[1deg] group/paper">
           <img
             src="/ripped-paper.png"
             alt="Ripped paper note"
-            className="w-[520px] opacity-80 group-hover/paper:opacity-100 drop-shadow-[0_4px_12px_rgba(0,0,0,0.15)] transition-opacity duration-300"
+            className="w-[520px] opacity-100 drop-shadow-[0_6px_20px_rgba(0,0,0,0.25)] transition-all duration-300"
             draggable={false}
           />
           <div className="absolute top-[50%] left-[62%] -translate-x-1/2 -translate-y-1/2">
@@ -709,12 +776,12 @@ export default function Home() {
         <img
           src="/milk-tea.png"
           alt="Milk tea"
-          className="hidden lg:block absolute right-[3%] top-[10%] z-30 w-[160px] rotate-[6deg] opacity-40 transition-all duration-300 hover:scale-[1.3] hover:rotate-[2deg] hover:opacity-80"
+          className="hidden lg:block absolute right-[30px] top-[70px] z-30 w-[160px] rotate-[6deg] opacity-90 transition-all duration-300 hover:scale-[1.3] hover:rotate-[2deg]"
           draggable={false}
         />
 
         {/* Image collage */}
-        <a href="https://unsplash.com/@yl1980s" target="_blank" rel="noopener noreferrer" className="hidden lg:block absolute right-[-3%] bottom-[-3%] z-10 rotate-[6deg] transition-transform duration-300 hover:rotate-[2deg] hover:scale-105 cursor-pointer group/collage overflow-visible">
+        <a href="https://unsplash.com/@yl1980s" target="_blank" rel="noopener noreferrer" className="hidden lg:block absolute right-[-20px] top-[200px] z-10 rotate-[6deg] transition-transform duration-300 hover:rotate-[2deg] hover:scale-105 cursor-pointer group/collage overflow-visible">
           <div className="relative overflow-visible">
             <img
               src="/cat.png"
@@ -728,18 +795,22 @@ export default function Home() {
             />
           </div>
         </a>
-        <h1 className="font-[family-name:var(--font-noto)] text-5xl md:text-7xl font-bold text-text-primary mb-4">
-          {displayed}
-          {!done && (
-            <span className="inline-block w-[3px] h-[0.7em] bg-text-primary align-text-bottom ml-[2px] cursor-blink" />
-          )}
-        </h1>
-        <p className="font-[family-name:var(--font-noto)] text-xs md:text-sm text-text-secondary uppercase tracking-[0.25em] mb-1">
-          {siteConfig.subtitle}
-        </p>
-        <p className="font-[family-name:var(--font-noto)] text-xs md:text-sm text-text-secondary max-w-lg text-center leading-relaxed tracking-[0.08em] mt-2">
-          {siteConfig.tagline}
-        </p>
+        {/* Center text */}
+        <div className="absolute top-[42%] left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center z-10">
+          <h1 className="font-[family-name:var(--font-noto)] text-5xl md:text-7xl font-bold text-text-primary mb-4">
+            {displayed}
+            {!done && (
+              <span className="inline-block w-[3px] h-[0.7em] bg-text-primary align-text-bottom ml-[2px] cursor-blink" />
+            )}
+          </h1>
+          <p className="font-[family-name:var(--font-noto)] text-xs md:text-sm text-text-secondary uppercase tracking-[0.25em] mb-1">
+            {siteConfig.subtitle}
+          </p>
+          <p className="font-[family-name:var(--font-noto)] text-xs md:text-sm text-text-secondary max-w-lg text-center leading-relaxed tracking-[0.08em] mt-2">
+            {siteConfig.tagline}
+          </p>
+        </div>
+      </div>
       </div>
 
       {/* Arrow between hero and bulletin board */}
@@ -845,6 +916,9 @@ export default function Home() {
           title="Portfolio flip book"
         />
       </div>
+
+      {/* Ripped paper quote */}
+      <RippedPaperNote />
 
       {/* Footer */}
       <footer className="w-full text-center py-12">
