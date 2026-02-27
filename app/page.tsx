@@ -225,22 +225,29 @@ function DotMatrixBoard() {
 /* ── Vinyl playlist card (floating decoration) ── */
 function VinylCard() {
   return (
-    <a href="https://cottenpanda.github.io/vibecodingplaylist/" target="_blank" rel="noopener noreferrer" className="hidden lg:block absolute left-[80px] top-[410px] z-30 transition-all duration-300 -rotate-[5deg] hover:rotate-[2deg] hover:scale-110 hover:-translate-y-5 cursor-pointer">
-      <div className="bg-white border border-editor-border rounded-2xl p-6 shadow-sm flex flex-col items-center w-[240px]">
-        {/* Vinyl record */}
-        <img
-          src="/Vinyl.png"
-          alt="Vinyl record"
-          className="w-36 h-36 vinyl-spin"
-          draggable={false}
-        />
-
-        {/* Info */}
-        <div className="mt-4 text-center">
-          <p className="font-[family-name:var(--font-noto)] text-[10px] text-text-muted uppercase tracking-widest mb-1">Playlist</p>
-          <h3 className="font-[family-name:var(--font-noto)] text-text-primary font-bold text-lg leading-tight mb-1">Vibe Coding</h3>
-          <p className="font-[family-name:var(--font-noto)] text-text-muted text-xs mb-1">18 projects</p>
-          <p className="font-[family-name:var(--font-noto)] text-text-muted/70 text-[11px] leading-snug">Built with creativity<br/>and curiosity.</p>
+    <a href="https://cottenpanda.github.io/vibecodingplaylist/" target="_blank" rel="noopener noreferrer" className="hidden lg:block absolute left-[80px] top-[410px] z-30 transition-all duration-300 -rotate-[5deg] hover:rotate-[2deg] hover:scale-110 hover:-translate-y-5 cursor-pointer group/vinyl" style={{ overflow: "visible" }}>
+      <div className="relative w-[240px]" style={{ overflow: "visible" }}>
+        {/* Vinyl record — outside card, centered with margin */}
+        <div className="absolute inset-x-0 top-[24px] flex justify-center z-10 pointer-events-none" style={{ overflow: "visible" }}>
+          <img
+            src="/Vinyl.png"
+            alt="Vinyl record"
+            className="w-36 h-36 vinyl-spin transition-all duration-500 ease-out group-hover/vinyl:scale-[2.3] group-hover/vinyl:-translate-y-[70px] group-hover/vinyl:-translate-x-[20px] group-hover/vinyl:drop-shadow-[0_12px_30px_rgba(0,0,0,0.35)]"
+            style={{ willChange: "transform" }}
+            draggable={false}
+          />
+        </div>
+        {/* Card */}
+        <div className="bg-white border border-editor-border rounded-2xl shadow-sm flex flex-col items-center w-[240px] pt-6 pb-6">
+          {/* Spacer matching default vinyl size */}
+          <div className="w-36 h-36" />
+          {/* Info */}
+          <div className="mt-4 text-center">
+            <p className="font-[family-name:var(--font-noto)] text-[10px] text-text-muted uppercase tracking-widest mb-1">Playlist</p>
+            <h3 className="font-[family-name:var(--font-noto)] text-text-primary font-bold text-lg leading-tight mb-1">Vibe Coding</h3>
+            <p className="font-[family-name:var(--font-noto)] text-text-muted text-xs mb-1">18 projects</p>
+            <p className="font-[family-name:var(--font-noto)] text-text-muted/70 text-[11px] leading-snug">Built with creativity<br/>and curiosity.</p>
+          </div>
         </div>
       </div>
     </a>
@@ -251,7 +258,7 @@ function VinylCard() {
 function NameBadge() {
   return (
     <div className="hidden lg:flex flex-col items-center absolute left-[40px] top-[-80px] z-20 badge-drop">
-     <a href="https://www.linkedin.com/in/uwyanliudesign" target="_blank" rel="noopener noreferrer" className="badge-swing flex flex-col items-center cursor-pointer">
+     <a href="https://www.linkedin.com/in/uwyanliudesign" target="_blank" rel="noopener noreferrer" className="badge-swing flex flex-col items-center cursor-pointer group/badge">
       {/* Lanyard strap — extra tall to avoid gap when swinging */}
       <div className="w-[26px] h-[240px] bg-stone-800 relative shadow-sm z-0">
         <div className="absolute inset-0 opacity-20" style={{
@@ -312,7 +319,7 @@ function NameBadge() {
           <div className="px-4 pt-5 pb-5 flex flex-col items-center" style={{
             background: "linear-gradient(180deg, #1c1917, #0c0a09)",
           }}>
-            <div className="w-32 h-32 rounded-full overflow-hidden bg-stone-600" style={{
+            <div className="w-32 h-32 rounded-full overflow-hidden bg-stone-600 relative" style={{
               border: "3px solid #57534e",
               borderTopColor: "#6b6560",
               borderBottomColor: "#3a3633",
@@ -320,8 +327,16 @@ function NameBadge() {
               <img
                 src="/profile.png"
                 alt="Yan Liu"
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover group-hover/badge:opacity-0 transition-opacity duration-300"
                 draggable={false}
+              />
+              <video
+                src="/badge-hover.mp4"
+                muted
+                loop
+                playsInline
+                autoPlay
+                className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover/badge:opacity-100 transition-opacity duration-300"
               />
             </div>
           </div>
