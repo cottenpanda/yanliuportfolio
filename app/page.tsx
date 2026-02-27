@@ -320,7 +320,7 @@ function NameBadge() {
               <img
                 src="/profile.png"
                 alt="Yan Liu"
-                className="w-full h-full object-cover grayscale"
+                className="w-full h-full object-cover"
                 draggable={false}
               />
             </div>
@@ -587,7 +587,7 @@ function ArrowAnimated() {
   }, []);
 
   return (
-    <div ref={ref} className="flex justify-center -mt-16 pb-2">
+    <div ref={ref} className="flex justify-center -mt-24 pb-0">
       <svg width="470" height="591" viewBox="0 0 470 591" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-56">
         {arrowPaths.map((d, i) => (
           <path
@@ -742,8 +742,11 @@ export default function Home() {
         </p>
       </div>
 
+      {/* Arrow between hero and bulletin board */}
+      <ArrowAnimated />
+
       {/* Bulletin board */}
-      <div className="w-full flex justify-center px-6 pt-96 pb-16">
+      <div className="w-full flex justify-center px-6 pt-4 pb-4">
         <div className="w-full max-w-[1000px]">
           {/* Dark frame */}
           <div className="rounded-3xl p-[14px]" style={{
@@ -834,7 +837,7 @@ export default function Home() {
       <ArrowAnimated />
 
       {/* Page flip book — portfolio sections */}
-      <div className="w-full flex justify-center -mt-8 pb-24">
+      <div className="w-full flex justify-center -mt-16 pb-24">
         <iframe
           src="/page-flip-test.html"
           className="w-full max-w-[1200px] border-none"
