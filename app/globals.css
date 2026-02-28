@@ -33,6 +33,20 @@ body::before {
   color: #FFFFFF;
 }
 
+/* Plant bounce on hover — smooth continuous */
+@keyframes plant-bounce {
+  0%, 100% { translate: 0 0; }
+  50% { translate: 0 -10px; }
+}
+
+.plant-hover {
+  transition: transform 0.4s ease, filter 0.4s ease;
+}
+
+.plant-hover:hover {
+  animation: plant-bounce 1.2s ease-in-out infinite;
+}
+
 /* Cursor blink */
 @keyframes cursor-blink {
   0%, 100% { opacity: 1; }

@@ -211,7 +211,7 @@ function DotMatrixBoard() {
       href={siteConfig.links.figma}
       target="_blank"
       rel="noopener noreferrer"
-      className="hidden lg:block absolute right-[250px] top-[80px] z-20 cursor-pointer transition-transform duration-300 ease-out rotate-[8deg] scale-[0.65] hover:scale-[0.72] hover:rotate-[3deg] group/matrix"
+      className="hidden lg:block absolute right-[220px] top-[60px] z-20 cursor-pointer transition-transform duration-300 ease-out rotate-[8deg] scale-[0.65] hover:scale-[0.72] hover:rotate-[3deg] group/matrix"
       style={{ willChange: "transform" }}
     >
       {/* Display panel */}
@@ -484,7 +484,7 @@ function RetroWindows() {
 
               {/* Content area — sunken inset */}
               <div className="mx-[4px] mb-[4px]" style={inset}>
-                <div className="w-full h-[110px] p-2" style={{ background: "#ffffff" }}>
+                <div className="w-full h-[140px] p-2" style={{ background: "#ffffff" }}>
                   {i === windows.length - 1 && typed && (
                     <span className="text-[11px] text-black font-mono">
                       {typed}
@@ -1082,10 +1082,10 @@ export default function Home() {
             draggable={false}
           />
           <div className="absolute top-[50%] left-[55%] -translate-x-1/2 -translate-y-1/2">
-            <img src="/ice-coffee.png" alt="Ice coffee" className="w-[70px] drop-shadow-[0_4px_8px_rgba(0,0,0,0.2)] hover:coffee-wobble" draggable={false} />
+            <img src="/ice-coffee.png" alt="Ice coffee" className="w-[85px] drop-shadow-[0_4px_8px_rgba(0,0,0,0.2)] hover:coffee-wobble" draggable={false} />
           </div>
-          <div className="absolute top-[70%] left-[23%] -translate-x-1/2 -translate-y-1/2">
-            <img src="/plant.png" alt="Plant" className="w-[150px] drop-shadow-[0_4px_8px_rgba(0,0,0,0.2)] transition-all duration-300 hover:scale-125 hover:rotate-[-5deg] hover:-translate-y-3" draggable={false} />
+          <div className="absolute top-[82%] left-[16%] -translate-x-1/2 -translate-y-1/2">
+            <img src="/plant.png" alt="Plant" className="w-[150px] drop-shadow-[0_4px_8px_rgba(0,0,0,0.2)] transition-all duration-300 scale-[1.45] rotate-[-5deg] -translate-y-3 hover:drop-shadow-[0_12px_20px_rgba(0,0,0,0.3)] plant-hover" draggable={false} />
           </div>
           <div className="absolute top-1/2 left-[80%] -translate-x-1/2 -translate-y-1/2 group/pencil">
             <img src="/apple-pencil.png" alt="Apple Pencil" className="pencil-img w-[70px] drop-shadow-[0_4px_8px_rgba(0,0,0,0.2)] transition-all duration-300 group-hover/pencil:scale-110 group-hover/pencil:-translate-y-2" draggable={false} />
@@ -1172,12 +1172,15 @@ export default function Home() {
       <RippedPaperNote />
 
       {/* Footer */}
-      <footer className="w-full flex justify-center items-center gap-3 py-12">
-        <img src="/star.svg" alt="" className="w-5 h-5" draggable={false} />
-        <p className="text-sm text-text-muted">
-          Vibe-coded by Yan Liu · Learning by building
-        </p>
-        <img src="/star.svg" alt="" className="w-5 h-5" draggable={false} />
+      <footer className="w-full flex flex-col items-center gap-4 pt-16 pb-20">
+        <div className="w-24 h-px bg-text-muted/20 mb-2" />
+        <div className="flex items-center gap-3">
+          <img src="/star.svg" alt="" className="w-5 h-5 opacity-60" draggable={false} />
+          <p className="text-[15px] text-text-muted tracking-wide">
+            Vibe-coded by Yan Liu · Learning by building
+          </p>
+          <img src="/star.svg" alt="" className="w-5 h-5 opacity-60" draggable={false} />
+        </div>
       </footer>
 
       {/* Sections — hidden for now */}
