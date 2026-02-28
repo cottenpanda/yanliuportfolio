@@ -21,7 +21,8 @@ body::before {
   position: fixed;
   inset: 0;
   pointer-events: none;
-  z-index: 0;
+  z-index: 9999;
+  opacity: 0.1;
   background-image: url("/noise-texture.png");
   background-repeat: repeat;
   background-size: 200px 200px;

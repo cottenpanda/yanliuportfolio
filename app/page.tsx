@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useScroll, useTransform, useMotionValueEvent, useMotionValue } from "framer-motion";
 import { siteConfig } from "@/lib/siteConfig";
 import { renderBold } from "@/lib/renderBold";
 
@@ -433,11 +433,11 @@ function RetroWindows() {
 
   return (
     <div className="hidden lg:block absolute top-[500px] right-[280px] z-20" onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}>
-      <div className="relative w-[300px] h-[240px]">
+      <div className="relative w-[350px] h-[290px]">
         {windows.map((win, i) => (
           <div
             key={i}
-            className="absolute w-[230px] transition-transform duration-300 hover:scale-105 cursor-pointer"
+            className="absolute w-[280px] transition-transform duration-300 hover:scale-105 cursor-pointer"
             style={{
               top: win.top,
               left: win.left,
@@ -611,7 +611,7 @@ const arrowPaths = [
   "M342.326 478.498C342.236 480.391 340.908 482.769 339.626 484.018C334.202 489.297 311.49 520.367 307.083 522.256C305.615 522.239 305.866 522.467 304.878 521.766C303.123 518.325 299.56 485.458 298.784 479.382C298.295 476.153 296.692 469.919 299.419 467.645C301.941 466.682 311.992 470.04 315.67 470.965C317.627 463.594 318.947 456.19 321.314 448.943C323.679 441.709 333.054 444.262 332.272 450.732C331.382 458.095 328.879 466.732 326.872 473.945C330.943 474.999 339.014 476.585 342.326 478.498Z",
 ];
 
-function ArrowAnimated() {
+function ArrowAnimated({ onVisible }: { onVisible?: () => void } = {}) {
   const ref = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
 
@@ -619,12 +619,12 @@ function ArrowAnimated() {
     const el = ref.current;
     if (!el) return;
     const obs = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) { setVisible(true); obs.disconnect(); } },
+      ([entry]) => { if (entry.isIntersecting) { setVisible(true); onVisible?.(); obs.disconnect(); } },
       { threshold: 0.3 }
     );
     obs.observe(el);
     return () => obs.disconnect();
-  }, []);
+  }, [onVisible]);
 
   return (
     <div ref={ref} className="flex justify-center -mt-48 -mb-16 pb-0">
@@ -803,6 +803,243 @@ function ClickBurst({ x, y, onDone }: { x: number; y: number; onDone: () => void
   );
 }
 
+/* ── Board images data ── */
+const BOARD_IMAGES = [
+  { src: "/bulletin/1.jpg", top: "4%", left: "8%", rotate: "-5deg", w: 220, z: 1, side: "left" as const, startVY: 0.1 },
+  { src: "/bulletin/2.jpg", top: "6%", left: "58%", rotate: "3deg", w: 210, z: 1, side: "right" as const, startVY: 0.15 },
+  { src: "/bulletin/3.jpg", top: "3%", left: "31%", rotate: "-2deg", w: 250, z: 1, side: "left" as const, startVY: 0.05 },
+  { src: "/bulletin/4.jpg", top: "38%", left: "5%", rotate: "4deg", w: 215, z: 1, side: "left" as const, startVY: 0.4 },
+  { src: "/bulletin/5.jpg", top: "35%", left: "38%", rotate: "6deg", w: 240, z: 3, side: "right" as const, startVY: 0.35 },
+  { src: "/bulletin/6.jpg", top: "40%", left: "68%", rotate: "2deg", w: 210, z: 1, side: "right" as const, startVY: 0.45 },
+  { src: "/bulletin/7.jpg", top: "74%", left: "12%", rotate: "-3deg", w: 240, z: 1, side: "left" as const, startVY: 0.7 },
+  { src: "/bulletin/8.jpg", top: "70%", left: "42%", rotate: "5deg", w: 215, z: 2, side: "right" as const, startVY: 0.65 },
+  { src: "/bulletin/9.jpg", top: "65%", left: "72%", rotate: "-4deg", w: 205, z: 1, side: "left" as const, startVY: 0.75 },
+  { src: "/bulletin/10.jpg", top: "12%", left: "80%", rotate: "6deg", w: 235, z: 1, side: "right" as const, startVY: 0.2 },
+];
+
+/* ── ScatterImage — scroll-driven fly-in ── */
+function ScatterImage({
+  img,
+  index,
+  scrollYProgress,
+  landed,
+  arrowVisible,
+  imgZIndex,
+  setImgZIndex,
+  zCounterRef,
+  setBursts,
+}: {
+  img: typeof BOARD_IMAGES[number];
+  index: number;
+  scrollYProgress: ReturnType<typeof useScroll>["scrollYProgress"];
+  landed: boolean;
+  arrowVisible: boolean;
+  imgZIndex: number[];
+  setImgZIndex: React.Dispatch<React.SetStateAction<number[]>>;
+  zCounterRef: React.MutableRefObject<number>;
+  setBursts: React.Dispatch<React.SetStateAction<{ id: number; x: number; y: number }[]>>;
+}) {
+  // Which image within its left/right group (0-4)
+  const sideIndex = BOARD_IMAGES.slice(0, index).filter(b => b.side === img.side).length;
+
+  // Stack positions above the board (in the gap between hero and board)
+  const BOARD_W = 972;
+  const BOARD_H = 578;
+  const stackCenterX = img.side === "left" ? BOARD_W * 0.0 : BOARD_W * 0.85;
+  const stackCenterY = -BOARD_H * 0.85;
+
+  // Final position in board (from percentage props)
+  const finalX = parseFloat(img.left) / 100 * BOARD_W;
+  const finalY = parseFloat(img.top) / 100 * BOARD_H;
+
+  // Spread images out so each is visible (cascade down and outward)
+  const spreadX = img.side === "left"
+    ? (sideIndex - 2) * 50 + [0, 30, -20, 15, -10][sideIndex]
+    : (sideIndex - 2) * -50 + [0, -30, 20, -15, 10][sideIndex];
+  const spreadY = sideIndex * 70;
+
+  const startX = (stackCenterX + spreadX) - finalX;
+  const startY = (stackCenterY + spreadY) - finalY;
+
+  // Fly to board positions via scroll
+  const moveStart = 0.3;
+  const moveEnd = 0.85;
+
+  const scrollX = useTransform(scrollYProgress, [0, moveStart, moveEnd], [startX, startX, 0]);
+  const scrollY = useTransform(scrollYProgress, [0, moveStart, moveEnd], [startY, startY, 0]);
+  const [visible, setVisible] = useState(false);
+  useMotionValueEvent(scrollYProgress, "change", (v) => {
+    if (v > 0.05 && !visible) setVisible(true);
+    if (v <= 0.02 && visible) setVisible(false);
+  });
+  const dragX = useMotionValue(0);
+  const dragY = useMotionValue(0);
+
+  // Reset drag offsets when un-landing (scrolling back up)
+  useEffect(() => {
+    if (!landed) { dragX.set(0); dragY.set(0); }
+  }, [landed, dragX, dragY]);
+
+  return (
+    <motion.img
+      src={img.src}
+      alt={`Showcase ${index + 1}`}
+      drag={landed}
+      dragMomentum={false}
+      whileHover={{ scale: 1.05 }}
+      whileDrag={{ scale: 1.08 }}
+      onDragStart={() => {
+        zCounterRef.current += 1;
+        setImgZIndex((prev) => { const next = [...prev]; next[index] = zCounterRef.current; return next; });
+      }}
+      onTap={(e) => {
+        const evt = e as unknown as MouseEvent;
+        setBursts((prev) => [...prev, { id: Date.now(), x: evt.clientX, y: evt.clientY }]);
+      }}
+      className="absolute rounded-md shadow-lg cursor-grab active:cursor-grabbing transition-opacity duration-[800ms] ease-in"
+      style={{
+        top: img.top,
+        left: img.left,
+        width: img.w,
+        rotate: img.rotate,
+        zIndex: imgZIndex[index],
+        x: landed ? dragX : scrollX,
+        y: landed ? dragY : scrollY,
+        opacity: landed || visible ? 1 : 0,
+      }}
+      draggable={false}
+    />
+  );
+}
+
+/* ── ScatterBoard — scroll-tracked wrapper ── */
+function ScatterBoard({
+  imgZIndex,
+  setImgZIndex,
+  zCounterRef,
+  setBursts,
+  bursts,
+  arrowVisible,
+}: {
+  imgZIndex: number[];
+  setImgZIndex: React.Dispatch<React.SetStateAction<number[]>>;
+  zCounterRef: React.MutableRefObject<number>;
+  setBursts: React.Dispatch<React.SetStateAction<{ id: number; x: number; y: number }[]>>;
+  bursts: { id: number; x: number; y: number }[];
+  arrowVisible: boolean;
+}) {
+  const boardRef = useRef<HTMLDivElement>(null);
+  const [landed, setLanded] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  const { scrollYProgress } = useScroll({
+    target: boardRef,
+    offset: ["start end", "center center"],
+  });
+
+  useMotionValueEvent(scrollYProgress, "change", (v) => {
+    if (v >= 0.9 && !landed) setLanded(true);
+    if (v < 0.85 && landed) setLanded(false);
+  });
+
+  useEffect(() => {
+    setIsMobile(window.innerWidth < 768);
+  }, []);
+
+  return (
+    <>
+      <p className="text-center font-[family-name:var(--font-noto)] text-[13px] text-[#A8A29E] mb-3">Drag to reposition the images.</p>
+      <div className="w-full flex justify-center px-6 pt-4 pb-4">
+        <div className="w-full max-w-[1000px]">
+          <div className="rounded-3xl p-[14px]" style={{
+            background: "linear-gradient(160deg, #d6cfc4 0%, #c9c0b3 20%, #bfb5a6 80%, #b5aa9a 100%)",
+            boxShadow: "0 10px 30px rgba(0,0,0,0.12), 0 24px 70px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.5), inset 0 -1px 0 rgba(0,0,0,0.1)",
+            borderTop: "1px solid rgba(255,255,255,0.4)",
+            borderLeft: "1px solid rgba(255,255,255,0.25)",
+            borderRight: "1px solid rgba(0,0,0,0.08)",
+            borderBottom: "2px solid rgba(0,0,0,0.12)",
+          }}>
+          <div ref={boardRef} className="min-h-[578px] rounded-xl relative overflow-visible" style={{
+            background: "linear-gradient(150deg, #f5f0e8 0%, #efe9df 35%, #e8e1d5 100%)",
+            boxShadow: "inset 0 2px 6px rgba(0,0,0,0.06)",
+          }}>
+            {/* Paper texture noise */}
+            <div className="absolute inset-0 pointer-events-none opacity-[0.08]" style={{
+              backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
+              backgroundSize: "200px 200px",
+            }} />
+            {/* Grid pattern */}
+            <div className="absolute inset-0 pointer-events-none" style={{
+              backgroundImage: `
+                linear-gradient(rgba(180, 160, 130, 0.18) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(180, 160, 130, 0.18) 1px, transparent 1px)
+              `,
+              backgroundSize: "36px 36px",
+            }} />
+            {/* Row numbers */}
+            <div className="absolute top-0 left-0 bottom-0 w-[24px] flex flex-col pointer-events-none select-none">
+              {Array.from({ length: 16 }).map((_, i) => (
+                <span key={i} className="font-mono text-[9px] text-stone-400 text-right pr-1" style={{ height: "36px", lineHeight: "36px" }}>
+                  {i + 1}
+                </span>
+              ))}
+            </div>
+            {/* Showcase images — scatter animation */}
+            {BOARD_IMAGES.map((img, i) =>
+              isMobile ? (
+                <motion.img
+                  key={i}
+                  src={img.src}
+                  alt={`Showcase ${i + 1}`}
+                  drag
+                  dragMomentum={false}
+                  whileHover={{ scale: 1.05 }}
+                  whileDrag={{ scale: 1.08 }}
+                  onDragStart={() => {
+                    zCounterRef.current += 1;
+                    setImgZIndex((prev) => { const next = [...prev]; next[i] = zCounterRef.current; return next; });
+                  }}
+                  onTap={(e) => {
+                    const evt = e as unknown as MouseEvent;
+                    setBursts((prev) => [...prev, { id: Date.now(), x: evt.clientX, y: evt.clientY }]);
+                  }}
+                  className="absolute rounded-md shadow-lg cursor-grab active:cursor-grabbing"
+                  style={{
+                    top: img.top,
+                    left: img.left,
+                    width: img.w,
+                    rotate: img.rotate,
+                    zIndex: imgZIndex[i],
+                  }}
+                  draggable={false}
+                />
+              ) : (
+                <ScatterImage
+                  key={i}
+                  img={img}
+                  index={i}
+                  scrollYProgress={scrollYProgress}
+                  landed={landed}
+                  arrowVisible={arrowVisible}
+                  imgZIndex={imgZIndex}
+                  setImgZIndex={setImgZIndex}
+                  zCounterRef={zCounterRef}
+                  setBursts={setBursts}
+                />
+              )
+            )}
+            {/* Click burst particles */}
+            {bursts.map((b) => (
+              <ClickBurst key={b.id} x={b.x} y={b.y} onDone={() => setBursts((prev) => prev.filter((p) => p.id !== b.id))} />
+            ))}
+          </div>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+}
+
 /* ── Tab definitions ── */
 const tabs = siteConfig.sections.map((s) => ({
   id: s.id,
@@ -820,6 +1057,8 @@ export default function Home() {
   const [bursts, setBursts] = useState<{ id: number; x: number; y: number }[]>([]);
   const [imgZIndex, setImgZIndex] = useState<number[]>([1, 1, 1, 1, 3, 1, 1, 2, 1, 1]);
   const zCounterRef = useRef(10);
+  const [arrowVisible, setArrowVisible] = useState(false);
+  const onArrowVisible = useRef(() => setArrowVisible(true)).current;
 
   return (
     <div className="bg-background relative overflow-x-hidden">
@@ -902,95 +1141,17 @@ export default function Home() {
       </div>
 
       {/* Arrow between hero and bulletin board */}
-      <ArrowAnimated />
+      <ArrowAnimated onVisible={onArrowVisible} />
 
       {/* Bulletin board */}
-      <p className="text-center font-[family-name:var(--font-noto)] text-[13px] text-[#A8A29E] mb-3">Drag to reposition the images.</p>
-      <div className="w-full flex justify-center px-6 pt-4 pb-4">
-        <div className="w-full max-w-[1000px]">
-          {/* Warm frame */}
-          <div className="rounded-3xl p-[14px]" style={{
-            background: "linear-gradient(160deg, #d6cfc4 0%, #c9c0b3 20%, #bfb5a6 80%, #b5aa9a 100%)",
-            boxShadow: "0 10px 30px rgba(0,0,0,0.12), 0 24px 70px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.5), inset 0 -1px 0 rgba(0,0,0,0.1)",
-            borderTop: "1px solid rgba(255,255,255,0.4)",
-            borderLeft: "1px solid rgba(255,255,255,0.25)",
-            borderRight: "1px solid rgba(0,0,0,0.08)",
-            borderBottom: "2px solid rgba(0,0,0,0.12)",
-          }}>
-          <div className="min-h-[578px] rounded-xl relative overflow-visible" style={{
-            background: "linear-gradient(150deg, #f5f0e8 0%, #efe9df 35%, #e8e1d5 100%)",
-            boxShadow: "inset 0 2px 6px rgba(0,0,0,0.06)",
-          }}>
-            {/* Paper texture noise */}
-            <div className="absolute inset-0 pointer-events-none opacity-[0.08]" style={{
-              backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
-              backgroundSize: "200px 200px",
-            }} />
-            {/* Grid pattern */}
-            <div className="absolute inset-0 pointer-events-none" style={{
-              backgroundImage: `
-                linear-gradient(rgba(180, 160, 130, 0.18) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(180, 160, 130, 0.18) 1px, transparent 1px)
-              `,
-              backgroundSize: "36px 36px",
-            }} />
-            {/* Row numbers */}
-            <div className="absolute top-0 left-0 bottom-0 w-[24px] flex flex-col pointer-events-none select-none">
-              {Array.from({ length: 16 }).map((_, i) => (
-                <span key={i} className="font-mono text-[9px] text-stone-400 text-right pr-1" style={{ height: "36px", lineHeight: "36px" }}>
-                  {i + 1}
-                </span>
-              ))}
-            </div>
-            {/* Showcase images — draggable */}
-            {[
-              { src: "/bulletin/1.jpg", top: "4%", left: "8%", rotate: "-5deg", w: 220, z: 1 },
-              { src: "/bulletin/2.jpg", top: "6%", left: "58%", rotate: "3deg", w: 210, z: 1 },
-              { src: "/bulletin/3.jpg", top: "3%", left: "31%", rotate: "-2deg", w: 250, z: 1 },
-              { src: "/bulletin/4.jpg", top: "38%", left: "5%", rotate: "4deg", w: 215, z: 1 },
-              { src: "/bulletin/5.jpg", top: "35%", left: "38%", rotate: "6deg", w: 240, z: 3 },
-              { src: "/bulletin/6.jpg", top: "40%", left: "68%", rotate: "2deg", w: 210, z: 1 },
-              { src: "/bulletin/7.jpg", top: "74%", left: "12%", rotate: "-3deg", w: 240, z: 1 },
-              { src: "/bulletin/8.jpg", top: "70%", left: "42%", rotate: "5deg", w: 215, z: 2 },
-              { src: "/bulletin/9.jpg", top: "65%", left: "72%", rotate: "-4deg", w: 205, z: 1 },
-              { src: "/bulletin/10.jpg", top: "12%", left: "80%", rotate: "6deg", w: 235, z: 1 },
-            ].map((img, i) => (
-              <motion.img
-                key={i}
-                src={img.src}
-                alt={`Showcase ${i + 1}`}
-                drag
-                dragMomentum={false}
-                whileHover={{ scale: 1.05 }}
-                whileDrag={{ scale: 1.08 }}
-                onDragStart={() => {
-                  zCounterRef.current += 1;
-                  setImgZIndex((prev) => { const next = [...prev]; next[i] = zCounterRef.current; return next; });
-                }}
-                onTap={(e) => {
-                  const evt = e as unknown as MouseEvent;
-                  setBursts((prev) => [...prev, { id: Date.now(), x: evt.clientX, y: evt.clientY }]);
-                }}
-                className="absolute rounded-md shadow-lg cursor-grab active:cursor-grabbing"
-                style={{
-                  top: img.top,
-                  left: img.left,
-                  width: img.w,
-                  rotate: img.rotate,
-                  zIndex: imgZIndex[i],
-                }}
-                draggable={false}
-              />
-            ))}
-
-            {/* Click burst particles */}
-            {bursts.map((b) => (
-              <ClickBurst key={b.id} x={b.x} y={b.y} onDone={() => setBursts((prev) => prev.filter((p) => p.id !== b.id))} />
-            ))}
-          </div>
-          </div>
-        </div>
-      </div>
+      <ScatterBoard
+        imgZIndex={imgZIndex}
+        setImgZIndex={setImgZIndex}
+        zCounterRef={zCounterRef}
+        arrowVisible={arrowVisible}
+        setBursts={setBursts}
+        bursts={bursts}
+      />
 
       {/* Arrow between bulletin board and flip book */}
       <div className="mt-8">
