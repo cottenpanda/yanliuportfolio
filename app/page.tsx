@@ -648,10 +648,47 @@ function ArrowAnimated() {
 }
 
 /* ── Ripped paper with tape ── */
+const quotes = [
+  "\u201CJust keep moving forward\u201D",
+  "\u201CDone is better than perfect\u201D",
+  "\u201CStay curious, keep building\u201D",
+  "\u201CDesign is how it works\u201D",
+  "\u201CShip it, then iterate\u201D",
+  "\u201CLearn by doing\u201D",
+];
+
 function RippedPaperNote() {
+  const [quoteIndex, setQuoteIndex] = useState(0);
+  const [fading, setFading] = useState(false);
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  const startRotating = () => {
+    // Immediately show next quote
+    setFading(true);
+    setTimeout(() => {
+      setQuoteIndex((prev) => (prev + 1) % quotes.length);
+      setFading(false);
+    }, 200);
+    // Then keep rotating
+    timerRef.current = setInterval(() => {
+      setFading(true);
+      setTimeout(() => {
+        setQuoteIndex((prev) => (prev + 1) % quotes.length);
+        setFading(false);
+      }, 200);
+    }, 2000);
+  };
+
+  const stopRotating = () => {
+    if (timerRef.current) {
+      clearInterval(timerRef.current);
+      timerRef.current = null;
+    }
+  };
+
   return (
     <div className="w-full flex justify-center px-6 -mt-14 pb-8">
-      <div className="relative" style={{ transform: "rotate(-1.5deg)" }}>
+      <div className="relative cursor-pointer select-none" style={{ transform: "rotate(-1.5deg)" }} onMouseEnter={startRotating} onMouseLeave={stopRotating}>
         {/* Tape — top left */}
         <div className="absolute -top-3 -left-4 w-[70px] h-[22px] z-10" style={{
           background: "linear-gradient(135deg, rgba(240,218,130,0.7) 0%, rgba(230,200,100,0.5) 100%)",
@@ -702,11 +739,15 @@ function RippedPaperNote() {
           }} />
 
           {/* Quote */}
-          <p className="relative z-10 text-center font-mono text-lg md:text-xl text-stone-700 leading-relaxed" style={{
-            fontStyle: "italic",
-          }}>
-            &ldquo;Just keep moving forward&rdquo;
-          </p>
+          <div className="relative z-10 overflow-hidden h-[32px] md:h-[36px]">
+            <p
+              key={quoteIndex}
+              className="text-center font-mono text-lg md:text-xl text-stone-700 leading-relaxed quote-slide-in"
+              style={{ fontStyle: "italic" }}
+            >
+              {quotes[quoteIndex]}
+            </p>
+          </div>
         </div>
       </div>
     </div>
@@ -802,7 +843,7 @@ export default function Home() {
             draggable={false}
           />
           <div className="absolute top-[50%] left-[55%] -translate-x-1/2 -translate-y-1/2">
-            <img src="/ice-coffee.png" alt="Ice coffee" className="w-[70px] drop-shadow-[0_4px_8px_rgba(0,0,0,0.2)] transition-all duration-300 hover:scale-125 hover:rotate-[6deg] hover:-translate-y-3" draggable={false} />
+            <img src="/ice-coffee.png" alt="Ice coffee" className="w-[70px] drop-shadow-[0_4px_8px_rgba(0,0,0,0.2)] hover:coffee-wobble" draggable={false} />
           </div>
           <div className="absolute top-[70%] left-[23%] -translate-x-1/2 -translate-y-1/2">
             <img src="/plant.png" alt="Plant" className="w-[150px] drop-shadow-[0_4px_8px_rgba(0,0,0,0.2)] transition-all duration-300 hover:scale-125 hover:rotate-[-5deg] hover:-translate-y-3" draggable={false} />
@@ -875,7 +916,7 @@ export default function Home() {
             borderRight: "1px solid rgba(0,0,0,0.3)",
             borderBottom: "2px solid rgba(0,0,0,0.5)",
           }}>
-          <div className="min-h-[578px] rounded-xl relative" style={{
+          <div className="min-h-[578px] rounded-xl relative overflow-hidden" style={{
             background: "linear-gradient(150deg, #2a2a2a 0%, #1a1a1a 35%, #111111 100%)",
             border: "1px solid rgba(0,0,0,0.4)",
             boxShadow: "inset 0 2px 6px rgba(0,0,0,0.4), inset 0 -1px 0 rgba(255,255,255,0.05)",
@@ -951,7 +992,7 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Arrow between hero and flip book */}
+      {/* Arrow between bulletin board and flip book */}
       <ArrowAnimated />
 
       {/* Page flip book — portfolio sections */}
