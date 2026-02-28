@@ -627,8 +627,8 @@ function ArrowAnimated() {
   }, []);
 
   return (
-    <div ref={ref} className="flex justify-center -mt-24 pb-0">
-      <svg width="470" height="591" viewBox="0 0 470 591" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-56">
+    <div ref={ref} className="flex justify-center -mt-48 -mb-16 pb-0">
+      <svg width="470" height="591" viewBox="0 0 470 591" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-36">
         {arrowPaths.map((d, i) => (
           <path
             key={i}
@@ -828,7 +828,7 @@ export default function Home() {
 
       {/* Hero — full viewport, centered */}
       <div className="min-h-screen flex items-center justify-center px-4 relative z-10 animate-fade-in">
-      <div className="relative w-[1400px] h-[900px] overflow-visible" style={{ maxWidth: "100vw" }}>
+      <div className="relative w-[1400px] h-[900px] overflow-visible" style={{ maxWidth: "100vw", transform: "translateX(-25px)" }}>
         <MacFolder />
         <DotMatrixBoard />
         <VinylCard />
@@ -889,7 +889,7 @@ export default function Home() {
           </div>
         </a>
         {/* Center text */}
-        <div className="absolute top-[42%] left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center z-10">
+        <div className="absolute top-[42%] left-[calc(50%+25px)] -translate-x-1/2 -translate-y-1/2 flex flex-col items-center z-10">
           <img src="/yan-liu.svg" alt="Yan Liu" className="h-[80px] md:h-[100px] mb-4" draggable={false} />
           <p className="font-[family-name:var(--font-noto)] text-xs md:text-sm text-text-secondary uppercase tracking-[0.25em] mb-1">
             {siteConfig.subtitle}
@@ -905,39 +905,39 @@ export default function Home() {
       <ArrowAnimated />
 
       {/* Bulletin board */}
+      <p className="text-center font-[family-name:var(--font-noto)] text-[13px] text-[#A8A29E] mb-3">Drag to reposition the images.</p>
       <div className="w-full flex justify-center px-6 pt-4 pb-4">
         <div className="w-full max-w-[1000px]">
-          {/* Dark frame */}
+          {/* Warm frame */}
           <div className="rounded-3xl p-[14px]" style={{
-            background: "linear-gradient(160deg, #3a3a3a 0%, #2a2a2a 20%, #1c1c1c 80%, #111111 100%)",
-            boxShadow: "0 10px 30px rgba(0,0,0,0.35), 0 24px 70px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.1), inset 0 -1px 0 rgba(0,0,0,0.4)",
-            borderTop: "1px solid rgba(255,255,255,0.12)",
-            borderLeft: "1px solid rgba(255,255,255,0.06)",
-            borderRight: "1px solid rgba(0,0,0,0.3)",
-            borderBottom: "2px solid rgba(0,0,0,0.5)",
+            background: "linear-gradient(160deg, #d6cfc4 0%, #c9c0b3 20%, #bfb5a6 80%, #b5aa9a 100%)",
+            boxShadow: "0 10px 30px rgba(0,0,0,0.12), 0 24px 70px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.5), inset 0 -1px 0 rgba(0,0,0,0.1)",
+            borderTop: "1px solid rgba(255,255,255,0.4)",
+            borderLeft: "1px solid rgba(255,255,255,0.25)",
+            borderRight: "1px solid rgba(0,0,0,0.08)",
+            borderBottom: "2px solid rgba(0,0,0,0.12)",
           }}>
-          <div className="min-h-[578px] rounded-xl relative overflow-hidden" style={{
-            background: "linear-gradient(150deg, #2a2a2a 0%, #1a1a1a 35%, #111111 100%)",
-            border: "1px solid rgba(0,0,0,0.4)",
-            boxShadow: "inset 0 2px 6px rgba(0,0,0,0.4), inset 0 -1px 0 rgba(255,255,255,0.05)",
+          <div className="min-h-[578px] rounded-xl relative overflow-visible" style={{
+            background: "linear-gradient(150deg, #f5f0e8 0%, #efe9df 35%, #e8e1d5 100%)",
+            boxShadow: "inset 0 2px 6px rgba(0,0,0,0.06)",
           }}>
             {/* Paper texture noise */}
-            <div className="absolute inset-0 pointer-events-none opacity-[0.18]" style={{
+            <div className="absolute inset-0 pointer-events-none opacity-[0.08]" style={{
               backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
               backgroundSize: "200px 200px",
             }} />
             {/* Grid pattern */}
             <div className="absolute inset-0 pointer-events-none" style={{
               backgroundImage: `
-                linear-gradient(rgba(200, 170, 120, 0.12) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(200, 170, 120, 0.12) 1px, transparent 1px)
+                linear-gradient(rgba(180, 160, 130, 0.18) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(180, 160, 130, 0.18) 1px, transparent 1px)
               `,
               backgroundSize: "36px 36px",
             }} />
             {/* Row numbers */}
             <div className="absolute top-0 left-0 bottom-0 w-[24px] flex flex-col pointer-events-none select-none">
               {Array.from({ length: 16 }).map((_, i) => (
-                <span key={i} className="font-mono text-[9px] text-stone-600 text-right pr-1" style={{ height: "36px", lineHeight: "36px" }}>
+                <span key={i} className="font-mono text-[9px] text-stone-400 text-right pr-1" style={{ height: "36px", lineHeight: "36px" }}>
                   {i + 1}
                 </span>
               ))}
@@ -993,10 +993,12 @@ export default function Home() {
       </div>
 
       {/* Arrow between bulletin board and flip book */}
-      <ArrowAnimated />
+      <div className="mt-8">
+        <ArrowAnimated />
+      </div>
 
       {/* Page flip book — portfolio sections */}
-      <div className="w-full flex justify-center -mt-16 pb-24">
+      <div className="w-full flex justify-center -mt-32 pb-24">
         <iframe
           src="/page-flip-test.html"
           className="w-full max-w-[1200px] border-none"
