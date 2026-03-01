@@ -111,7 +111,7 @@ function FloatingDecorations() {
 function MacFolder() {
   return (
     <div
-      className="hidden lg:block absolute left-[440px] top-[540px] z-30 group cursor-pointer rotate-[6deg] transition-all duration-300 hover:scale-110 hover:-translate-y-2 hover:rotate-[2deg]"
+      className="hidden lg:block absolute left-[440px] top-[560px] z-30 group cursor-pointer rotate-[6deg] transition-all duration-300 hover:scale-110 hover:-translate-y-2 hover:rotate-[2deg]"
       style={{ perspective: "500px" }}
     >
       <div className="relative w-[155px] h-[155px] transition-all duration-300 group-hover:drop-shadow-[0_8px_16px_rgba(0,0,0,0.25)]">
@@ -127,7 +127,7 @@ function MacFolder() {
         <img
           src="/Ipad and notebook.svg"
           alt="iPad and notebook"
-          className="absolute left-1/2 bottom-[30%] w-[90px] -translate-x-1/2 transition-all duration-500 ease-out opacity-0 group-hover:opacity-100 group-hover:-translate-y-[75px] group-hover:-translate-x-[140px] group-hover:rotate-[-15deg] z-10"
+          className="absolute left-1/2 bottom-[30%] w-[105px] -translate-x-1/2 transition-all duration-500 ease-out opacity-0 group-hover:opacity-100 group-hover:-translate-y-[75px] group-hover:-translate-x-[140px] group-hover:rotate-[-15deg] z-10"
           style={{ filter: "drop-shadow(0 6px 12px rgba(0,0,0,0.25))" }}
           draggable={false}
         />
@@ -135,7 +135,7 @@ function MacFolder() {
         <img
           src="/Claude logo.svg"
           alt="Claude"
-          className="absolute left-1/2 bottom-[30%] w-[55px] -translate-x-1/2 transition-all duration-500 ease-out delay-75 opacity-0 group-hover:opacity-100 group-hover:-translate-y-[95px] group-hover:-translate-x-[30px] group-hover:rotate-[5deg] z-10"
+          className="absolute left-1/2 bottom-[30%] w-[65px] -translate-x-1/2 transition-all duration-500 ease-out delay-75 opacity-0 group-hover:opacity-100 group-hover:-translate-y-[95px] group-hover:-translate-x-[30px] group-hover:rotate-[5deg] z-10"
           style={{ filter: "drop-shadow(0 6px 12px rgba(0,0,0,0.25))" }}
           draggable={false}
         />
@@ -143,7 +143,7 @@ function MacFolder() {
         <img
           src="/laptop.svg"
           alt="Laptop"
-          className="absolute left-1/2 bottom-[30%] w-[90px] -translate-x-1/2 transition-all duration-500 ease-out delay-150 opacity-0 group-hover:opacity-100 group-hover:-translate-y-[65px] group-hover:translate-x-[40px] group-hover:rotate-[10deg] z-10"
+          className="absolute left-1/2 bottom-[30%] w-[105px] -translate-x-1/2 transition-all duration-500 ease-out delay-150 opacity-0 group-hover:opacity-100 group-hover:-translate-y-[65px] group-hover:translate-x-[40px] group-hover:rotate-[10deg] z-10"
           style={{ filter: "drop-shadow(0 6px 12px rgba(0,0,0,0.25))" }}
           draggable={false}
         />
@@ -258,8 +258,8 @@ function VinylCard() {
         </div>
         {/* Card */}
         <div className="relative bg-white border border-editor-border rounded-2xl shadow-sm flex flex-col items-center w-[240px] pt-6 pb-6 overflow-hidden">
-          {/* Animated blobs */}
-          <div className="absolute inset-0 pointer-events-none">
+          {/* Animated blobs — hidden by default, appear on hover */}
+          <div className="absolute inset-0 pointer-events-none opacity-0 transition-opacity duration-500 ease-out group-hover/vinyl:opacity-100">
             <div className="vinyl-blob vinyl-blob-1" />
             <div className="vinyl-blob vinyl-blob-2" />
             <div className="vinyl-blob vinyl-blob-3" />
@@ -676,7 +676,7 @@ function RippedPaperNote() {
         setQuoteIndex((prev) => (prev + 1) % quotes.length);
         setFading(false);
       }, 200);
-    }, 2000);
+    }, 1200);
   };
 
   const stopRotating = () => {
@@ -1059,11 +1059,22 @@ export default function Home() {
   const zCounterRef = useRef(10);
   const [arrowVisible, setArrowVisible] = useState(false);
   const onArrowVisible = useRef(() => setArrowVisible(true)).current;
+  const [pageBursts, setPageBursts] = useState<{ id: number; x: number; y: number }[]>([]);
+  const burstCounter = useRef(0);
+  const handlePageClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    const target = e.target as HTMLElement;
+    if (target.closest("a, button, iframe")) return;
+    const id = burstCounter.current++;
+    setPageBursts((prev) => [...prev, { id, x: e.clientX, y: e.clientY }]);
+  };
 
   return (
-    <div className="bg-background relative overflow-x-hidden">
+    <div className="bg-background relative overflow-x-hidden" onClick={handlePageClick}>
       <StarBackground />
       <FloatingDecorations />
+      {pageBursts.map((b) => (
+        <ClickBurst key={b.id} x={b.x} y={b.y} onDone={() => setPageBursts((prev) => prev.filter((p) => p.id !== b.id))} />
+      ))}
 
       {/* Hero — full viewport, centered */}
       <div className="min-h-screen flex items-center justify-center px-4 relative z-10 animate-fade-in">
@@ -1101,6 +1112,15 @@ export default function Home() {
           </div>
         </div>
 
+        {/* Flower vase sticker */}
+        <img
+          src="/flower.png"
+          alt=""
+          className="hidden lg:block absolute left-[350px] top-[340px] z-20 w-[120px] transition-transform duration-300 ease-out hover:scale-110"
+          style={{ willChange: "transform" }}
+          draggable={false}
+        />
+
         {/* Milk tea doodle */}
         <img
           src="/milk-tea.png"
@@ -1128,7 +1148,7 @@ export default function Home() {
           </div>
         </a>
         {/* Center text */}
-        <div className="absolute top-[42%] left-[calc(50%+25px)] -translate-x-1/2 -translate-y-1/2 flex flex-col items-center z-10">
+        <div className="absolute top-[42%] left-[calc(50%+30px)] -translate-x-1/2 -translate-y-1/2 flex flex-col items-center z-10">
           <img src="/yan-liu.svg" alt="Yan Liu" className="h-[80px] md:h-[100px] mb-4" draggable={false} />
           <p className="font-[family-name:var(--font-noto)] text-xs md:text-sm text-text-secondary uppercase tracking-[0.25em] mb-1">
             {siteConfig.subtitle}
@@ -1172,16 +1192,18 @@ export default function Home() {
       <RippedPaperNote />
 
       {/* Footer */}
-      <footer className="w-full flex flex-col items-center gap-4 pt-16 pb-20">
+      <footer className="w-full flex flex-col items-center gap-4 pt-16 pb-12">
         <div className="w-24 h-px bg-text-muted/20 mb-2" />
         <div className="flex items-center gap-3">
           <img src="/star.svg" alt="" className="w-5 h-5 opacity-60" draggable={false} />
-          <p className="text-[15px] text-text-muted tracking-wide">
+          <p className="text-[15px] tracking-wide" style={{ color: "#212121" }}>
             Vibe-coded by Yan Liu · Learning by building
           </p>
           <img src="/star.svg" alt="" className="w-5 h-5 opacity-60" draggable={false} />
         </div>
       </footer>
+
+
 
       {/* Sections — hidden for now */}
       <div className="hidden flex-col items-center px-4 pb-24 relative z-10">
