@@ -26,6 +26,9 @@ export const metadata: Metadata = {
   title: "Yan Liu — Product Designer",
   description:
     "Design like a strategist. Ship like a builder. Senior Product Designer with 7+ years of experience.",
+  icons: {
+    icon: "/favicon.svg",
+  },
 };
 
 export default function RootLayout({
