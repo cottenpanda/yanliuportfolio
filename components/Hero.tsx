@@ -15,9 +15,11 @@ export default function Hero() {
           className="flex-shrink-0"
         >
           <div className="w-32 h-40 md:w-40 md:h-52 rounded-xl bg-warm overflow-hidden">
-            <div className="w-full h-full bg-gradient-to-br from-accent/20 to-warm flex items-center justify-center text-accent-dark/30 text-xs">
-              Photo
-            </div>
+            <img
+              src="/flower.png"
+              alt="Flower"
+              className="w-full h-full object-cover"
+            />
           </div>
         </motion.div>
 

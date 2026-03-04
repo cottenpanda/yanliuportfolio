@@ -1116,7 +1116,7 @@ export default function Home() {
         <img
           src="/flower.png"
           alt=""
-          className="hidden lg:block absolute left-[350px] top-[340px] z-20 w-[120px] transition-transform duration-300 ease-out hover:scale-110"
+          className="hidden lg:block absolute left-[370px] top-[370px] z-20 w-[100px] rotate-[-6deg] transition-transform duration-300 ease-out hover:scale-[1.3] hover:rotate-[-2deg] hover:-translate-y-2"
           style={{ willChange: "transform" }}
           draggable={false}
         />
