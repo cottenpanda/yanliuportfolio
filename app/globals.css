@@ -8,10 +8,11 @@ html {
 
 body {
   background-color: #FAF8F5;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='40' height='40'><line x1='20' y1='15' x2='20' y2='25' stroke='rgba(0,0,0,0.1)' stroke-width='1'/><line x1='15' y1='20' x2='25' y2='20' stroke='rgba(0,0,0,0.1)' stroke-width='1'/></svg>");
   color: #1C1917;
   background-image:
-    linear-gradient(rgba(200, 180, 150, 0.18) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(200, 180, 150, 0.18) 1px, transparent 1px);
+    linear-gradient(rgba(200, 180, 150, 0.25) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(200, 180, 150, 0.25) 1px, transparent 1px);
   background-size: 36px 36px;
   position: relative;
 }
@@ -119,6 +120,18 @@ body::before {
 
 .animate-fade-in-up {
   animation: fade-in-up 0.5s ease-out both;
+}
+
+/* Scroll-triggered fade in */
+@keyframes scroll-fade-up {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.scroll-fade-in {
+  animation: scroll-fade-up ease-out both;
+  animation-timeline: view();
+  animation-range: entry 0% entry 30%;
 }
 
 /* Star twinkle */

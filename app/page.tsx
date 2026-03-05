@@ -723,19 +723,15 @@ function RippedPaperNote() {
         }} />
 
         {/* Paper */}
+        <div style={{ filter: "drop-shadow(0 6px 12px rgba(0,0,0,0.15)) drop-shadow(0 2px 4px rgba(0,0,0,0.1))" }}>
         <div className="relative w-[380px] md:w-[460px] px-10 py-12 overflow-hidden" style={{
-          background: "linear-gradient(175deg, #f8f7f4 0%, #f0eeea 100%)",
-          boxShadow: "0 4px 20px rgba(0,0,0,0.1), 0 1px 4px rgba(0,0,0,0.08)",
+          background: "linear-gradient(175deg, #ffffff 0%, #f5f3ef 100%)",
           clipPath: "polygon(0% 0%, 100% 0%, 100% calc(100% - 8px), 97% 100%, 93% calc(100% - 5px), 88% 100%, 83% calc(100% - 3px), 78% 100%, 72% calc(100% - 6px), 67% 100%, 61% calc(100% - 4px), 55% 100%, 49% calc(100% - 7px), 43% 100%, 37% calc(100% - 3px), 31% 100%, 25% calc(100% - 5px), 19% 100%, 13% calc(100% - 4px), 7% 100%, 2% calc(100% - 6px), 0% 100%)",
         }}>
-          {/* Grid lines */}
+          {/* Dots pattern */}
           <div className="absolute inset-0 pointer-events-none" style={{
-            backgroundImage: "linear-gradient(rgba(180,200,220,0.25) 1px, transparent 1px), linear-gradient(90deg, rgba(180,200,220,0.25) 1px, transparent 1px)",
-            backgroundSize: "24px 24px",
-          }} />
-          {/* Red margin line */}
-          <div className="absolute top-0 bottom-0 left-[38px] w-[1px] pointer-events-none" style={{
-            background: "rgba(220,120,120,0.3)",
+            backgroundImage: "radial-gradient(circle, rgba(180,200,220,0.35) 1px, transparent 1px)",
+            backgroundSize: "20px 20px",
           }} />
 
           {/* Quote */}
@@ -748,6 +744,7 @@ function RippedPaperNote() {
               {quotes[quoteIndex]}
             </p>
           </div>
+        </div>
         </div>
       </div>
     </div>
@@ -869,8 +866,8 @@ function ScatterImage({
   const scrollY = useTransform(scrollYProgress, [0, moveStart, moveEnd], [startY, startY, 0]);
   const [visible, setVisible] = useState(false);
   useMotionValueEvent(scrollYProgress, "change", (v) => {
-    if (v > 0.05 && !visible) setVisible(true);
-    if (v <= 0.02 && visible) setVisible(false);
+    if (v > 0.25 && !visible) setVisible(true);
+    if (v <= 0.2 && visible) setVisible(false);
   });
   const dragX = useMotionValue(0);
   const dragY = useMotionValue(0);
@@ -968,13 +965,10 @@ function ScatterBoard({
               backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
               backgroundSize: "200px 200px",
             }} />
-            {/* Grid pattern */}
+            {/* Dots pattern */}
             <div className="absolute inset-0 pointer-events-none" style={{
-              backgroundImage: `
-                linear-gradient(rgba(180, 160, 130, 0.18) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(180, 160, 130, 0.18) 1px, transparent 1px)
-              `,
-              backgroundSize: "36px 36px",
+              backgroundImage: `radial-gradient(circle, rgba(180, 160, 130, 0.3) 1.2px, transparent 1.2px)`,
+              backgroundSize: "24px 24px",
             }} />
             {/* Row numbers */}
             <div className="absolute top-0 left-0 bottom-0 w-[24px] flex flex-col pointer-events-none select-none">
@@ -1069,7 +1063,7 @@ export default function Home() {
   };
 
   return (
-    <div className="bg-background relative overflow-x-hidden" onClick={handlePageClick}>
+    <div className="relative overflow-x-hidden" onClick={handlePageClick}>
       <StarBackground />
       <FloatingDecorations />
       {pageBursts.map((b) => (
@@ -1169,10 +1163,8 @@ export default function Home() {
       </div>
       </div>
 
-      {/* Arrow between hero and bulletin board */}
-      <ArrowAnimated onVisible={onArrowVisible} />
-
       {/* Bulletin board */}
+      <div className="mt-56" />
       <ScatterBoard
         imgZIndex={imgZIndex}
         setImgZIndex={setImgZIndex}
@@ -1182,13 +1174,8 @@ export default function Home() {
         bursts={bursts}
       />
 
-      {/* Arrow between bulletin board and flip book */}
-      <div className="mt-8">
-        <ArrowAnimated />
-      </div>
-
       {/* Page flip book — portfolio sections */}
-      <div className="w-full flex justify-center -mt-32 pb-24">
+      <div className="w-full flex justify-center mt-40 pb-24 scroll-fade-in">
         <iframe
           src="/page-flip-test.html"
           className="w-full max-w-[1200px] border-none"
