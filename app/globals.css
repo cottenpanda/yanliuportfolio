@@ -269,6 +269,19 @@ body::before {
   animation: blob-drift-3 8s ease-in-out infinite;
 }
 
+/* Flower glitch on hover — smooth chromatic shimmer */
+@keyframes flower-glitch {
+  0%   { filter: none; }
+  25%  { filter: hue-rotate(15deg) brightness(1.05); }
+  50%  { filter: hue-rotate(-10deg) saturate(1.2); }
+  75%  { filter: hue-rotate(8deg) brightness(1.08); }
+  100% { filter: none; }
+}
+
+.group\/flower:hover .flower-glitch-target {
+  animation: flower-glitch 1.5s ease-in-out infinite;
+}
+
 /* Vinyl spin */
 @keyframes vinyl-spin {
   from { transform: rotate(0deg); }

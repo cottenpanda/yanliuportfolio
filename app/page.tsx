@@ -1113,13 +1113,22 @@ export default function Home() {
         </div>
 
         {/* Flower vase sticker */}
-        <img
-          src="/flower.png"
-          alt=""
-          className="hidden lg:block absolute left-[370px] top-[370px] z-20 w-[100px] rotate-[-6deg] transition-transform duration-300 ease-out hover:scale-[1.3] hover:rotate-[-2deg] hover:-translate-y-2"
-          style={{ willChange: "transform" }}
-          draggable={false}
-        />
+        <div className="hidden lg:block absolute left-[370px] top-[370px] z-20 group/flower">
+          <div className="relative w-[100px] rotate-[-6deg] transition-all duration-500 ease-out group-hover/flower:scale-[1.8] group-hover/flower:rotate-[-2deg] group-hover/flower:-translate-y-6 group-hover/flower:z-40" style={{ willChange: "transform" }}>
+            <img
+              src="/flower.png"
+              alt=""
+              className="w-full transition-opacity duration-500 ease-out group-hover/flower:opacity-0"
+              draggable={false}
+            />
+            <img
+              src="/flower hover.png"
+              alt=""
+              className="absolute inset-0 w-full opacity-0 transition-opacity duration-500 ease-out group-hover/flower:opacity-100 flower-glitch-target"
+              draggable={false}
+            />
+          </div>
+        </div>
 
         {/* Milk tea doodle */}
         <img
