@@ -1089,7 +1089,7 @@ export default function Home() {
           <div className="absolute top-[50%] left-[55%] -translate-x-1/2 -translate-y-1/2">
             <img src="/ice-coffee.png" alt="Ice coffee" className="w-[85px] drop-shadow-[0_4px_8px_rgba(0,0,0,0.2)] hover:coffee-wobble" draggable={false} />
           </div>
-          <div className="absolute top-[82%] left-[16%] -translate-x-1/2 -translate-y-1/2">
+          <div className="absolute top-[75%] left-[16%] -translate-x-1/2 -translate-y-1/2">
             <img src="/plant.png" alt="Plant" className="w-[150px] drop-shadow-[0_4px_8px_rgba(0,0,0,0.2)] transition-all duration-300 scale-[1.45] rotate-[-5deg] -translate-y-3 hover:drop-shadow-[0_12px_20px_rgba(0,0,0,0.3)] plant-hover" draggable={false} />
           </div>
           <div className="absolute top-1/2 left-[80%] -translate-x-1/2 -translate-y-1/2 group/pencil">
@@ -1191,11 +1191,11 @@ export default function Home() {
       <footer className="w-full flex flex-col items-center gap-4 pt-16 pb-12">
         <div className="w-24 h-px bg-text-muted/20 mb-2" />
         <div className="flex items-center gap-3">
-          <img src="/star.svg" alt="" className="w-5 h-5 opacity-60" draggable={false} />
+          <img src="/star.svg" alt="" className="w-5 h-5 brightness-0 opacity-70 animate-spin" style={{ animationDuration: "4s" }} draggable={false} />
           <p className="text-[15px] tracking-wide" style={{ color: "#212121" }}>
             Vibe-coded by Yan Liu · Learning by building
           </p>
-          <img src="/star.svg" alt="" className="w-5 h-5 opacity-60" draggable={false} />
+          <img src="/star.svg" alt="" className="w-5 h-5 brightness-0 opacity-70 animate-spin" style={{ animationDuration: "4s" }} draggable={false} />
         </div>
       </footer>
 
