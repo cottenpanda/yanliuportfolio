@@ -657,6 +657,46 @@ const quotes = [
   "\u201CLearn by doing\u201D",
 ];
 
+/* ── Scroll-triggered text reveal ── */
+function ScrollRevealText() {
+  const ref = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    if (!ref.current) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) setVisible(true); },
+      { threshold: 0.3 }
+    );
+    observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <div ref={ref} className="w-full max-w-[700px] mx-auto px-6 py-12 text-center">
+      <p
+        className="font-[family-name:var(--font-courier-prime)] text-[17px] md:text-[20px] text-stone-600 leading-relaxed transition-all duration-700 ease-out"
+        style={{
+          opacity: visible ? 1 : 0,
+          transform: visible ? "translateY(0)" : "translateY(20px)",
+        }}
+      >
+        I turn ambiguity into clear product design direction and ship with cross-functional teams at speed.
+      </p>
+      <p
+        className="font-[family-name:var(--font-courier-prime)] text-[17px] md:text-[20px] text-stone-600 leading-relaxed mt-6 transition-all duration-700 ease-out delay-500"
+        style={{
+          opacity: visible ? 1 : 0,
+          transform: visible ? "translateY(0)" : "translateY(20px)",
+          transitionDelay: "0.5s",
+        }}
+      >
+        Outside work, I build with AI—prototyping ideas and exploring the edge of design and technology.
+      </p>
+    </div>
+  );
+}
+
 function RippedPaperNote() {
   const [quoteIndex, setQuoteIndex] = useState(0);
   const [fading, setFading] = useState(false);
@@ -1175,9 +1215,11 @@ export default function Home() {
       <div className="mt-[220px]" />
       <RippedPaperNote />
 
+      {/* Typewriter bio */}
+      <ScrollRevealText />
 
       {/* Page flip book — portfolio sections */}
-      <div className="w-full flex justify-center mt-24 pb-8 scroll-fade-in">
+      <div className="w-full flex justify-center mt-12 pb-8 scroll-fade-in">
         <iframe
           src="/page-flip-test.html"
           className="w-full max-w-[1200px] border-none"
