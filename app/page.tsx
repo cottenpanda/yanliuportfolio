@@ -268,10 +268,10 @@ function VinylCard() {
           <div className="relative z-[1] w-36 h-36" />
           {/* Info */}
           <div className="relative z-[1] mt-4 text-center">
-            <p className="font-[family-name:var(--font-noto)] text-[10px] text-text-primary uppercase tracking-widest mb-1">Playlist</p>
-            <h3 className="font-[family-name:var(--font-noto)] text-text-primary font-bold text-lg leading-tight mb-1">Vibe Coding</h3>
-            <p className="font-[family-name:var(--font-noto)] text-text-primary text-xs mb-1">18 projects</p>
-            <p className="font-[family-name:var(--font-noto)] text-text-primary text-[11px] leading-snug">Built with creativity<br/>and curiosity.</p>
+            <p className="font-[family-name:var(--font-courier-prime)] text-[10px] text-text-primary uppercase tracking-widest mb-1">Playlist</p>
+            <h3 className="font-[family-name:var(--font-courier-prime)] text-text-primary font-bold text-lg leading-tight mb-1">Vibe Coding</h3>
+            <p className="font-[family-name:var(--font-courier-prime)] text-text-primary text-xs mb-1">18 projects</p>
+            <p className="font-[family-name:var(--font-courier-prime)] text-text-primary text-[11px] leading-snug">Built with creativity<br/>and curiosity.</p>
           </div>
         </div>
       </div>
@@ -328,13 +328,13 @@ function NameBadge() {
           }}>
             {/* Grid lines overlay */}
             <div className="absolute inset-0 pointer-events-none opacity-[0.12]" style={{
-              backgroundImage: "linear-gradient(rgba(255,255,255,1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,1) 1px, transparent 1px)",
-              backgroundSize: "24px 24px",
+              backgroundImage: "radial-gradient(circle, rgba(255,255,255,0.8) 1px, transparent 1px)",
+              backgroundSize: "18px 18px",
             }} />
             {/* Name */}
             <div className="relative z-10">
               <h3 className="text-white font-extrabold text-[32px] leading-[1.05] tracking-[0.15em]">刘彦</h3>
-              <p className="font-mono text-white/50 text-[10px] uppercase tracking-[0.15em] mt-2">Product Designer</p>
+              <p className="font-[family-name:var(--font-courier-prime)] text-white/50 text-[9px] uppercase tracking-[0.1em] mt-2">Seattle-based<br />Senior Product Designer</p>
             </div>
             {/* Starburst accent */}
             <img src="/star.svg" alt="" className="absolute top-3 right-3 z-10 w-12 h-12" draggable={false} />
@@ -377,16 +377,16 @@ function NameBadge() {
 function RetroWindows() {
   const [hovered, setHovered] = useState(false);
   const [typed, setTyped] = useState("");
-  const email = "yanliudesignlife@gmail.com";
+  const bioText = "Hi, I'm Yan. I currently work at Getty Images. On the side, I explore AI tools, make random doodles, take photos, and share designs.\n\nyanliudesignlife@gmail.com";
 
   useEffect(() => {
     if (!hovered) { setTyped(""); return; }
     let i = 0;
     const interval = setInterval(() => {
       i++;
-      setTyped(email.slice(0, i));
-      if (i >= email.length) clearInterval(interval);
-    }, 50);
+      setTyped(bioText.slice(0, i));
+      if (i >= bioText.length) clearInterval(interval);
+    }, 30);
     return () => clearInterval(interval);
   }, [hovered]);
 
@@ -437,7 +437,7 @@ function RetroWindows() {
         {windows.map((win, i) => (
           <div
             key={i}
-            className="absolute w-[280px] transition-transform duration-300 hover:scale-105 cursor-pointer"
+            className="absolute w-[320px] transition-transform duration-300 hover:scale-105 cursor-pointer"
             style={{
               top: win.top,
               left: win.left,
@@ -484,12 +484,12 @@ function RetroWindows() {
 
               {/* Content area — sunken inset */}
               <div className="mx-[4px] mb-[4px]" style={inset}>
-                <div className="w-full h-[140px] p-2" style={{ background: "#ffffff" }}>
+                <div className="w-full h-[180px] p-2 overflow-hidden" style={{ background: "#ffffff" }}>
                   {i === windows.length - 1 && typed && (
-                    <span className="text-[11px] text-black font-mono">
+                    <p className="text-[11px] text-black font-[family-name:var(--font-courier-prime)] whitespace-pre-wrap leading-none">
                       {typed}
                       <span className="inline-block w-[5px] h-[11px] bg-black ml-[1px] align-text-bottom" style={{ animation: "blink 1s step-end infinite" }} />
-                    </span>
+                    </p>
                   )}
                 </div>
               </div>
@@ -738,7 +738,7 @@ function RippedPaperNote() {
           <div className="relative z-10 overflow-hidden h-[32px] md:h-[36px]">
             <p
               key={quoteIndex}
-              className="text-center font-mono text-lg md:text-xl text-stone-700 leading-relaxed quote-slide-in"
+              className="text-center text-lg md:text-xl text-stone-700 leading-relaxed quote-slide-in font-[family-name:var(--font-courier-prime)]"
               style={{ fontStyle: "italic" }}
             >
               {quotes[quoteIndex]}
@@ -945,7 +945,7 @@ function ScatterBoard({
 
   return (
     <>
-      <p className="text-center font-[family-name:var(--font-noto)] text-[13px] text-[#A8A29E] mb-3">Drag to reposition the images.</p>
+      <p className="text-center font-[family-name:var(--font-courier-prime)] text-[13px] text-[#A8A29E] mb-3">Drag to reposition the images.</p>
       <div className="w-full flex justify-center px-6 pt-4 pb-4">
         <div className="w-full max-w-[1000px]">
           <div className="rounded-3xl p-[14px]" style={{
@@ -1107,7 +1107,7 @@ export default function Home() {
         </div>
 
         {/* Flower vase sticker */}
-        <div className="hidden lg:block absolute left-[370px] top-[370px] z-20 group/flower">
+        <div className="hidden lg:block absolute left-[420px] top-[370px] z-20 group/flower">
           <div className="relative w-[100px] rotate-[-6deg] transition-all duration-500 ease-out group-hover/flower:scale-[1.8] group-hover/flower:rotate-[-2deg] group-hover/flower:-translate-y-6 group-hover/flower:z-40" style={{ willChange: "transform" }}>
             <img
               src="/flower.png"
@@ -1153,11 +1153,8 @@ export default function Home() {
         {/* Center text */}
         <div className="absolute top-[42%] left-[calc(50%+30px)] -translate-x-1/2 -translate-y-1/2 flex flex-col items-center z-10">
           <img src="/yan-liu.svg" alt="Yan Liu" className="h-[80px] md:h-[100px] mb-4" draggable={false} />
-          <p className="font-[family-name:var(--font-noto)] text-xs md:text-sm text-text-secondary uppercase tracking-[0.25em] mb-1">
-            {siteConfig.subtitle}
-          </p>
-          <p className="font-[family-name:var(--font-noto)] text-xs md:text-sm text-text-secondary max-w-lg text-center leading-relaxed tracking-[0.15em] mt-2">
-            {siteConfig.tagline}
+          <p className="font-[family-name:var(--font-courier-prime)] text-sm md:text-base text-text-secondary text-center tracking-[0.2em] uppercase" style={{ lineHeight: "1.8" }}>
+            Design like a strategist<br />Ship like a builder
           </p>
         </div>
       </div>
@@ -1174,8 +1171,13 @@ export default function Home() {
         bursts={bursts}
       />
 
+      {/* Ripped paper quote */}
+      <div className="mt-[220px]" />
+      <RippedPaperNote />
+
+
       {/* Page flip book — portfolio sections */}
-      <div className="w-full flex justify-center mt-40 pb-24 scroll-fade-in">
+      <div className="w-full flex justify-center mt-24 pb-8 scroll-fade-in">
         <iframe
           src="/page-flip-test.html"
           className="w-full max-w-[1200px] border-none"
@@ -1184,15 +1186,12 @@ export default function Home() {
         />
       </div>
 
-      {/* Ripped paper quote */}
-      <RippedPaperNote />
-
       {/* Footer */}
       <footer className="w-full flex flex-col items-center gap-4 pt-16 pb-12">
         <div className="w-24 h-px bg-text-muted/20 mb-2" />
         <div className="flex items-center gap-3">
           <img src="/star.svg" alt="" className="w-5 h-5 brightness-0 opacity-70 animate-spin" style={{ animationDuration: "4s" }} draggable={false} />
-          <p className="text-[15px] tracking-wide" style={{ color: "#212121" }}>
+          <p className="font-[family-name:var(--font-courier-prime)] text-[15px] tracking-wide" style={{ color: "#212121" }}>
             Vibe-coded by Yan Liu · Learning by building
           </p>
           <img src="/star.svg" alt="" className="w-5 h-5 brightness-0 opacity-70 animate-spin" style={{ animationDuration: "4s" }} draggable={false} />

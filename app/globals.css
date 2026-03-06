@@ -13,7 +13,7 @@ body {
   background-image:
     linear-gradient(rgba(200, 180, 150, 0.25) 1px, transparent 1px),
     linear-gradient(90deg, rgba(200, 180, 150, 0.25) 1px, transparent 1px);
-  background-size: 36px 36px;
+  background-size: 56px 56px;
   position: relative;
 }
 

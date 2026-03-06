@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Caveat, Source_Code_Pro, Noto_Sans } from "next/font/google";
+import { Inter, Caveat, Source_Code_Pro, Noto_Sans, Courier_Prime } from "next/font/google";
 import "./globals.css";
 
 const inter = Inter({
@@ -22,6 +22,12 @@ const notoSans = Noto_Sans({
   variable: "--font-noto",
 });
 
+const courierPrime = Courier_Prime({
+  weight: ["400", "700"],
+  subsets: ["latin"],
+  variable: "--font-courier-prime",
+});
+
 export const metadata: Metadata = {
   title: "Yan Liu — Product Designer",
   description:
@@ -37,7 +43,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${inter.variable} ${caveat.variable} ${sourceCodePro.variable} ${notoSans.variable}`}>
+    <html lang="en" className={`${inter.variable} ${caveat.variable} ${sourceCodePro.variable} ${notoSans.variable} ${courierPrime.variable}`}>
       <head>
         <link rel="preload" href="/mac-folder-back.svg" as="image" />
         <link rel="preload" href="/mac-folder-front.svg" as="image" />
