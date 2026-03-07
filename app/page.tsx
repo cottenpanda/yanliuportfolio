@@ -1008,17 +1008,13 @@ function ScatterImage({
   const scrollX = useTransform(scrollYProgress, [0, moveStart, moveEnd], [startX, startX, 0]);
   const scrollY = useTransform(scrollYProgress, [0, moveStart, moveEnd], [startY, startY, 0]);
   const [visible, setVisible] = useState(false);
+  const [hasLanded, setHasLanded] = useState(false);
   useMotionValueEvent(scrollYProgress, "change", (v) => {
     if (v > 0.25 && !visible) setVisible(true);
-    if (v <= 0.2 && visible) setVisible(false);
+    if (landed && !hasLanded) setHasLanded(true);
   });
   const dragX = useMotionValue(0);
   const dragY = useMotionValue(0);
-
-  // Reset drag offsets when un-landing (scrolling back up)
-  useEffect(() => {
-    if (!landed) { dragX.set(0); dragY.set(0); }
-  }, [landed, dragX, dragY]);
 
   return (
     <motion.img
@@ -1043,9 +1039,9 @@ function ScatterImage({
         width: img.w,
         rotate: img.rotate,
         zIndex: imgZIndex[index],
-        x: landed ? dragX : scrollX,
-        y: landed ? dragY : scrollY,
-        opacity: landed || visible ? 1 : 0,
+        x: hasLanded ? dragX : scrollX,
+        y: hasLanded ? dragY : scrollY,
+        opacity: hasLanded || visible ? 1 : 0,
       }}
       draggable={false}
     />
