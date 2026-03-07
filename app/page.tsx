@@ -721,7 +721,32 @@ function ScrollRevealText() {
   }, []);
 
   return (
-    <div ref={ref} className="w-full max-w-[800px] mx-auto px-6 py-12 text-center">
+    <div ref={ref} className="relative w-full max-w-[800px] mx-auto px-6 py-12 text-center">
+      {/* Left: earbuds */}
+      <img
+        src="/earbuds.png"
+        alt=""
+        className="hidden lg:block absolute -left-[160px] -top-[60px] w-[140px] transition-all duration-700 ease-out"
+        style={{
+          opacity: visible ? 1 : 0,
+          transform: visible ? "translateX(0) rotate(-15deg)" : "translateX(-60px) rotate(-15deg)",
+        }}
+        draggable={false}
+      />
+
+      {/* Right: computer */}
+      <img
+        src="/computer.png"
+        alt=""
+        className="hidden lg:block absolute -right-[180px] -top-[60px] w-[160px] transition-all duration-700 ease-out"
+        style={{
+          opacity: visible ? 1 : 0,
+          transform: visible ? "translateX(0) rotate(10deg)" : "translateX(60px) rotate(10deg)",
+          transitionDelay: "0.2s",
+        }}
+        draggable={false}
+      />
+
       <p
         className="font-[family-name:var(--font-courier-prime)] text-[17px] md:text-[20px] text-stone-600 leading-relaxed transition-all duration-700 ease-out"
         style={{
@@ -1290,12 +1315,12 @@ export default function Home() {
         bursts={bursts}
       />
 
-      {/* Ripped paper quote */}
+      {/* Ripped paper quote + bio with decorative images */}
       <div className="mt-[220px]" />
-      <RippedPaperNote />
-
-      {/* Typewriter bio */}
-      <ScrollRevealText />
+      <div className="relative">
+        <RippedPaperNote />
+        <ScrollRevealText />
+      </div>
 
       {/* Page flip book — portfolio sections */}
       <div className="w-full flex justify-center mt-12 pb-8 scroll-fade-in">

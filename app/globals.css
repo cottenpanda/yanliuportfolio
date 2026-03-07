@@ -134,6 +134,30 @@ body::before {
   animation-range: entry 0% entry 30%;
 }
 
+/* Scroll-triggered slide from left */
+@keyframes scroll-slide-left {
+  from { opacity: 0; transform: translateX(-60px) rotate(-15deg); }
+  to { opacity: 1; transform: translateX(0) rotate(-15deg); }
+}
+
+.scroll-slide-in-left {
+  animation: scroll-slide-left 0.8s ease-out both;
+  animation-timeline: view();
+  animation-range: entry 0% entry 40%;
+}
+
+/* Scroll-triggered slide from right */
+@keyframes scroll-slide-right {
+  from { opacity: 0; transform: translateX(60px) rotate(10deg); }
+  to { opacity: 1; transform: translateX(0) rotate(10deg); }
+}
+
+.scroll-slide-in-right {
+  animation: scroll-slide-right 0.8s ease-out both;
+  animation-timeline: view();
+  animation-range: entry 0% entry 40%;
+}
+
 /* Star twinkle */
 @keyframes twinkle {
   0%, 100% { opacity: 0.3; }
