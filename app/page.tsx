@@ -706,6 +706,40 @@ function DrawInStars() {
 }
 
 /* ── Scroll-triggered text reveal ── */
+function TypedText({ text, start, delay = 0 }: { text: string; start: boolean; delay?: number }) {
+  const [displayed, setDisplayed] = useState("");
+  const [started, setStarted] = useState(false);
+
+  useEffect(() => {
+    if (!start) return;
+    const timeout = setTimeout(() => setStarted(true), delay);
+    return () => clearTimeout(timeout);
+  }, [start, delay]);
+
+  useEffect(() => {
+    if (!started) return;
+    let i = 0;
+    const interval = setInterval(() => {
+      i++;
+      setDisplayed(text.slice(0, i));
+      if (i >= text.length) clearInterval(interval);
+    }, 80);
+    return () => clearInterval(interval);
+  }, [started, text]);
+
+  return (
+    <span className="relative">
+      <span className="invisible">{text}</span>
+      <span className="absolute inset-0">
+        {started ? displayed : ""}
+        {started && displayed.length < text.length && (
+          <span className="inline-block w-[2px] h-[1em] bg-stone-600 align-middle animate-pulse ml-[1px]" />
+        )}
+      </span>
+    </span>
+  );
+}
+
 function ScrollRevealText() {
   const ref = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
@@ -773,7 +807,7 @@ function ScrollRevealText() {
         </span>{" "}
         direction and ship with cross-functional teams{" "}
         <span className="inline-flex items-center border border-stone-500 px-2.5 pt-[2px] pb-[0px] rounded-sm">
-          at speed.
+          <TypedText text="at speed." start={visible} delay={700} />
         </span>
       </p>
       <p
@@ -792,7 +826,7 @@ function ScrollRevealText() {
         />
         Outside work,{" "}
         <span className="inline-flex items-center border border-stone-500 px-2.5 pt-[2px] pb-[0px] rounded-sm">
-          I build with AI,
+          <TypedText text="I build with AI," start={visible} delay={1400} />
         </span>{" "}
         prototyping ideas and exploring the edge of design and technology.
       </p>
@@ -1228,7 +1262,7 @@ export default function Home() {
           <div className="absolute top-[50%] left-[55%] -translate-x-1/2 -translate-y-1/2">
             <img src="/ice-coffee.png" alt="Ice coffee" className="w-[85px] drop-shadow-[0_4px_8px_rgba(0,0,0,0.2)] hover:coffee-wobble" draggable={false} />
           </div>
-          <div className="absolute top-[75%] left-[16%] -translate-x-1/2 -translate-y-1/2">
+          <div className="absolute top-[70%] left-[16%] -translate-x-1/2 -translate-y-1/2">
             <img src="/plant.png" alt="Plant" className="w-[150px] drop-shadow-[0_4px_8px_rgba(0,0,0,0.2)] transition-all duration-300 scale-[1.45] rotate-[-5deg] -translate-y-3 hover:drop-shadow-[0_12px_20px_rgba(0,0,0,0.3)] plant-hover" draggable={false} />
           </div>
           <div className="absolute top-1/2 left-[80%] -translate-x-1/2 -translate-y-1/2 group/pencil">
@@ -1246,7 +1280,7 @@ export default function Home() {
         </div>
 
         {/* Flower vase sticker */}
-        <div className="hidden lg:block absolute left-[420px] top-[370px] z-20 group/flower">
+        <div className="hidden lg:block absolute left-[410px] top-[355px] z-20 group/flower">
           <div className="relative w-[100px] rotate-[-6deg] transition-all duration-500 ease-out group-hover/flower:scale-[1.8] group-hover/flower:rotate-[-2deg] group-hover/flower:-translate-y-6 group-hover/flower:z-40" style={{ willChange: "transform" }}>
             <img
               src="/flower.png"
