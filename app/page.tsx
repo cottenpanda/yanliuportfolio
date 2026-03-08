@@ -337,7 +337,7 @@ function NameBadge() {
               <p className="font-[family-name:var(--font-courier-prime)] text-white/50 text-[9px] uppercase tracking-[0.1em] mt-2">Seattle-based<br />Senior Product Designer</p>
             </div>
             {/* Starburst accent */}
-            <img src="/star.svg" alt="" className="absolute top-3 right-3 z-10 w-12 h-12" draggable={false} />
+            <img src="/yellow-star.svg" alt="" className="absolute top-3 right-3 z-10 w-12 h-12" draggable={false} />
           </div>
 
           {/* Bottom section — dark with profile photo */}
@@ -346,8 +346,6 @@ function NameBadge() {
           }}>
             <div className="w-32 h-32 rounded-full overflow-hidden bg-stone-600 relative" style={{
               border: "3px solid #57534e",
-              borderTopColor: "#6b6560",
-              borderBottomColor: "#3a3633",
             }}>
               <img
                 src="/profile.png"
