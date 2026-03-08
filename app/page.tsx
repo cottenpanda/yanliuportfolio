@@ -819,11 +819,11 @@ function ScrollRevealText() {
         <img
           src="/star.svg"
           alt=""
-          className="inline-block w-[36px] h-auto align-middle ml-4 -mr-2 -mt-1"
+          className="inline-block w-[36px] h-auto align-middle -ml-0.5 mr-1 -mt-1"
           draggable={false}
         />
         Outside work,{" "}
-        <span className="inline-flex items-center border border-stone-500 px-2.5 pt-[2px] pb-[0px] rounded-sm">
+        <span className="inline-flex items-center border border-stone-500 pl-2.5 pr-2 pt-[2px] pb-[0px] rounded-sm">
           <TypedText text="I build with AI," start={visible} delay={1400} />
         </span>{" "}
         prototyping ideas and exploring the edge of design and technology.
@@ -980,7 +980,7 @@ const BOARD_IMAGES = [
   { src: "/bulletin/1.jpg", top: "4%", left: "8%", rotate: "-5deg", w: 220, z: 1, side: "left" as const, startVY: 0.1 },
   { src: "/bulletin/2.jpg", top: "6%", left: "58%", rotate: "3deg", w: 210, z: 1, side: "right" as const, startVY: 0.15 },
   { src: "/bulletin/3.jpg", top: "3%", left: "31%", rotate: "-2deg", w: 250, z: 1, side: "left" as const, startVY: 0.05 },
-  { src: "/bulletin/4.jpg", top: "38%", left: "5%", rotate: "4deg", w: 215, z: 1, side: "left" as const, startVY: 0.4 },
+  { src: "/bulletin/11.jpg", top: "38%", left: "5%", rotate: "4deg", w: 215, z: 1, side: "left" as const, startVY: 0.4 },
   { src: "/bulletin/5.jpg", top: "35%", left: "38%", rotate: "6deg", w: 240, z: 3, side: "right" as const, startVY: 0.35 },
   { src: "/bulletin/6.jpg", top: "40%", left: "68%", rotate: "2deg", w: 210, z: 1, side: "right" as const, startVY: 0.45 },
   { src: "/bulletin/7.jpg", top: "74%", left: "12%", rotate: "-3deg", w: 240, z: 1, side: "left" as const, startVY: 0.7 },
