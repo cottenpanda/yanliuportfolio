@@ -239,7 +239,7 @@ function DotMatrixBoard() {
       href={siteConfig.links.figma}
       target="_blank"
       rel="noopener noreferrer"
-      className="hidden lg:block absolute right-[220px] top-[60px] z-20 cursor-pointer transition-transform duration-300 ease-out rotate-[8deg] scale-[0.65] hover:scale-[0.72] hover:rotate-[3deg] group/matrix"
+      className="hidden lg:block absolute right-[250px] top-[280px] z-20 cursor-pointer transition-transform duration-300 ease-out rotate-[8deg] scale-[0.65] hover:scale-[0.72] hover:rotate-[3deg] group/matrix"
       style={{ willChange: "transform" }}
     >
       {/* Display panel */}
@@ -1328,11 +1328,11 @@ export default function Home() {
           <LocalTime />
         </div>
 
-        {/* Milk tea doodle */}
+        {/* Concert ticket */}
         <img
-          src="/milk-tea.png"
-          alt="Milk tea"
-          className="hidden lg:block absolute right-[30px] top-[70px] z-30 w-[160px] rotate-[6deg] opacity-90 transition-transform duration-300 ease-out hover:scale-[1.3] hover:rotate-[2deg]"
+          src="/ticket.jpg"
+          alt="Design x Technology ticket"
+          className="hidden lg:block absolute right-[80px] top-[100px] z-30 w-[370px] rotate-[4deg] opacity-95 transition-transform duration-300 ease-out hover:scale-[1.5] hover:rotate-[1deg]"
           style={{ willChange: "transform" }}
           draggable={false}
         />
