@@ -1378,7 +1378,6 @@ export default function Home() {
 
       {/* Footer */}
       <footer className="w-full flex flex-col items-center gap-4 pt-4 pb-12">
-        <div className="w-24 h-px bg-text-muted/20 mb-2" />
         <div className="flex items-center gap-3">
           <img src="/star.svg" alt="" className="w-5 h-5 brightness-0 opacity-70 animate-spin" style={{ animationDuration: "4s" }} draggable={false} />
           <p className="font-[family-name:var(--font-courier-prime)] text-[15px] tracking-wide" style={{ color: "#212121" }}>
