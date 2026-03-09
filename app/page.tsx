@@ -458,7 +458,7 @@ function RetroWindows() {
   );
 
   return (
-    <div className="hidden lg:block absolute top-[500px] right-[280px] z-20" onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}>
+    <div className="hidden lg:block absolute top-[500px] right-[310px] z-20" onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}>
       <div className="relative w-[350px] h-[290px]">
         {windows.map((win, i) => (
           <div
@@ -783,29 +783,37 @@ function ScrollRevealText() {
   return (
     <div ref={ref} className="relative w-full max-w-[800px] mx-auto px-6 py-12 text-center">
       {/* Left: earbuds */}
-      <img
-        src="/earbuds.png"
-        alt=""
-        className="hidden lg:block absolute -left-[160px] -top-[60px] w-[140px] transition-all duration-700 ease-out"
+      <div
+        className="hidden lg:block absolute -left-[160px] -top-[60px] w-[170px] transition-all duration-700 ease-out"
         style={{
           opacity: visible ? 1 : 0,
           transform: visible ? "translateX(0) rotate(-15deg)" : "translateX(-60px) rotate(-15deg)",
         }}
-        draggable={false}
-      />
+      >
+        <img
+          src="/earbuds.png"
+          alt=""
+          className="w-full transition-transform duration-300 ease-out hover:scale-110 hover:-translate-y-2 cursor-pointer"
+          draggable={false}
+        />
+      </div>
 
       {/* Right: computer */}
-      <img
-        src="/computer.png"
-        alt=""
-        className="hidden lg:block absolute -right-[180px] -top-[60px] w-[160px] transition-all duration-700 ease-out"
+      <div
+        className="hidden lg:block absolute -right-[250px] -top-[30px] w-[190px] transition-all duration-700 ease-out"
         style={{
           opacity: visible ? 1 : 0,
           transform: visible ? "translateX(0) rotate(10deg)" : "translateX(60px) rotate(10deg)",
           transitionDelay: "0.2s",
         }}
-        draggable={false}
-      />
+      >
+        <img
+          src="/computer.png"
+          alt=""
+          className="w-full transition-transform duration-300 ease-out hover:scale-110 hover:-translate-y-2 cursor-pointer"
+          draggable={false}
+        />
+      </div>
 
       <p
         className="font-[family-name:var(--font-courier-prime)] text-[17px] md:text-[20px] text-stone-600 leading-relaxed transition-all duration-700 ease-out"
@@ -1378,7 +1386,7 @@ export default function Home() {
 
       {/* Ripped paper quote + bio with decorative images */}
       <div className="mt-[220px]" />
-      <div className="relative">
+      <div className="relative" style={{ transform: "translateX(-20px)" }}>
         <RippedPaperNote />
         <ScrollRevealText />
       </div>
