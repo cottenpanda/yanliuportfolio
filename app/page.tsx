@@ -794,33 +794,33 @@ function ScrollRevealText() {
           cardRotate={cell.cardRotate}
         />
       ))}
-      {/* Left: earbuds */}
+      {/* Left: computer */}
       <div
-        className="hidden lg:block absolute -left-[160px] -top-[60px] w-[170px] transition-all duration-700 ease-out"
+        className="hidden lg:block absolute -left-[175px] top-[48px] w-[160px] transition-all duration-700 ease-out"
         style={{
           opacity: visible ? 1 : 0,
           transform: visible ? "translateX(0) rotate(-15deg)" : "translateX(-60px) rotate(-15deg)",
         }}
       >
         <img
-          src="/earbuds.png"
+          src="/computer.png"
           alt=""
           className="w-full transition-transform duration-300 ease-out hover:scale-110 hover:-translate-y-2 cursor-pointer"
           draggable={false}
         />
       </div>
 
-      {/* Right: computer */}
+      {/* Right: earbuds */}
       <div
-        className="hidden lg:block absolute -right-[250px] -top-[30px] w-[190px] transition-all duration-700 ease-out"
+        className="hidden lg:block absolute -right-[170px] top-[20px] w-[140px] transition-all duration-700 ease-out"
         style={{
           opacity: visible ? 1 : 0,
-          transform: visible ? "translateX(0) rotate(10deg)" : "translateX(60px) rotate(10deg)",
+          transform: visible ? "translateX(0) rotate(-5deg)" : "translateX(60px) rotate(-5deg)",
           transitionDelay: "0.2s",
         }}
       >
         <img
-          src="/computer.png"
+          src="/earbuds.png"
           alt=""
           className="w-full transition-transform duration-300 ease-out hover:scale-110 hover:-translate-y-2 cursor-pointer"
           draggable={false}
@@ -1058,7 +1058,7 @@ const gridAnimations = [
 // Grid cell positions (col, row relative to container's snapped grid) + card offsets
 const easterEggCells = [
   { col: -2, row: -3, animIdx: 0, cardOffset: [60, -50] as [number, number], cardRotate: 2 },
-  { col: -3, row: 4, animIdx: 1, cardOffset: [60, -50] as [number, number], cardRotate: -2 },
+  { col: -3, row: 5, animIdx: 1, cardOffset: [60, -50] as [number, number], cardRotate: -2 },
   { col: 16, row: -3, animIdx: 2, cardOffset: [-170, -50] as [number, number], cardRotate: -2 },
   { col: 17, row: 5, animIdx: 3, cardOffset: [-170, -50] as [number, number], cardRotate: 2 },
 ];
