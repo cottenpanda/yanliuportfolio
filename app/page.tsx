@@ -977,12 +977,12 @@ function ClickBurst({ x, y, onDone }: { x: number; y: number; onDone: () => void
 
 /* ── Board images data ── */
 const BOARD_IMAGES = [
-  { src: "/bulletin/1.jpg", top: "4%", left: "8%", rotate: "-5deg", w: 220, z: 1, side: "left" as const, startVY: 0.1 },
+  { src: "/bulletin/1.jpg", top: "1%", left: "8%", rotate: "-5deg", w: 220, z: 1, side: "left" as const, startVY: 0.1 },
   { src: "/bulletin/2.jpg", top: "6%", left: "58%", rotate: "3deg", w: 210, z: 1, side: "right" as const, startVY: 0.15 },
-  { src: "/bulletin/3.jpg", top: "3%", left: "31%", rotate: "-2deg", w: 250, z: 1, side: "left" as const, startVY: 0.05 },
-  { src: "/bulletin/11.jpg", top: "38%", left: "5%", rotate: "4deg", w: 215, z: 1, side: "left" as const, startVY: 0.4 },
-  { src: "/bulletin/5.jpg", top: "35%", left: "38%", rotate: "6deg", w: 240, z: 3, side: "right" as const, startVY: 0.35 },
-  { src: "/bulletin/6.jpg", top: "40%", left: "68%", rotate: "2deg", w: 210, z: 1, side: "right" as const, startVY: 0.45 },
+  { src: "/bulletin/3.jpg", top: "40%", left: "60%", rotate: "2deg", w: 280, z: 1, side: "right" as const, startVY: 0.45 },
+  { src: "/bulletin/11.jpg", top: "34%", left: "2%", rotate: "4deg", w: 215, z: 1, side: "left" as const, startVY: 0.4 },
+  { src: "/bulletin/5.jpg", top: "31%", left: "30%", rotate: "6deg", w: 270, z: 3, side: "right" as const, startVY: 0.35 },
+  { src: "/bulletin/6.jpg", top: "3%", left: "31%", rotate: "-2deg", w: 210, z: 1, side: "left" as const, startVY: 0.05 },
   { src: "/bulletin/7.jpg", top: "74%", left: "12%", rotate: "-3deg", w: 240, z: 1, side: "left" as const, startVY: 0.7 },
   { src: "/bulletin/8.jpg", top: "70%", left: "42%", rotate: "5deg", w: 215, z: 2, side: "right" as const, startVY: 0.65 },
   { src: "/bulletin/9.jpg", top: "65%", left: "72%", rotate: "-4deg", w: 205, z: 1, side: "left" as const, startVY: 0.75 },
@@ -1220,7 +1220,7 @@ export default function Home() {
   const { displayed, done } = useTypingEffect(siteConfig.name, 80);
   const activeSection = siteConfig.sections[activeTab];
   const [bursts, setBursts] = useState<{ id: number; x: number; y: number }[]>([]);
-  const [imgZIndex, setImgZIndex] = useState<number[]>([1, 1, 1, 1, 3, 1, 1, 2, 1, 1]);
+  const [imgZIndex, setImgZIndex] = useState<number[]>([1, 1, 2, 3, 3, 1, 1, 4, 1, 1]);
   const zCounterRef = useRef(10);
   const [arrowVisible, setArrowVisible] = useState(false);
   const onArrowVisible = useRef(() => setArrowVisible(true)).current;
