@@ -1337,13 +1337,27 @@ export default function Home() {
         </div>
 
         {/* Concert ticket */}
-        <img
-          src="/ticket.jpg"
-          alt="Design x Technology ticket"
-          className="hidden lg:block absolute right-[80px] top-[100px] z-30 w-[370px] rotate-[4deg] opacity-95 transition-transform duration-300 ease-out hover:scale-[1.5] hover:rotate-[1deg]"
+        <div
+          className="hidden lg:block absolute right-[80px] top-[100px] z-30 w-[370px] rotate-[4deg] transition-transform duration-300 ease-out hover:scale-[1.5] hover:rotate-[1deg] group/ticket"
           style={{ willChange: "transform" }}
-          draggable={false}
-        />
+        >
+          <img
+            src="/ticket.jpg"
+            alt="Design x Technology ticket"
+            className="w-full opacity-95"
+            draggable={false}
+          />
+          {/* Scan shimmer effect */}
+          <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-0 group-hover/ticket:opacity-100">
+            <div
+              className="absolute top-0 -left-full w-full h-full group-hover/ticket:animate-[ticket-scan_2.2s_ease-in-out_infinite]"
+              style={{
+                background: "linear-gradient(90deg, transparent 0%, rgba(255,100,100,0.08) 25%, rgba(255,200,50,0.12) 35%, rgba(100,255,150,0.12) 45%, rgba(255,255,255,0.3) 50%, rgba(100,180,255,0.12) 55%, rgba(200,100,255,0.12) 65%, rgba(255,100,150,0.08) 75%, transparent 100%)",
+                filter: "blur(1.5px)",
+              }}
+            />
+          </div>
+        </div>
 
         {/* Image collage */}
         <a href="https://unsplash.com/@yl1980s" target="_blank" rel="noopener noreferrer" className="hidden lg:block absolute right-[-20px] top-[200px] z-10 rotate-[6deg] transition-transform duration-300 ease-out hover:rotate-[2deg] hover:scale-105 cursor-pointer group/collage overflow-visible"
