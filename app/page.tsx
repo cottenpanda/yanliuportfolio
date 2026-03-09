@@ -28,6 +28,34 @@ function useTypingEffect(text: string, speed = 28) {
   return { displayed, done };
 }
 
+/* ── Local time ── */
+function LocalTime() {
+  const [time, setTime] = useState("");
+
+  useEffect(() => {
+    const update = () => {
+      const now = new Date();
+      const h = now.getHours();
+      const m = String(now.getMinutes()).padStart(2, "0");
+      const hour12 = h % 12 || 12;
+      const ampm = h >= 12 ? "PM" : "AM";
+      setTime(`SEA ${String(hour12).padStart(2, "0")}:${m} ${ampm}`);
+    };
+    update();
+    const id = setInterval(update, 1000);
+    return () => clearInterval(id);
+  }, []);
+
+  if (!time) return null;
+
+  return (
+    <div className="hidden lg:flex flex-col items-end font-[family-name:var(--font-noto)] tracking-widest uppercase">
+      <span className="text-[9px]" style={{ color: "#9e9e9e" }}>Local Time</span>
+      <span className="text-[11px] text-stone-800 font-medium">{time}</span>
+    </div>
+  );
+}
+
 /* ── Star background ── */
 function StarBackground() {
   const [stars, setStars] = useState<
@@ -1293,6 +1321,11 @@ export default function Home() {
               draggable={false}
             />
           </div>
+        </div>
+
+        {/* Local time */}
+        <div className="hidden lg:block absolute right-[10px] top-[20px] z-20">
+          <LocalTime />
         </div>
 
         {/* Milk tea doodle */}
