@@ -241,7 +241,7 @@ export default function PageFlipBook() {
             />
           ))}
         </div>
-        <p className="text-text-muted text-xs font-mono">
+        <p className="text-text-muted text-xs font-[family-name:var(--font-courier-prime)]">
           {canGoForward || canGoBackward
             ? "Click \u00B7 drag \u00B7 \u2190 \u2192 arrow keys to flip"
             : ""}

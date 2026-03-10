@@ -1412,9 +1412,6 @@ function ScatterImage({
   const scrollY = useTransform(scrollYProgress, [0, moveStart, moveEnd], [startY, startY, 0]);
   // Scroll-linked opacity: fade in as images approach, fade out when scrolling back
   const scrollOpacity = useTransform(scrollYProgress, [0.1, 0.3, 0.85, 1], [0, 1, 1, 1]);
-  // Scroll-linked blur: sharp when in view, blurred when far
-  const scrollBlur = useTransform(scrollYProgress, [0.1, 0.3], [12, 0]);
-  const scrollFilter = useTransform(scrollBlur, (v) => `blur(${v}px)`);
 
   const dragX = useMotionValue(0);
   const dragY = useMotionValue(0);
@@ -1444,8 +1441,7 @@ function ScatterImage({
         zIndex: imgZIndex[index],
         x: landed ? dragX : scrollX,
         y: landed ? dragY : scrollY,
-        opacity: landed ? 1 : scrollOpacity,
-        filter: landed ? "none" : scrollFilter,
+        opacity: scrollOpacity,
       }}
       draggable={false}
     />
