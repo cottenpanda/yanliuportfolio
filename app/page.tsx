@@ -1058,9 +1058,9 @@ const gridAnimations = [
 // Grid cell positions (col, row relative to container's snapped grid) + card offsets
 const easterEggCells = [
   { col: -2, row: -3, animIdx: 0, cardOffset: [60, -50] as [number, number], cardRotate: 2 },
-  { col: -3, row: 5, animIdx: 1, cardOffset: [60, -50] as [number, number], cardRotate: -2 },
+  { col: -3, row: 6, animIdx: 1, cardOffset: [60, -50] as [number, number], cardRotate: -2 },
   { col: 16, row: -3, animIdx: 2, cardOffset: [-170, -50] as [number, number], cardRotate: -2 },
-  { col: 17, row: 5, animIdx: 3, cardOffset: [-170, -50] as [number, number], cardRotate: 2 },
+  { col: 17, row: 6, animIdx: 3, cardOffset: [-170, -50] as [number, number], cardRotate: 2 },
 ];
 
 function EasterEggCell({ containerRef, col, row, animIdx, cardOffset, cardRotate }: {
@@ -1284,7 +1284,7 @@ function FlipBookParallax() {
   const opacity = useTransform(scrollYProgress, [0, 0.15, 0.35], [0, 0.4, 1]);
 
   return (
-    <div ref={ref} className="w-full flex justify-center mt-12 pb-8 overflow-visible">
+    <div ref={ref} className="w-full flex justify-center -mt-4 pb-8 overflow-visible">
       <motion.div style={{ y, scale, opacity }} className="w-full max-w-[1200px]">
         <iframe
           src="/page-flip-test.html"
@@ -1756,7 +1756,7 @@ export default function Home() {
       />
 
       {/* Ripped paper quote + bio with decorative images */}
-      <div className="mt-[220px]" />
+      <div className="mt-[360px]" />
       <div className="relative" style={{ transform: "translateX(-20px)" }}>
         <RippedPaperNote />
         <ScrollRevealText />
