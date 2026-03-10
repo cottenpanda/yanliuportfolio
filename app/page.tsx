@@ -145,7 +145,7 @@ function MacFolder() {
       <div className="relative w-[155px] h-[155px] transition-all duration-300 group-hover:drop-shadow-[0_8px_16px_rgba(0,0,0,0.25)]">
         {/* Back panel — stays in place */}
         <img
-          src="/mac-folder-back.svg"
+          src="/mac-folder-back-opt.svg"
           alt=""
           className="absolute inset-0 w-full h-full z-0"
           draggable={false}
@@ -177,7 +177,7 @@ function MacFolder() {
         />
         {/* Front panel — rotates open on hover */}
         <img
-          src="/mac-folder-front.svg"
+          src="/mac-folder-front-opt.svg"
           alt="Folder"
           className="absolute inset-0 w-full h-full z-20 transition-transform duration-500 ease-out origin-bottom group-hover:[transform:rotateX(-22deg)]"
           draggable={false}

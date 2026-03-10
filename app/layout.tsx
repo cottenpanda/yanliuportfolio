@@ -45,8 +45,8 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inter.variable} ${caveat.variable} ${sourceCodePro.variable} ${notoSans.variable} ${courierPrime.variable}`}>
       <head>
-        <link rel="preload" href="/mac-folder-back.svg" as="image" />
-        <link rel="preload" href="/mac-folder-front.svg" as="image" />
+        <link rel="preload" href="/mac-folder-back-opt.svg" as="image" />
+        <link rel="preload" href="/mac-folder-front-opt.svg" as="image" />
       </head>
       <body className="font-sans antialiased">{children}</body>
     </html>
