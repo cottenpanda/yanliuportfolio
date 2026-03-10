@@ -1703,7 +1703,7 @@ export default function Home() {
         </div>
 
         {/* Image collage */}
-        <a href="https://unsplash.com/@yl1980s" target="_blank" rel="noopener noreferrer" className="hidden lg:block absolute right-[-20px] top-[200px] z-10 rotate-[6deg] transition-transform duration-300 ease-out hover:rotate-[2deg] hover:scale-105 cursor-pointer group/collage overflow-visible hero-entrance"
+        <a href="https://unsplash.com/@yl1980s" target="_blank" rel="noopener noreferrer" className="hidden lg:block absolute right-[-30px] top-[200px] z-10 rotate-[6deg] transition-transform duration-300 ease-out hover:rotate-[2deg] hover:scale-105 cursor-pointer group/collage overflow-visible hero-entrance"
       style={{ willChange: "transform", animation: "hero-fade-in 0.7s cubic-bezier(0.4,0,0.2,1) 3.4s both" }}>
           <div className="relative overflow-visible">
             <img
