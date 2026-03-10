@@ -153,9 +153,33 @@ body::before {
   to { opacity: 1; filter: blur(0px); scale: 1; }
 }
 
+@keyframes hero-scale-up {
+  0% { opacity: 0; scale: 0.3; }
+  50% { opacity: 1; scale: 1.02; }
+  70% { scale: 0.99; }
+  100% { opacity: 1; scale: 1; }
+}
+
+@keyframes hero-glare {
+  0% { left: -120%; opacity: 0; }
+  5% { opacity: 1; }
+  80% { opacity: 1; }
+  100% { left: 160%; opacity: 0; }
+}
+
 .hero-entrance {
   opacity: 0;
   animation-fill-mode: both;
+}
+
+/* Floating hover effect */
+@keyframes board-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+
+.board-float {
+  animation: board-float 4s ease-in-out infinite;
 }
 
 /* Scroll-triggered fade in */
@@ -393,7 +417,7 @@ body::before {
 }
 
 .badge-drop {
-  animation: badge-drop 1.6s ease-in-out 1.5s both;
+  animation: badge-drop 1.6s ease-in-out 3.8s both;
 }
 
 /* Scrollbar for tabs */

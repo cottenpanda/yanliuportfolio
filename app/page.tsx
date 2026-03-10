@@ -140,7 +140,7 @@ function MacFolder() {
   return (
     <div
       className="hidden lg:block absolute left-[440px] top-[560px] z-30 group cursor-pointer rotate-[6deg] transition-all duration-300 hover:scale-110 hover:-translate-y-2 hover:rotate-[2deg] hero-entrance"
-      style={{ perspective: "500px", animation: "hero-slide-up 0.6s ease-out 2.1s both" }}
+      style={{ perspective: "500px", animation: "hero-slide-up 0.6s ease-out 4.4s both" }}
     >
       <div className="relative w-[155px] h-[155px] transition-all duration-300 group-hover:drop-shadow-[0_8px_16px_rgba(0,0,0,0.25)]">
         {/* Back panel — stays in place */}
@@ -240,7 +240,7 @@ function DotMatrixBoard() {
       target="_blank"
       rel="noopener noreferrer"
       className="hidden lg:block absolute right-[250px] top-[280px] z-20 cursor-pointer transition-transform duration-300 ease-out rotate-[8deg] scale-[0.65] hover:scale-[0.72] hover:rotate-[3deg] group/matrix hero-entrance"
-      style={{ willChange: "transform", animation: "hero-slide-right 0.6s ease-out 2.3s both" }}
+      style={{ willChange: "transform", animation: "hero-slide-right 0.6s ease-out 4.6s both" }}
     >
       {/* Display panel */}
       <div className="rounded-2xl p-3" style={{
@@ -272,7 +272,7 @@ function DotMatrixBoard() {
 /* ── Vinyl playlist card (floating decoration) ── */
 function VinylCard() {
   return (
-    <a href="https://cottenpanda.github.io/vibecodingplaylist/" target="_blank" rel="noopener noreferrer" className="hidden lg:block absolute left-[80px] top-[410px] z-30 transition-all duration-300 -rotate-[5deg] hover:rotate-[2deg] hover:scale-110 hover:-translate-y-5 cursor-pointer group/vinyl hero-entrance" style={{ overflow: "visible", animation: "hero-slide-left 0.6s ease-out 1.7s both" }}>
+    <a href="https://cottenpanda.github.io/vibecodingplaylist/" target="_blank" rel="noopener noreferrer" className="hidden lg:block absolute left-[80px] top-[410px] z-30 transition-all duration-300 -rotate-[5deg] hover:rotate-[2deg] hover:scale-110 hover:-translate-y-5 cursor-pointer group/vinyl hero-entrance" style={{ overflow: "visible", animation: "hero-slide-left 0.6s ease-out 4.0s both" }}>
       <div className="relative w-[240px]" style={{ overflow: "visible" }}>
         {/* Vinyl record — outside card, centered with margin */}
         <div className="absolute inset-x-0 top-[24px] flex justify-center z-10 pointer-events-none" style={{ overflow: "visible" }}>
@@ -458,7 +458,7 @@ function RetroWindows() {
   );
 
   return (
-    <div className="hidden lg:block absolute top-[500px] right-[310px] z-20 hero-entrance" style={{ animation: "hero-slide-up 0.6s ease-out 3.1s both" }} onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}>
+    <div className="hidden lg:block absolute top-[500px] right-[310px] z-20 hero-entrance" style={{ animation: "hero-slide-up 0.6s ease-out 5.4s both" }} onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}>
       <div className="relative w-[350px] h-[290px]">
         {windows.map((win, i) => (
           <div
@@ -1278,9 +1278,9 @@ function FlipBookParallax() {
     target: ref,
     offset: ["start end", "end start"],
   });
-  const y = useTransform(scrollYProgress, [0, 1], [120, -120]);
-  const scale = useTransform(scrollYProgress, [0, 0.3, 0.5], [0.9, 0.98, 1]);
-  const opacity = useTransform(scrollYProgress, [0, 0.2, 0.35], [0, 0.5, 1]);
+  const y = useTransform(scrollYProgress, [0, 1], [300, -150]);
+  const scale = useTransform(scrollYProgress, [0, 0.3, 0.5], [0.75, 0.92, 1]);
+  const opacity = useTransform(scrollYProgress, [0, 0.15, 0.35], [0, 0.4, 1]);
 
   return (
     <div ref={ref} className="w-full flex justify-center mt-12 pb-8 overflow-visible">
@@ -1487,20 +1487,20 @@ function ScatterBoard({
   return (
     <>
       <motion.p
-        className="text-center font-[family-name:var(--font-courier-prime)] text-[13px] text-[#A8A29E] mb-3"
+        className="text-center font-[family-name:var(--font-courier-prime)] text-[13px] text-[#A8A29E] mb-1"
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         transition={{ duration: 0.5 }}
         viewport={{ once: true, margin: "-100px" }}
-      >Drag to reposition the images.</motion.p>
+      >Drag and drop to move</motion.p>
       <motion.div
         className="w-full flex justify-center px-6 pt-4 pb-4"
-        initial={{ opacity: 0, y: 80 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, ease: "easeOut" }}
-        viewport={{ once: true, margin: "-200px" }}
+        initial={{ opacity: 0, y: 150, scale: 0.85 }}
+        whileInView={{ opacity: 1, y: 0, scale: 1 }}
+        transition={{ duration: 1, ease: "easeOut" }}
+        viewport={{ once: true, margin: "-150px" }}
       >
-        <div className="w-full max-w-[1000px]">
+        <div className="w-full max-w-[1000px] board-float">
           <div className="rounded-3xl p-[14px]" style={{
             background: "linear-gradient(160deg, #d6cfc4 0%, #c9c0b3 20%, #bfb5a6 80%, #b5aa9a 100%)",
             boxShadow: "0 10px 30px rgba(0,0,0,0.12), 0 24px 70px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.5), inset 0 -1px 0 rgba(0,0,0,0.1)",
@@ -1631,7 +1631,7 @@ export default function Home() {
         <NameBadge />
         <RetroWindows />
         {/* Ripped paper + ice coffee + plant */}
-        <div className="hidden lg:block absolute top-[20px] left-[600px] -translate-x-1/2 z-20 rotate-[-5deg] transition-all duration-300 hover:scale-110 hover:rotate-[1deg] group/paper hero-entrance" style={{ animation: "hero-fade-in 0.5s ease-out 1.9s both" }}>
+        <div className="hidden lg:block absolute top-[20px] left-[600px] -translate-x-1/2 z-20 rotate-[-5deg] transition-all duration-300 hover:scale-110 hover:rotate-[1deg] group/paper hero-entrance" style={{ animation: "hero-fade-in 0.5s ease-out 4.2s both" }}>
           <img
             src="/ripped-paper.png"
             alt="Ripped paper note"
@@ -1659,7 +1659,7 @@ export default function Home() {
         </div>
 
         {/* Flower vase sticker */}
-        <div className="hidden lg:block absolute left-[410px] top-[355px] z-20 group/flower hero-entrance" style={{ animation: "hero-pop 0.5s ease-out 2.5s both" }}>
+        <div className="hidden lg:block absolute left-[410px] top-[355px] z-20 group/flower hero-entrance" style={{ animation: "hero-pop 0.5s ease-out 4.8s both" }}>
           <div className="relative w-[100px] rotate-[-6deg] transition-all duration-500 ease-out group-hover/flower:scale-[1.8] group-hover/flower:rotate-[-2deg] group-hover/flower:-translate-y-6 group-hover/flower:z-40" style={{ willChange: "transform" }}>
             <img
               src="/flower.png"
@@ -1677,14 +1677,14 @@ export default function Home() {
         </div>
 
         {/* Local time */}
-        <div className="hidden lg:block absolute right-[10px] top-[20px] z-20 hero-entrance" style={{ animation: "hero-fade-in 0.4s ease-out 3.3s both" }}>
+        <div className="hidden lg:block absolute right-[10px] top-[20px] z-20 hero-entrance" style={{ animation: "hero-fade-in 0.4s ease-out 5.6s both" }}>
           <LocalTime />
         </div>
 
         {/* Concert ticket */}
         <div
           className="hidden lg:block absolute right-[80px] top-[100px] z-30 w-[370px] rotate-[4deg] transition-transform duration-300 ease-out hover:scale-[1.5] hover:rotate-[1deg] group/ticket hero-entrance"
-          style={{ willChange: "transform", animation: "hero-fade-in 0.5s ease-out 2.7s both" }}
+          style={{ willChange: "transform", animation: "hero-fade-in 0.5s ease-out 5.0s both" }}
         >
           <img
             src="/ticket.jpg"
@@ -1706,7 +1706,7 @@ export default function Home() {
 
         {/* Image collage */}
         <a href="https://unsplash.com/@yl1980s" target="_blank" rel="noopener noreferrer" className="hidden lg:block absolute right-[-20px] top-[200px] z-10 rotate-[6deg] transition-transform duration-300 ease-out hover:rotate-[2deg] hover:scale-105 cursor-pointer group/collage overflow-visible hero-entrance"
-      style={{ willChange: "transform", animation: "hero-fade-in 0.5s ease-out 2.9s both" }}>
+      style={{ willChange: "transform", animation: "hero-fade-in 0.5s ease-out 5.2s both" }}>
           <div className="relative overflow-visible">
             <img
               src="/cat.png"
@@ -1723,11 +1723,19 @@ export default function Home() {
         </a>
         {/* Center text */}
         <div className="absolute top-[42%] left-[calc(50%+30px)] -translate-x-1/2 -translate-y-1/2 flex flex-col items-center z-10">
-          <img src="/yan-liu.svg" alt="Yan Liu" className="h-[80px] md:h-[100px] mb-4 hero-entrance" style={{ animation: "hero-blur-in 0.6s ease-out 0.2s both" }} draggable={false} />
-          <p className="font-[family-name:var(--font-courier-prime)] text-sm md:text-base text-text-secondary text-center tracking-[0.2em] uppercase hero-entrance" style={{ lineHeight: "1.8", animation: "hero-fade-in 0.4s ease-out 0.55s both" }}>
+          <div className="relative mb-4 hero-entrance overflow-hidden" style={{ animation: "hero-blur-in 0.6s ease-out 0.3s both" }}>
+            <img src="/yan-liu.svg" alt="Yan Liu" className="h-[80px] md:h-[100px]" draggable={false} />
+            {/* Glare sweep */}
+            <div className="absolute inset-0 pointer-events-none" style={{ animation: "hero-glare 1.2s ease-in-out 1.0s both" }}>
+              <div className="absolute top-0 h-full w-[60%] -skew-x-12" style={{
+                background: "linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.25) 25%, rgba(255,255,255,0.8) 48%, rgba(255,255,255,1) 50%, rgba(255,255,255,0.8) 52%, rgba(255,255,255,0.25) 75%, transparent 100%)",
+              }} />
+            </div>
+          </div>
+          <p className="font-[family-name:var(--font-courier-prime)] text-sm md:text-base text-text-secondary text-center tracking-[0.2em] uppercase hero-entrance" style={{ lineHeight: "1.8", animation: "hero-fade-in 0.4s ease-out 2.4s both" }}>
             Design like a strategist
           </p>
-          <p className="font-[family-name:var(--font-courier-prime)] text-sm md:text-base text-text-secondary text-center tracking-[0.2em] uppercase hero-entrance" style={{ lineHeight: "1.8", animation: "hero-fade-in 0.4s ease-out 0.75s both" }}>
+          <p className="font-[family-name:var(--font-courier-prime)] text-sm md:text-base text-text-secondary text-center tracking-[0.2em] uppercase hero-entrance" style={{ lineHeight: "1.8", animation: "hero-fade-in 0.4s ease-out 2.7s both" }}>
             Ship like a builder
           </p>
         </div>
@@ -1757,23 +1765,35 @@ export default function Home() {
       <FlipBookParallax />
 
       {/* Social icons */}
-      <div className="flex justify-center gap-5 pt-12 pb-4">
-        <a href="https://x.com/yanliudesign" target="_blank" rel="noopener noreferrer" className="text-stone-500 hover:text-stone-800 transition-colors">
+      <motion.div
+        className="flex justify-center gap-5 pt-12 pb-4"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-50px" }}
+        variants={{ visible: { transition: { staggerChildren: 0.12 } } }}
+      >
+        <motion.a variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0 } }} transition={{ duration: 0.4 }} href="https://x.com/yanliudesign" target="_blank" rel="noopener noreferrer" className="text-stone-500 hover:text-stone-800 transition-colors">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-        </a>
-        <a href="https://www.linkedin.com/in/uwyanliudesign" target="_blank" rel="noopener noreferrer" className="text-stone-500 hover:text-stone-800 transition-colors">
+        </motion.a>
+        <motion.a variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0 } }} transition={{ duration: 0.4 }} href="https://www.linkedin.com/in/uwyanliudesign" target="_blank" rel="noopener noreferrer" className="text-stone-500 hover:text-stone-800 transition-colors">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-        </a>
-        <a href="https://www.figma.com/@yanliu" target="_blank" rel="noopener noreferrer" className="text-stone-500 hover:text-stone-800 transition-colors">
+        </motion.a>
+        <motion.a variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0 } }} transition={{ duration: 0.4 }} href="https://www.figma.com/@yanliu" target="_blank" rel="noopener noreferrer" className="text-stone-500 hover:text-stone-800 transition-colors">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M15.852 8.981h-4.588V0h4.588c2.476 0 4.49 2.014 4.49 4.49s-2.014 4.491-4.49 4.491zM12.735 7.51h3.117c1.665 0 3.019-1.355 3.019-3.019s-1.355-3.019-3.019-3.019h-3.117V7.51zm0 1.471H8.148c-2.476 0-4.49-2.014-4.49-4.49S5.672 0 8.148 0h4.588v8.981zm-4.587-7.51c-1.665 0-3.019 1.355-3.019 3.019s1.354 3.02 3.019 3.02h3.117V1.471H8.148zm4.587 15.019H8.148c-2.476 0-4.49-2.014-4.49-4.49s2.014-4.49 4.49-4.49h4.588v8.98zM8.148 8.981c-1.665 0-3.019 1.355-3.019 3.019s1.355 3.019 3.019 3.019h3.117V8.981H8.148zM8.172 24c-2.476 0-4.49-2.014-4.49-4.49s2.014-4.49 4.49-4.49h4.564v4.49c0 2.476-2.014 4.49-4.49 4.49h-.074zm-.024-7.51a3.023 3.023 0 00-3.019 3.019c0 1.665 1.355 3.019 3.019 3.019s3.019-1.355 3.019-3.019v-3.019H8.148zm7.704 0h-.098c-2.476 0-4.49-2.014-4.49-4.49s2.014-4.49 4.49-4.49h.098c2.476 0 4.49 2.014 4.49 4.49s-2.014 4.49-4.49 4.49zm-.098-7.509a3.023 3.023 0 00-3.019 3.019c0 1.665 1.355 3.019 3.019 3.019s3.019-1.355 3.019-3.019-1.355-3.019-3.019-3.019z"/></svg>
-        </a>
-        <a href="https://github.com/cottenpanda" target="_blank" rel="noopener noreferrer" className="text-stone-500 hover:text-stone-800 transition-colors">
+        </motion.a>
+        <motion.a variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0 } }} transition={{ duration: 0.4 }} href="https://github.com/cottenpanda" target="_blank" rel="noopener noreferrer" className="text-stone-500 hover:text-stone-800 transition-colors">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
-        </a>
-      </div>
+        </motion.a>
+      </motion.div>
 
       {/* Footer */}
-      <footer className="w-full flex flex-col items-center gap-4 pt-4 pb-12">
+      <motion.footer
+        className="w-full flex flex-col items-center gap-4 pt-4 pb-12"
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, ease: "easeOut", delay: 0.15 }}
+        viewport={{ once: true, margin: "-50px" }}
+      >
         <div className="flex items-center gap-3">
           <img src="/star.svg" alt="" className="w-5 h-5 brightness-0 opacity-70 animate-spin" style={{ animationDuration: "4s" }} draggable={false} />
           <p className="font-[family-name:var(--font-courier-prime)] text-[15px] tracking-wide" style={{ color: "#212121" }}>
@@ -1781,7 +1801,7 @@ export default function Home() {
           </p>
           <img src="/star.svg" alt="" className="w-5 h-5 brightness-0 opacity-70 animate-spin" style={{ animationDuration: "4s" }} draggable={false} />
         </div>
-      </footer>
+      </motion.footer>
 
 
 
