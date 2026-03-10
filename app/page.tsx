@@ -140,7 +140,7 @@ function MacFolder() {
   return (
     <div
       className="hidden lg:block absolute left-[440px] top-[560px] z-30 group cursor-pointer rotate-[6deg] transition-all duration-300 hover:scale-110 hover:-translate-y-2 hover:rotate-[2deg] hero-entrance"
-      style={{ perspective: "500px", animation: "hero-slide-up 0.7s cubic-bezier(0.4,0,0.2,1) 3.3s both" }}
+      style={{ perspective: "500px", animation: "hero-slide-up 0.7s cubic-bezier(0.4,0,0.2,1) 2.8s both" }}
     >
       <div className="relative w-[155px] h-[155px] transition-all duration-300 group-hover:drop-shadow-[0_8px_16px_rgba(0,0,0,0.25)]">
         {/* Back panel — stays in place */}
@@ -240,7 +240,7 @@ function DotMatrixBoard() {
       target="_blank"
       rel="noopener noreferrer"
       className="hidden lg:block absolute right-[250px] top-[280px] z-20 cursor-pointer transition-transform duration-300 ease-out rotate-[8deg] scale-[0.65] hover:scale-[0.72] hover:rotate-[3deg] group/matrix hero-entrance"
-      style={{ willChange: "transform", animation: "hero-slide-right 0.7s cubic-bezier(0.4,0,0.2,1) 3.45s both" }}
+      style={{ willChange: "transform", animation: "hero-slide-right 0.7s cubic-bezier(0.4,0,0.2,1) 2.95s both" }}
     >
       {/* Display panel */}
       <div className="rounded-2xl p-3" style={{
@@ -272,7 +272,7 @@ function DotMatrixBoard() {
 /* ── Vinyl playlist card (floating decoration) ── */
 function VinylCard() {
   return (
-    <a href="https://cottenpanda.github.io/vibecodingplaylist/" target="_blank" rel="noopener noreferrer" className="hidden lg:block absolute left-[80px] top-[410px] z-30 transition-all duration-300 -rotate-[5deg] hover:rotate-[2deg] hover:scale-110 hover:-translate-y-5 cursor-pointer group/vinyl hero-entrance" style={{ overflow: "visible", animation: "hero-slide-left 0.7s cubic-bezier(0.4,0,0.2,1) 3.0s both" }}>
+    <a href="https://cottenpanda.github.io/vibecodingplaylist/" target="_blank" rel="noopener noreferrer" className="hidden lg:block absolute left-[80px] top-[410px] z-30 transition-all duration-300 -rotate-[5deg] hover:rotate-[2deg] hover:scale-110 hover:-translate-y-5 cursor-pointer group/vinyl hero-entrance" style={{ overflow: "visible", animation: "hero-slide-left 0.7s cubic-bezier(0.4,0,0.2,1) 2.5s both" }}>
       <div className="relative w-[240px]" style={{ overflow: "visible" }}>
         {/* Vinyl record — outside card, centered with margin */}
         <div className="absolute inset-x-0 top-[24px] flex justify-center z-10 pointer-events-none" style={{ overflow: "visible" }}>
@@ -458,7 +458,7 @@ function RetroWindows() {
   );
 
   return (
-    <div className="hidden lg:block absolute top-[500px] right-[310px] z-20 hero-entrance" style={{ animation: "hero-slide-up 0.7s cubic-bezier(0.4,0,0.2,1) 4.05s both" }} onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}>
+    <div className="hidden lg:block absolute top-[500px] right-[310px] z-20 hero-entrance" style={{ animation: "hero-slide-up 0.7s cubic-bezier(0.4,0,0.2,1) 3.55s both" }} onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}>
       <div className="relative w-[350px] h-[290px]">
         {windows.map((win, i) => (
           <div
@@ -1632,7 +1632,7 @@ export default function Home() {
         <NameBadge />
         <RetroWindows />
         {/* Ripped paper + ice coffee + plant */}
-        <div className="hidden lg:block absolute top-[20px] left-[600px] -translate-x-1/2 z-20 rotate-[-5deg] transition-all duration-300 hover:scale-110 hover:rotate-[1deg] group/paper hero-entrance" style={{ animation: "hero-fade-in 0.7s cubic-bezier(0.4,0,0.2,1) 3.15s both" }}>
+        <div className="hidden lg:block absolute top-[20px] left-[600px] -translate-x-1/2 z-20 rotate-[-5deg] transition-all duration-300 hover:scale-110 hover:rotate-[1deg] group/paper hero-entrance" style={{ animation: "hero-fade-in 0.7s cubic-bezier(0.4,0,0.2,1) 2.65s both" }}>
           <img
             src="/ripped-paper.png"
             alt="Ripped paper note"
@@ -1660,7 +1660,7 @@ export default function Home() {
         </div>
 
         {/* Flower vase sticker */}
-        <div className="hidden lg:block absolute left-[410px] top-[355px] z-20 group/flower hero-entrance" style={{ animation: "hero-pop 0.7s cubic-bezier(0.4,0,0.2,1) 3.6s both" }}>
+        <div className="hidden lg:block absolute left-[410px] top-[355px] z-20 group/flower hero-entrance" style={{ animation: "hero-pop 0.7s cubic-bezier(0.4,0,0.2,1) 3.1s both" }}>
           <div className="relative w-[100px] rotate-[-6deg] transition-all duration-500 ease-out group-hover/flower:scale-[1.8] group-hover/flower:rotate-[-2deg] group-hover/flower:-translate-y-6 group-hover/flower:z-40" style={{ willChange: "transform" }}>
             <img
               src="/flower.png"
@@ -1678,14 +1678,14 @@ export default function Home() {
         </div>
 
         {/* Local time */}
-        <div className="hidden lg:block absolute right-[10px] top-[20px] z-20 hero-entrance" style={{ animation: "hero-fade-in 0.6s cubic-bezier(0.4,0,0.2,1) 4.2s both" }}>
+        <div className="hidden lg:block absolute right-[10px] top-[20px] z-20 hero-entrance" style={{ animation: "hero-fade-in 0.6s cubic-bezier(0.4,0,0.2,1) 3.7s both" }}>
           <LocalTime />
         </div>
 
         {/* Concert ticket */}
         <div
           className="hidden lg:block absolute right-[80px] top-[100px] z-30 w-[370px] rotate-[4deg] transition-transform duration-300 ease-out hover:scale-[1.5] hover:rotate-[1deg] group/ticket hero-entrance"
-          style={{ willChange: "transform", animation: "hero-fade-in 0.7s cubic-bezier(0.4,0,0.2,1) 3.75s both" }}
+          style={{ willChange: "transform", animation: "hero-fade-in 0.7s cubic-bezier(0.4,0,0.2,1) 3.25s both" }}
         >
           <img
             src="/ticket.jpg"
@@ -1707,7 +1707,7 @@ export default function Home() {
 
         {/* Image collage */}
         <a href="https://unsplash.com/@yl1980s" target="_blank" rel="noopener noreferrer" className="hidden lg:block absolute right-[-20px] top-[200px] z-10 rotate-[6deg] transition-transform duration-300 ease-out hover:rotate-[2deg] hover:scale-105 cursor-pointer group/collage overflow-visible hero-entrance"
-      style={{ willChange: "transform", animation: "hero-fade-in 0.7s cubic-bezier(0.4,0,0.2,1) 3.9s both" }}>
+      style={{ willChange: "transform", animation: "hero-fade-in 0.7s cubic-bezier(0.4,0,0.2,1) 3.4s both" }}>
           <div className="relative overflow-visible">
             <img
               src="/cat.png"
@@ -1733,10 +1733,10 @@ export default function Home() {
               }} />
             </div>
           </div>
-          <p className="font-[family-name:var(--font-courier-prime)] text-sm md:text-base text-text-secondary text-center tracking-[0.2em] uppercase hero-entrance" style={{ lineHeight: "1.8", animation: "hero-fade-in 0.5s cubic-bezier(0.4,0,0.2,1) 2.4s both" }}>
+          <p className="font-[family-name:var(--font-courier-prime)] text-sm md:text-base text-text-secondary text-center tracking-[0.2em] uppercase hero-entrance" style={{ lineHeight: "1.8", animation: "hero-fade-in 0.5s cubic-bezier(0.4,0,0.2,1) 1.9s both" }}>
             Design like a strategist
           </p>
-          <p className="font-[family-name:var(--font-courier-prime)] text-sm md:text-base text-text-secondary text-center tracking-[0.2em] uppercase hero-entrance" style={{ lineHeight: "1.8", animation: "hero-fade-in 0.5s cubic-bezier(0.4,0,0.2,1) 2.7s both" }}>
+          <p className="font-[family-name:var(--font-courier-prime)] text-sm md:text-base text-text-secondary text-center tracking-[0.2em] uppercase hero-entrance" style={{ lineHeight: "1.8", animation: "hero-fade-in 0.5s cubic-bezier(0.4,0,0.2,1) 2.15s both" }}>
             Ship like a builder
           </p>
         </div>

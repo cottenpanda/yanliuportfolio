@@ -418,7 +418,7 @@ body::before {
 }
 
 .badge-drop {
-  animation: badge-drop 1.6s ease-in-out 4.3s both;
+  animation: badge-drop 1.6s ease-in-out 3.8s both;
 }
 
 /* Scrollbar for tabs */
