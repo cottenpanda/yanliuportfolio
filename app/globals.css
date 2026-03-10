@@ -124,27 +124,27 @@ body::before {
 
 /* Hero entrance animations — use individual transform properties to avoid conflicting with Tailwind's transform */
 @keyframes hero-fade-in {
-  from { opacity: 0; translate: 0 16px; }
+  from { opacity: 0; translate: 0 12px; }
   to { opacity: 1; translate: 0 0; }
 }
 
 @keyframes hero-slide-left {
-  from { opacity: 0; translate: -60px 0; }
+  from { opacity: 0; translate: -40px 0; }
   to { opacity: 1; translate: 0 0; }
 }
 
 @keyframes hero-slide-right {
-  from { opacity: 0; translate: 60px 0; }
+  from { opacity: 0; translate: 40px 0; }
   to { opacity: 1; translate: 0 0; }
 }
 
 @keyframes hero-slide-up {
-  from { opacity: 0; translate: 0 40px; }
+  from { opacity: 0; translate: 0 30px; }
   to { opacity: 1; translate: 0 0; }
 }
 
 @keyframes hero-pop {
-  from { opacity: 0; scale: 0.8; }
+  from { opacity: 0; scale: 0.85; }
   to { opacity: 1; scale: 1; }
 }
 
@@ -161,10 +161,10 @@ body::before {
 }
 
 @keyframes hero-glare {
-  0% { left: -120%; opacity: 0; }
+  0% { translate: -120% 0; opacity: 0; }
   5% { opacity: 1; }
   80% { opacity: 1; }
-  100% { left: 160%; opacity: 0; }
+  100% { translate: 260% 0; opacity: 0; }
 }
 
 .hero-entrance {
@@ -174,12 +174,13 @@ body::before {
 
 /* Floating hover effect */
 @keyframes board-float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-12px); }
+  0%, 100% { translate: 0 0; }
+  50% { translate: 0 -12px; }
 }
 
 .board-float {
   animation: board-float 4s ease-in-out infinite;
+  will-change: translate;
 }
 
 /* Scroll-triggered fade in */
@@ -417,7 +418,7 @@ body::before {
 }
 
 .badge-drop {
-  animation: badge-drop 1.6s ease-in-out 3.8s both;
+  animation: badge-drop 1.6s ease-in-out 4.3s both;
 }
 
 /* Scrollbar for tabs */
