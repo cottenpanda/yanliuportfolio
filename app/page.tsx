@@ -298,7 +298,7 @@ function VinylCard() {
           <div className="relative z-[1] mt-4 text-center">
             <p className="font-[family-name:var(--font-courier-prime)] text-[10px] text-text-primary uppercase tracking-widest mb-1">Playlist</p>
             <h3 className="font-[family-name:var(--font-courier-prime)] text-text-primary font-bold text-lg leading-tight mb-1">Vibe Coding</h3>
-            <p className="font-[family-name:var(--font-courier-prime)] text-text-primary text-xs mb-1">18 projects</p>
+            <p className="font-[family-name:var(--font-courier-prime)] text-text-primary text-xs mb-1">19 projects</p>
             <p className="font-[family-name:var(--font-courier-prime)] text-text-primary text-[11px] leading-snug">Built with creativity<br/>and curiosity.</p>
           </div>
         </div>
@@ -1167,30 +1167,38 @@ function RippedPaperNote() {
   const [quoteIndex, setQuoteIndex] = useState(0);
   const [fading, setFading] = useState(false);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
-
-  const startRotating = () => {
-    // Immediately show next quote
-    setFading(true);
-    setTimeout(() => {
-      setQuoteIndex((prev) => (prev + 1) % quotes.length);
-      setFading(false);
-    }, 200);
-    // Then keep rotating
-    timerRef.current = setInterval(() => {
-      setFading(true);
-      setTimeout(() => {
-        setQuoteIndex((prev) => (prev + 1) % quotes.length);
-        setFading(false);
-      }, 200);
-    }, 1200);
-  };
+  const timeoutRefs = useRef<ReturnType<typeof setTimeout>[]>([]);
 
   const stopRotating = () => {
     if (timerRef.current) {
       clearInterval(timerRef.current);
       timerRef.current = null;
     }
+    timeoutRefs.current.forEach(clearTimeout);
+    timeoutRefs.current = [];
   };
+
+  const startRotating = () => {
+    stopRotating();
+    setFading(true);
+    const t1 = setTimeout(() => {
+      setQuoteIndex((prev) => (prev + 1) % quotes.length);
+      setFading(false);
+    }, 200);
+    timeoutRefs.current.push(t1);
+    timerRef.current = setInterval(() => {
+      setFading(true);
+      const t2 = setTimeout(() => {
+        setQuoteIndex((prev) => (prev + 1) % quotes.length);
+        setFading(false);
+      }, 200);
+      timeoutRefs.current.push(t2);
+    }, 1200);
+  };
+
+  useEffect(() => {
+    return () => stopRotating();
+  }, []);
 
   return (
     <div className="w-full flex justify-center px-6 -mt-14 pb-8">
