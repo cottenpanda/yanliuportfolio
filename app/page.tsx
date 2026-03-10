@@ -1071,6 +1071,8 @@ function EasterEggCell({ containerRef, col, row, animIdx, cardOffset, cardRotate
   const GRID = 56;
   const [open, setOpen] = useState(false);
   const [snapOffset, setSnapOffset] = useState({ x: 0, y: 0 });
+  const [sparkled, setSparkled] = useState(false);
+  const [blinking, setBlinking] = useState(false);
   const Anim = gridAnimations[animIdx];
   const cardW = 160;
   const cardH = 160;
@@ -1120,9 +1122,33 @@ function EasterEggCell({ containerRef, col, row, animIdx, cardOffset, cardRotate
         onClick={() => setOpen(!open)}
       >
         {!open ? (
-          <div className="w-full h-full relative border border-dashed border-stone-300 rounded-[1px]">
-            <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover/egg:opacity-100 transition-opacity duration-200">
-              <span className="text-stone-400 text-lg font-light select-none">+</span>
+          <div
+            className="w-full h-full relative border border-dashed rounded-[1px] egg-border"
+            ref={(el) => {
+              if (el && !sparkled) {
+                const obs = new IntersectionObserver(([entry]) => {
+                  if (entry.isIntersecting) {
+                    setTimeout(() => {
+                      let count = 0;
+                      const dark = "rgba(28, 25, 23, 0.8)";
+                      const light = "rgba(214, 211, 209, 1)";
+                      setBlinking(true);
+                      const interval = setInterval(() => {
+                        el.style.borderColor = count % 2 === 0 ? dark : light;
+                        count++;
+                        if (count >= 6) { clearInterval(interval); el.style.borderColor = ""; setBlinking(false); }
+                      }, 200);
+                      setSparkled(true);
+                    }, animIdx * 250);
+                    obs.disconnect();
+                  }
+                }, { threshold: 0.5 });
+                obs.observe(el);
+              }
+            }}
+          >
+            <div className={`absolute inset-0 flex items-center justify-center transition-opacity duration-200 ${blinking ? "opacity-100" : "opacity-0 group-hover/egg:opacity-100"}`}>
+              <span className="text-stone-700 text-lg font-light select-none">+</span>
             </div>
           </div>
         ) : (
