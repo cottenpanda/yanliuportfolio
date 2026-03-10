@@ -1410,12 +1410,12 @@ function ScatterImage({
 
   const scrollX = useTransform(scrollYProgress, [0, moveStart, moveEnd], [startX, startX, 0]);
   const scrollY = useTransform(scrollYProgress, [0, moveStart, moveEnd], [startY, startY, 0]);
-  const [visible, setVisible] = useState(false);
-  const [hasLanded, setHasLanded] = useState(false);
-  useMotionValueEvent(scrollYProgress, "change", (v) => {
-    if (v > 0.25 && !visible) setVisible(true);
-    if (landed && !hasLanded) setHasLanded(true);
-  });
+  // Scroll-linked opacity: fade in as images approach, fade out when scrolling back
+  const scrollOpacity = useTransform(scrollYProgress, [0.1, 0.3, 0.85, 1], [0, 1, 1, 1]);
+  // Scroll-linked blur: sharp when in view, blurred when far
+  const scrollBlur = useTransform(scrollYProgress, [0.1, 0.3], [12, 0]);
+  const scrollFilter = useTransform(scrollBlur, (v) => `blur(${v}px)`);
+
   const dragX = useMotionValue(0);
   const dragY = useMotionValue(0);
 
@@ -1435,16 +1435,17 @@ function ScatterImage({
         const evt = e as unknown as MouseEvent;
         setBursts((prev) => [...prev, { id: Date.now(), x: evt.clientX, y: evt.clientY }]);
       }}
-      className="absolute rounded-md shadow-lg cursor-grab active:cursor-grabbing transition-opacity duration-[800ms] ease-in"
+      className="absolute rounded-md shadow-lg cursor-grab active:cursor-grabbing"
       style={{
         top: img.top,
         left: img.left,
         width: img.w,
         rotate: img.rotate,
         zIndex: imgZIndex[index],
-        x: hasLanded ? dragX : scrollX,
-        y: hasLanded ? dragY : scrollY,
-        opacity: hasLanded || visible ? 1 : 0,
+        x: landed ? dragX : scrollX,
+        y: landed ? dragY : scrollY,
+        opacity: landed ? 1 : scrollOpacity,
+        filter: landed ? "none" : scrollFilter,
       }}
       draggable={false}
     />
