@@ -1201,7 +1201,13 @@ function RippedPaperNote() {
   }, []);
 
   return (
-    <div className="w-full flex justify-center px-6 -mt-14 pb-8">
+    <motion.div
+      className="w-full flex justify-center px-6 -mt-14 pb-8"
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6, ease: "easeOut" }}
+      viewport={{ once: true, amount: 0.2 }}
+    >
       <div className="relative cursor-pointer select-none" style={{ transform: "rotate(-1.5deg)" }} onMouseEnter={startRotating} onMouseLeave={stopRotating}>
         {/* Tape — top left */}
         <div className="absolute -top-3 -left-4 w-[70px] h-[22px] z-10" style={{
@@ -1261,6 +1267,31 @@ function RippedPaperNote() {
         </div>
         </div>
       </div>
+    </motion.div>
+  );
+}
+
+/* ── Flip book with parallax ── */
+function FlipBookParallax() {
+  const ref = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "end start"],
+  });
+  const y = useTransform(scrollYProgress, [0, 1], [120, -120]);
+  const scale = useTransform(scrollYProgress, [0, 0.3, 0.5], [0.9, 0.98, 1]);
+  const opacity = useTransform(scrollYProgress, [0, 0.2, 0.35], [0, 0.5, 1]);
+
+  return (
+    <div ref={ref} className="w-full flex justify-center mt-12 pb-8 overflow-visible">
+      <motion.div style={{ y, scale, opacity }} className="w-full max-w-[1200px]">
+        <iframe
+          src="/page-flip-test.html"
+          className="w-full border-none"
+          style={{ height: "800px" }}
+          title="Portfolio flip book"
+        />
+      </motion.div>
     </div>
   );
 }
@@ -1455,8 +1486,20 @@ function ScatterBoard({
 
   return (
     <>
-      <p className="text-center font-[family-name:var(--font-courier-prime)] text-[13px] text-[#A8A29E] mb-3">Drag to reposition the images.</p>
-      <div className="w-full flex justify-center px-6 pt-4 pb-4">
+      <motion.p
+        className="text-center font-[family-name:var(--font-courier-prime)] text-[13px] text-[#A8A29E] mb-3"
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+        viewport={{ once: true, margin: "-100px" }}
+      >Drag to reposition the images.</motion.p>
+      <motion.div
+        className="w-full flex justify-center px-6 pt-4 pb-4"
+        initial={{ opacity: 0, y: 80 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+        viewport={{ once: true, margin: "-200px" }}
+      >
         <div className="w-full max-w-[1000px]">
           <div className="rounded-3xl p-[14px]" style={{
             background: "linear-gradient(160deg, #d6cfc4 0%, #c9c0b3 20%, #bfb5a6 80%, #b5aa9a 100%)",
@@ -1539,7 +1582,7 @@ function ScatterBoard({
           </div>
           </div>
         </div>
-      </div>
+      </motion.div>
     </>
   );
 }
@@ -1711,14 +1754,7 @@ export default function Home() {
       </div>
 
       {/* Page flip book — portfolio sections */}
-      <div className="w-full flex justify-center mt-12 pb-8 scroll-fade-in">
-        <iframe
-          src="/page-flip-test.html"
-          className="w-full max-w-[1200px] border-none"
-          style={{ height: "800px" }}
-          title="Portfolio flip book"
-        />
-      </div>
+      <FlipBookParallax />
 
       {/* Social icons */}
       <div className="flex justify-center gap-5 pt-12 pb-4">
