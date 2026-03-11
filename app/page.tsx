@@ -1980,6 +1980,56 @@ function FuelMixRadar() {
   );
 }
 
+const reminders = [
+  "Stay away from drama and negativity",
+  "A small step every day",
+  "Work hard in silence",
+  "Stay curious, stay humble",
+];
+
+function ReminderCard() {
+  const [hovered, setHovered] = useState(false);
+  const [visibleCount, setVisibleCount] = useState(reminders.length);
+
+  useEffect(() => {
+    if (hovered) {
+      setVisibleCount(0);
+      const timers = reminders.map((_, i) =>
+        setTimeout(() => setVisibleCount(i + 1), (i + 1) * 200)
+      );
+      return () => timers.forEach(clearTimeout);
+    } else {
+      setVisibleCount(reminders.length);
+    }
+  }, [hovered]);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      whileHover={{ rotate: -2, scale: 1.02, boxShadow: "4px 4px 12px rgba(0,0,0,0.08)" }}
+      transition={{ delay: 0.05 }}
+      className="bg-white/80 rounded-xl p-3 cursor-pointer origin-top-left"
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+    >
+      <div className="text-[9px] text-stone-400 uppercase tracking-wider mb-2">Reminder</div>
+      <ul className="space-y-[5px] list-disc list-inside text-[11px] text-stone-500 leading-snug">
+        {reminders.slice(0, visibleCount).map((r, i) => (
+          <motion.li
+            key={i}
+            initial={{ opacity: 0, x: -8 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.25 }}
+          >
+            {r}
+          </motion.li>
+        ))}
+      </ul>
+    </motion.div>
+  );
+}
+
 function WeatherCard() {
   const [hovered, setHovered] = useState(false);
   return (
@@ -2037,15 +2087,7 @@ function DesktopWidgets() {
     <div className="p-3 flex flex-col gap-3">
       {/* Top row: Reminders, Energy, Calendar */}
       <div className="grid grid-cols-3 gap-3">
-        <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }} className="bg-white/80 rounded-xl p-3">
-          <div className="text-[9px] text-stone-400 uppercase tracking-wider mb-2">Reminder</div>
-          <ul className="space-y-[5px] list-disc list-inside text-[11px] text-stone-500 leading-snug">
-            <li>Stay away from drama and negativity</li>
-            <li>A small step every day</li>
-            <li>Work hard in silence</li>
-            <li>Stay curious, stay humble</li>
-          </ul>
-        </motion.div>
+        <ReminderCard />
 
         <EnergyCircle />
 
