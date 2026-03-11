@@ -296,10 +296,10 @@ function VinylCard() {
           <div className="relative z-[1] w-36 h-36" />
           {/* Info */}
           <div className="relative z-[1] mt-4 text-center">
-            <p className="font-[family-name:var(--font-courier-prime)] text-[10px] text-text-primary uppercase tracking-widest mb-1">Playlist</p>
-            <h3 className="font-[family-name:var(--font-courier-prime)] text-text-primary font-bold text-lg leading-tight mb-1">Vibe Coding</h3>
-            <p className="font-[family-name:var(--font-courier-prime)] text-text-primary text-xs mb-1">19 projects</p>
-            <p className="font-[family-name:var(--font-courier-prime)] text-text-primary text-[11px] leading-snug">Built with creativity<br/>and curiosity.</p>
+            <p className="font-[family-name:var(--font-noto)] text-[10px] text-text-primary uppercase tracking-widest mb-1">Playlist</p>
+            <h3 className="font-[family-name:var(--font-noto)] text-text-primary font-bold text-lg leading-tight mb-1">Vibe Coding</h3>
+            <p className="font-[family-name:var(--font-noto)] text-text-primary text-xs mb-1">19 projects</p>
+            <p className="font-[family-name:var(--font-noto)] text-text-primary text-[11px] leading-snug">Built with creativity<br/>and curiosity.</p>
           </div>
         </div>
       </div>
@@ -362,7 +362,7 @@ function NameBadge() {
             {/* Name */}
             <div className="relative z-10">
               <h3 className="text-white font-extrabold text-[32px] leading-[1.05] tracking-[0.15em]">刘彦</h3>
-              <p className="font-[family-name:var(--font-courier-prime)] text-white/50 text-[9px] uppercase tracking-[0.1em] mt-2">Seattle-based<br />Senior Product Designer</p>
+              <p className="font-[family-name:var(--font-noto)] text-white/50 text-[9px] uppercase tracking-[0.1em] mt-2">Seattle-based<br />Senior Product Designer</p>
             </div>
             {/* Starburst accent */}
             <img src="/yellow-star.svg" alt="" className="absolute top-3 right-3 z-10 w-12 h-12" draggable={false} />
@@ -1298,30 +1298,927 @@ function RippedPaperNote() {
   );
 }
 
-/* ── Flip book with parallax ── */
-function FlipBookParallax() {
-  const ref = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start end", "end start"],
-  });
-  const y = useTransform(scrollYProgress, [0, 1], [300, -150]);
-  const scale = useTransform(scrollYProgress, [0, 0.3, 0.5], [0.75, 0.92, 1]);
-  const opacity = useTransform(scrollYProgress, [0, 0.15, 0.35], [0, 0.4, 1]);
+/* ── Folder Window ── */
+const folderColors = [
+  { bg: "#4A9EE8", tab: "#3B8AD4", label: "white" },
+  { bg: "#E8A44A", tab: "#D49236", label: "white" },
+  { bg: "#5ABE7A", tab: "#48A866", label: "white" },
+  { bg: "#E86B6B", tab: "#D45555", label: "white" },
+  { bg: "#A87ADB", tab: "#9466C4", label: "white" },
+];
+
+const folderImages = [
+  "/sheet-work.jpg",
+  "/sheet-ai.jpg",
+  "/sheet-community.jpg",
+  "/sheet-lens.jpg",
+  "/sheet-sketch.jpg",
+];
+
+const folderIcons = [
+  "/folder-icon-work.svg",
+  "/folder-icon-ai.svg",
+  "/folder-icon-community.svg",
+  "/folder-icon-lens.svg",
+  "/folder-icon-sketch.svg",
+];
+
+const folderContent = [
+  {
+    title: "Design for AI Products",
+    description: "From **multimodal conversational interfaces to search and AI modification**, turning complex ideas into intuitive product experiences.\n\nRecent work includes natural language search, search trend dashboards, contributor platform redesigns, internal search editing tools, and watermark systems for Getty Images and iStock.",
+    cta: { label: "Projects at work (password required)", url: "https://yanliu.design" },
+  },
+  {
+    title: "Design with AI and beyond",
+    description: "Experimenting and building with AI tools — prototyping ideas quickly and shipping projects along the way.\n\nHighlights include launching my first **Chrome extension Focus Now** to park extra tabs and reduce clutter, and Cozy Journaling, winner of the **Built with Claude Sonnet 4.5 \"Keep Creating\" Award**.",
+    cta: { label: "Vibe coding projects", url: "https://cottenpanda.github.io/vibecodingplaylist" },
+  },
+  {
+    title: "Community Impact",
+    description: "My Figma Community files have over **500K+** uses.\n\n**100+ Abstract Shapes / Elements** was a finalist for Favorite Graphic Resources in the **2022 Figma Community Awards**.\n\n**50+ Abstract Geometric Shapes** was featured during the Day 2 virtual broadcast at **Config 2024**.",
+    cta: { label: "Figma designs", url: "https://www.figma.com/@yanliu" },
+  },
+  {
+    title: "Through My Lens",
+    description: "Nature helps me step away from daily routines and reset my perspective.\n\nMy photography has reached **19M+ views** and **150K+ downloads**, and has been used across platforms including BuzzFeed, Notion, Trello, Mailchimp, Fever, and Figma.",
+    cta: { label: "Photos on Unsplash", url: "https://unsplash.com/@yl1980s" },
+  },
+  {
+    title: "From Sketch to Merch",
+    description: "I create illustrations and black-and-white doodles as a way to unwind and explore visual ideas.\n\nIn 2022, I collaborated with **SHEIN X Artist** to launch my merchandise collection, YANLIU.\n\nI share work on **Instagram and RedNote**.",
+    cta: [
+      { label: "Instagram", url: "https://www.instagram.com/yanliudesign" },
+      { label: "RedNote", url: "https://www.xiaohongshu.com/user/profile/5cf87836000000001803f1b3?xhsshare=CopyLink&appuid=5cf87836000000001803f1b3&apptime=1654372327" },
+    ],
+  },
+];
+
+function FolderIcon({ color, title, onClick, isSelected, icon }: {
+  color: typeof folderColors[number];
+  title: string;
+  onClick: () => void;
+  isSelected: boolean;
+  icon: string;
+}) {
+  return (
+    <motion.button
+      onClick={onClick}
+      className="flex flex-col items-center gap-2.5 group cursor-pointer"
+      whileHover={{ scale: 1.08 }}
+      whileTap={{ scale: 0.95 }}
+      transition={{ duration: 0.2 }}
+    >
+      {/* Folder shape — Mac style */}
+      <div className="relative w-[96px] h-[80px]" style={{ filter: isSelected ? `drop-shadow(0 2px 8px ${color.bg}66)` : "drop-shadow(0 2px 4px rgba(0,0,0,0.1))" }}>
+        {/* Back panel with tab */}
+        <svg viewBox="0 0 96 80" className="absolute inset-0 w-full h-full" xmlns="http://www.w3.org/2000/svg">
+          <rect x="0" y="12" width="96" height="68" rx="8" fill={color.tab} />
+          <path
+            d="M0 20 C0 14.5, 4.5 10, 10 10 L32 10 Q36 10, 38 6 Q40 2, 44 2 L86 2 Q94 2, 96 10 L96 20 L0 20 Z"
+            fill={color.tab}
+          />
+        </svg>
+        {/* Front body */}
+        <div
+          className="absolute left-[1px] right-[1px] bottom-[1px] h-[62px] rounded-[7px] transition-shadow duration-200"
+          style={{
+            backgroundColor: color.bg,
+            boxShadow: "inset 0 1px 0 rgba(255,255,255,0.3), 0 1px 2px rgba(0,0,0,0.06)",
+          }}
+        />
+        {/* Folder icon — debossed/indented into folder face */}
+        <img
+          src={icon}
+          alt=""
+          className="absolute left-1/2 -translate-x-1/2 bottom-[10px] w-[44px] h-[44px] object-contain pointer-events-none"
+          style={{ filter: "brightness(0) saturate(0)", opacity: 0.1, mixBlendMode: "multiply" }}
+        />
+      </div>
+      {/* Label */}
+      <span className={`text-[11px] leading-tight text-center max-w-[100px] transition-colors duration-200 ${
+        isSelected ? "text-stone-900 font-medium" : "text-stone-500 group-hover:text-stone-700"
+      }`}>
+        {title}
+      </span>
+    </motion.button>
+  );
+}
+
+function FolderSideSheet({ folderIndex, onClose, onNavigate }: {
+  folderIndex: number;
+  onClose: () => void;
+  onNavigate: (index: number) => void;
+}) {
+  const content = folderContent[folderIndex];
+  const color = folderColors[folderIndex];
+  const image = folderImages[folderIndex];
+  const icon = folderIcons[folderIndex];
+  const nextIndex = (folderIndex + 1) % folderContent.length;
 
   return (
-    <div ref={ref} className="w-full flex justify-center -mt-4 pb-8 overflow-visible">
-      <motion.div style={{ y, scale, opacity }} className="w-full max-w-[1200px]">
+    <motion.div
+      className="absolute inset-0 z-10"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.3 }}
+    >
+      {/* Blurred backdrop */}
+      <div
+        className="absolute inset-0 backdrop-blur-sm bg-black/5 cursor-pointer"
+        onClick={onClose}
+      />
+      {/* Side sheet — persistent container */}
+      <motion.div
+        className="absolute top-0 right-0 z-20 h-full w-[480px] border-l border-stone-200 shadow-xl overflow-hidden rounded-l-xl"
+        style={{ backgroundColor: "#FAF8F5" }}
+        initial={{ x: "100%" }}
+        animate={{ x: 0 }}
+        exit={{ x: "100%" }}
+        transition={{ type: "spring", damping: 28, stiffness: 300 }}
+      >
+        {/* Paper noise texture */}
+        <div className="absolute inset-0 pointer-events-none opacity-[0.06] rounded-l-xl overflow-hidden" style={{
+          backgroundImage: "url(/noise-texture.png)",
+          backgroundRepeat: "repeat",
+          backgroundSize: "200px 200px",
+        }} />
+
+        {/* Header */}
+        <div className="relative flex items-center justify-between px-5 py-3 border-b border-stone-200/60 z-10" style={{ backgroundColor: `${color.bg}08` }}>
+          <div className="flex items-center gap-2.5">
+            <img src={icon} alt="" className="w-5 h-5 object-contain" style={{ filter: `brightness(0) saturate(0) opacity(0.5)` }} />
+            <span className="text-[14px] text-stone-700 font-medium">
+              {content.title}
+            </span>
+            <button
+              onClick={(e) => { e.stopPropagation(); onNavigate(nextIndex); }}
+              className="flex items-center gap-0.5 text-[12px] text-stone-400 hover:text-stone-600 transition-colors cursor-pointer ml-1"
+            >
+              <span>Next</span>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="9 18 15 12 9 6" />
+              </svg>
+            </button>
+          </div>
+          <button
+            onClick={(e) => { e.stopPropagation(); onClose(); }}
+            className="text-stone-400 hover:text-stone-600 transition-colors cursor-pointer"
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18" />
+              <line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+          </button>
+        </div>
+
+        {/* Scrollable content — crossfade on folder change */}
+        <div className="relative h-[calc(100%-45px)] overflow-y-auto">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={folderIndex}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+            >
+              {/* Cover image */}
+              <div className="relative w-full">
+                <img src={image} alt={content.title} className="w-full h-auto object-contain" />
+              </div>
+
+              {/* Content */}
+              <div className="relative p-5 space-y-4">
+                {content.description.split("\n\n").map((para, i) => (
+                  <p key={i} className="text-stone-600 leading-relaxed text-[14px]">
+                    {renderBold(para)}
+                  </p>
+                ))}
+                {content.cta && (
+                  <div className="flex gap-4">
+                    {(Array.isArray(content.cta) ? content.cta : [content.cta]).map((link, i) => (
+                      <a
+                        key={i}
+                        href={link.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-block text-[14px] underline underline-offset-4 decoration-stone-300 hover:decoration-stone-500 transition-colors"
+                        style={{ color: color.bg }}
+                      >
+                        {link.label}
+                      </a>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </motion.div>
+          </AnimatePresence>
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+}
+
+function LockNotification({ onUnlock }: { onUnlock: () => void }) {
+  return (
+    <motion.div
+      className="absolute inset-0 z-20 flex items-center justify-center"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.3 }}
+    >
+      {/* iOS-style notification */}
+      <motion.div
+        className="bg-white/95 backdrop-blur-xl rounded-2xl shadow-lg border border-white/60 px-6 py-5 w-[340px] text-center"
+        initial={{ opacity: 0, y: -20, scale: 0.95 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        exit={{ opacity: 0, y: -10, scale: 0.97 }}
+        transition={{ duration: 0.4, delay: 0.2, ease: "easeOut" }}
+      >
+        {/* Bell icon */}
+        <div className="flex justify-center mb-3">
+          <div className="bg-stone-100 rounded-full px-3 py-1.5 flex items-center">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-stone-500 bell-shake">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+              <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+            </svg>
+          </div>
+        </div>
+        <p className="text-[11px] font-semibold tracking-widest uppercase text-stone-500 mb-1.5">Reminder</p>
+        <p className="text-[14px] text-stone-700 leading-snug mb-4">
+          Tools evolve. Curiosity stays.<br />Small steps move things forward.
+        </p>
+        {/* Buttons */}
+        <div className="flex border-t border-stone-200">
+          <button
+            onClick={onUnlock}
+            className="flex-1 py-2.5 text-[14px] text-blue-500 font-medium hover:bg-stone-50 transition-colors border-r border-stone-200 rounded-bl-2xl"
+          >
+            Okay!
+          </button>
+          <button
+            onClick={onUnlock}
+            className="flex-1 py-2.5 text-[14px] text-blue-500 font-medium hover:bg-stone-50 transition-colors rounded-br-2xl"
+          >
+            Got it!
+          </button>
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+}
+
+const appTools = [
+  { label: "Claude", icon: "/app-claude.jpg" },
+  { label: "Figma", icon: "/app-figma.jpg" },
+  { label: "Cursor", icon: "/app-cursor.jpg" },
+  { label: "Google AI Studio", icon: "/app-google-ai.jpg" },
+  { label: "Lovable", icon: "/app-lovable.jpg" },
+  { label: "Codex", icon: "/app-codex.jpg" },
+  { label: "GitHub", icon: "/app-github.jpg" },
+];
+
+const sidebarItems = [
+  { id: "yanliu", label: "yanliu", icon: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2196F3" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg> },
+  { id: "desktop", label: "Desktop", icon: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2196F3" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg> },
+  { id: "recents", label: "Recents", icon: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2196F3" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> },
+  { id: "documents", label: "Documents", icon: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2196F3" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> },
+];
+
+const statusItems = [
+  { action: "Designing", detail: "AI products" },
+  { action: "Building", detail: "small tools" },
+  { action: "Exploring", detail: "vibe coding and AI" },
+  { action: "Collecting", detail: "ideas & doodles" },
+  { action: "Drinking", detail: "coffee" },
+];
+
+function RecentStatus() {
+  const [count, setCount] = useState(0);
+  useEffect(() => {
+    setCount(0);
+    const t = statusItems.map((_, i) => setTimeout(() => setCount(i + 1), 600 + i * 350));
+    return () => t.forEach(clearTimeout);
+  }, []);
+
+  return (
+    <div className="flex flex-col items-center pt-32">
+      <motion.div
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.5 }}
+        className="text-[11px] text-stone-400 uppercase tracking-[0.2em] mb-8"
+      >
+        System Status
+      </motion.div>
+      <div className="space-y-4">
+        {statusItems.slice(0, count).map((s, i) => (
+          <motion.div
+            key={s.action}
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ type: "spring", stiffness: 200, damping: 20 }}
+            className="flex items-center gap-3 text-[14px]"
+          >
+            <motion.span
+              initial={{ width: 6, height: 6, borderRadius: 999 }}
+              animate={{ backgroundColor: ["#d6d3d1", "#10b981", "#d6d3d1"] }}
+              transition={{ duration: 2, repeat: Infinity, delay: i * 0.4 }}
+              className="inline-block w-1.5 h-1.5 rounded-full"
+            />
+            <span className="text-stone-400">{s.action}</span>
+            <motion.span
+              initial={{ opacity: 0 }}
+              animate={{ opacity: [0.3, 1, 0.3] }}
+              transition={{ duration: 1.5, repeat: Infinity, delay: i * 0.3 }}
+              className="text-stone-300"
+            >
+              →
+            </motion.span>
+            <span className="text-stone-700">{s.detail}</span>
+          </motion.div>
+        ))}
+      </div>
+      {count >= statusItems.length && (
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4, type: "spring" }}
+          className="text-emerald-500 text-[11px] mt-8 tracking-wide flex items-center gap-2"
+        >
+          <motion.span
+            animate={{ scale: [1, 1.3, 1] }}
+            transition={{ duration: 2, repeat: Infinity }}
+          >
+            ●
+          </motion.span>
+          All systems nominal
+        </motion.div>
+      )}
+    </div>
+  );
+}
+
+function WidgetClock() {
+  const [time, setTime] = useState(new Date());
+  useEffect(() => {
+    const t = setInterval(() => setTime(new Date()), 1000);
+    return () => clearInterval(t);
+  }, []);
+  const h = time.getHours() % 12;
+  const m = time.getMinutes();
+  const s = time.getSeconds();
+  const hDeg = h * 30 + m * 0.5;
+  const mDeg = m * 6;
+  const sDeg = s * 6;
+  const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+  const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+  return (
+    <div className="flex flex-col items-center gap-2">
+      <svg width="100" height="100" viewBox="0 0 100 100">
+        <circle cx="50" cy="50" r="48" fill="none" stroke="#57534e" strokeWidth="1" />
+        {[...Array(12)].map((_, i) => (
+          <line key={i} x1="50" y1="8" x2="50" y2="14" stroke="#a8a29e" strokeWidth="1.5" transform={`rotate(${i * 30} 50 50)`} />
+        ))}
+        <line x1="50" y1="50" x2="50" y2="22" stroke="white" strokeWidth="2.5" strokeLinecap="round" transform={`rotate(${hDeg} 50 50)`} />
+        <line x1="50" y1="50" x2="50" y2="16" stroke="white" strokeWidth="1.5" strokeLinecap="round" transform={`rotate(${mDeg} 50 50)`} />
+        <line x1="50" y1="50" x2="50" y2="14" stroke="#ef4444" strokeWidth="0.8" strokeLinecap="round" transform={`rotate(${sDeg} 50 50)`} />
+        <circle cx="50" cy="50" r="2.5" fill="white" />
+      </svg>
+      <div className="text-center">
+        <div className="text-[22px] font-semibold text-white tabular-nums">
+          {time.getHours().toString().padStart(2, "0")}:{m.toString().padStart(2, "0")}
+        </div>
+        <div className="text-[10px] text-stone-400">
+          {days[time.getDay()]}, {time.getDate()} {months[time.getMonth()]}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+const randomIdeas = [
+  "Design a tool that turns notes into flowers",
+  "Visualize your thoughts as a constellation",
+  "Turn daily mood into a color palette",
+  "Build a curiosity tracker",
+  "Turn random doodles into posters",
+  "Generate a new idea every morning",
+  "Design a tiny tool that encourages focus",
+  "Turn screenshots into visual stories",
+  "Create a map of your ideas",
+  "Visualize how curiosity grows over time",
+  "Build a tool that turns words into shapes",
+  "Generate a random interface challenge",
+  "Turn unfinished ideas into prompts",
+  "Build a tiny tool that makes people smile",
+  "Turn random thoughts into design prompts",
+  "Generate a new creative constraint every day",
+  "Visualize how ideas evolve",
+  "Turn sketches into animations",
+  "Build a playful productivity toy",
+  "Turn mistakes into new experiments",
+  "Create a curiosity dashboard",
+  "Turn inspiration into a visual archive",
+  "Generate a daily design challenge",
+  "Turn random photos into patterns",
+  "Build a tiny AI brainstorming partner",
+  "Turn your ideas into a branching tree",
+  "Create a visual diary of experiments",
+  "Generate weird interface ideas",
+  "Turn random words into product concepts",
+  "Build a tiny creativity engine",
+  "Visualize your energy throughout the day",
+  "Turn music into generative visuals",
+  "Build a random prototype generator",
+  "Turn design principles into a game",
+  "Create a map of unfinished projects",
+  "Turn daily observations into design ideas",
+  "Generate a tool that simplifies something annoying",
+  "Turn random shapes into interface components",
+  "Build a curiosity playground",
+  "Turn everyday objects into design prompts",
+  "Generate an idea worth prototyping today",
+  "Turn AI prompts into visual experiments",
+  "Create a tiny tool that sparks creativity",
+  "Turn boredom into a design challenge",
+  "Build something weird just to see what happens",
+  "Turn inspiration into interactive sketches",
+  "Create a random design lab",
+  "Turn a simple idea into a prototype in one hour",
+  "Build a tool that visualizes imagination",
+  "Generate an idea you would never normally try",
+];
+
+const ideaFrequency = [2, 5, 3, 7, 4, 8, 6, 9, 5, 7, 3, 6];
+
+function IdeaWidget() {
+  const [idea, setIdea] = useState(randomIdeas[0]);
+
+  const generate = () => {
+    let next;
+    do { next = randomIdeas[Math.floor(Math.random() * randomIdeas.length)]; } while (next === idea);
+    setIdea(next);
+  };
+
+  const maxF = Math.max(...ideaFrequency);
+
+  return (
+    <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="bg-white/80 rounded-xl p-3 col-span-2 flex flex-col">
+      {/* Top: Idea Frequency spark graph */}
+      <div className="flex items-baseline justify-between mb-2">
+        <div className="text-[9px] text-stone-400 uppercase tracking-wider">Idea Frequency</div>
+        <div className="text-[9px] text-violet-400">This year</div>
+      </div>
+      <div className="flex items-end gap-[3px] h-[75px] mb-4">
+        {ideaFrequency.map((val, i) => (
+          <motion.div
+            key={i}
+            initial={{ height: 0 }}
+            animate={{ height: `${(val / maxF) * 100}%` }}
+            transition={{ delay: 0.3 + i * 0.04, duration: 0.5, ease: "easeOut" }}
+            className="flex-1 bg-violet-200 rounded-sm"
+          />
+        ))}
+      </div>
+
+      {/* Divider */}
+      <div className="border-t border-stone-100 pt-3 mb-1">
+        <div className="text-[9px] text-stone-400 uppercase tracking-wider mb-2">Random Idea</div>
+      </div>
+
+      {/* Idea display */}
+      <div className="flex-1 flex items-center overflow-hidden">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={idea}
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: -20, opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="text-[13px] text-stone-600 leading-snug"
+          >
+            {idea}
+          </motion.div>
+        </AnimatePresence>
+      </div>
+
+      {/* Generate button */}
+      <button
+        onClick={generate}
+        className="mt-3 self-start px-3 py-1 rounded-md bg-stone-100 hover:bg-stone-200 text-[10px] text-stone-500 transition-colors"
+      >
+        Generate
+      </button>
+    </motion.div>
+  );
+}
+
+function DesktopWidgets() {
+  const today = new Date();
+  const currentDay = today.getDate();
+  const daysInMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate();
+  const firstDayOfWeek = new Date(today.getFullYear(), today.getMonth(), 1).getDay();
+  const monthName = today.toLocaleString("default", { month: "short" });
+  const year = today.getFullYear();
+
+  const [todos, setTodos] = useState([
+    { text: "Fix that weird animation bug", done: false },
+    { text: "Ship the tiny tool I started", done: false },
+    { text: "Sketch 3 new interaction ideas", done: false },
+    { text: "Try a new AI experiment", done: false },
+    { text: "Try not to open 20 tabs", done: false },
+    { text: "Clean up my messy desktop", done: false },
+    { text: "Celebrate small wins", done: false },
+  ]);
+
+  const toggleTodo = (index: number) => {
+    setTodos(prev => prev.map((t, i) => i === index ? { ...t, done: !t.done } : t));
+  };
+
+
+
+  return (
+    <div className="p-3 flex flex-col gap-3">
+      {/* Top row: Reminders, Energy, Calendar */}
+      <div className="grid grid-cols-3 gap-3">
+        <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }} className="bg-white/80 rounded-xl p-3">
+          <div className="text-[9px] text-stone-400 uppercase tracking-wider mb-2">Reminder</div>
+          <ul className="space-y-[5px] list-disc list-inside text-[11px] text-stone-500 leading-snug">
+            <li>Stay away from drama and negativity</li>
+            <li>A small step every day</li>
+            <li>Work hard in silence</li>
+            <li>Stay curious, stay humble</li>
+          </ul>
+        </motion.div>
+
+        <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-white/80 rounded-xl p-3 flex flex-col items-center">
+          <div className="text-[9px] text-stone-400 uppercase tracking-wider self-start mb-2">Energy</div>
+          <div className="relative w-[80px] h-[80px]">
+            <svg width="80" height="80" viewBox="0 0 80 80">
+              <circle cx="40" cy="40" r="32" fill="none" stroke="#e7e5e4" strokeWidth="6" />
+              <motion.circle
+                cx="40" cy="40" r="32"
+                fill="none" stroke="#10b981" strokeWidth="6"
+                strokeLinecap="butt"
+                strokeDasharray={`${2 * Math.PI * 32}`}
+                initial={{ strokeDashoffset: 2 * Math.PI * 32 }}
+                animate={{ strokeDashoffset: 2 * Math.PI * 32 * (1 - 0.95) }}
+                transition={{ delay: 0.2, duration: 1, ease: "easeOut" }}
+                transform="rotate(-90 40 40)"
+              />
+            </svg>
+            <div className="absolute inset-0 flex flex-col items-center justify-center">
+              <span className="text-[18px] font-semibold text-stone-700 leading-none">95%</span>
+            </div>
+          </div>
+          <div className="text-[9px] text-stone-400 mt-1">Feeling great</div>
+        </motion.div>
+
+        <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="bg-white/80 rounded-xl p-3 flex flex-col items-center">
+          <div className="text-[9px] text-stone-400 uppercase tracking-wider self-start mb-1">Fuel Mix</div>
+          {(() => {
+            const stats = [
+              { label: "Coffee", value: 90 },
+              { label: "Tea", value: 65 },
+              { label: "Music", value: 80 },
+              { label: "Sunlight", value: 55 },
+              { label: "Curiosity", value: 100 },
+              { label: "Ideas", value: 95 },
+            ];
+            const cx = 65, cy = 62, maxR = 45, levels = 4, n = stats.length;
+            const angle = (i: number) => (Math.PI * 2 * i) / n - Math.PI / 2;
+            const pt = (i: number, r: number) => `${cx + r * Math.cos(angle(i))},${cy + r * Math.sin(angle(i))}`;
+            const dataPoints = stats.map((s, i) => pt(i, (s.value / 100) * maxR));
+            return (
+              <svg width="130" height="130" viewBox="0 0 130 130">
+                {/* Grid rings */}
+                {[...Array(levels)].map((_, l) => {
+                  const r = maxR * ((l + 1) / levels);
+                  const pts = stats.map((_, i) => pt(i, r)).join(" ");
+                  return <polygon key={l} points={pts} fill="none" stroke="#e7e5e4" strokeWidth="0.5" />;
+                })}
+                {/* Axis lines */}
+                {stats.map((_, i) => (
+                  <line key={i} x1={cx} y1={cy} x2={Number(pt(i, maxR).split(",")[0])} y2={Number(pt(i, maxR).split(",")[1])} stroke="#e7e5e4" strokeWidth="0.5" />
+                ))}
+                {/* Data shape */}
+                <motion.polygon
+                  points={dataPoints.join(" ")}
+                  fill="rgba(59,130,246,0.15)"
+                  stroke="#3b82f6"
+                  strokeWidth="1.5"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.3, duration: 0.6 }}
+                />
+                {/* Data dots */}
+                {dataPoints.map((p, i) => {
+                  const [x, y] = p.split(",").map(Number);
+                  return <circle key={i} cx={x} cy={y} r="2" fill="#3b82f6" />;
+                })}
+                {/* Labels */}
+                {stats.map((s, i) => {
+                  const lR = maxR + 14;
+                  const x = cx + lR * Math.cos(angle(i));
+                  const y = cy + lR * Math.sin(angle(i));
+                  return <text key={i} x={x} y={y} textAnchor="middle" dominantBaseline="middle" className="text-[7px] fill-stone-400">{s.label}</text>;
+                })}
+              </svg>
+            );
+          })()}
+        </motion.div>
+      </div>
+
+      {/* Bottom row: Weather + To-Do (left), Goals (right) */}
+      <div className="grid grid-cols-3 gap-3">
+        {/* Left column: Weather + To-Do stacked */}
+        <div className="flex flex-col gap-3">
+          <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-white/80 rounded-xl px-3 py-2.5">
+            <div className="text-[9px] text-stone-400 uppercase tracking-wider mb-1">Seattle</div>
+            <div className="flex items-center gap-1.5">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" strokeWidth="1.5"><path d="M18 10a6 6 0 00-12 0 4 4 0 000 8h12a3 3 0 100-6 3 3 0 00-1-2"/></svg>
+              <span className="text-[18px] font-light text-stone-700 leading-none">52°</span>
+            </div>
+            <div className="text-[9px] text-stone-400 mt-1">Perfect weather for building things</div>
+          </motion.div>
+
+          <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="bg-white/80 rounded-xl p-3 flex-1">
+            <div className="text-[9px] text-stone-400 uppercase tracking-wider mb-3">To-Do</div>
+            <div className="space-y-2.5">
+              {todos.map((item, i) => (
+                <div key={i} className="flex items-center gap-1.5 text-[11px] cursor-pointer" onClick={() => toggleTodo(i)}>
+                  <div className={`w-3.5 h-3.5 rounded-[3px] border-[1.5px] flex items-center justify-center shrink-0 transition-colors ${item.done ? "bg-blue-500 border-blue-500" : "border-stone-300"}`}>
+                    {item.done && <svg width="8" height="8" viewBox="0 0 12 12" fill="none"><path d="M2.5 6l2.5 2.5 4.5-5" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>}
+                  </div>
+                  <span className={`transition-colors ${item.done ? "text-stone-400 line-through" : "text-stone-600"}`}>{item.text}</span>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+        </div>
+
+        {/* Goals - spans 2 columns, matches height of weather + todo */}
+        <IdeaWidget />
+      </div>
+
+      {/* Dock: tool icons */}
+      <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-white/60 backdrop-blur-sm rounded-xl px-6 py-7 flex justify-evenly">
+        {appTools.map((tool, i) => (
+          <motion.img
+            key={i}
+            src={tool.icon}
+            alt={tool.label}
+            title={tool.label}
+            className="w-[36px] h-[36px] object-cover rounded-[9px] cursor-default"
+            whileHover={{ scale: 1.2, y: -4 }}
+            transition={{ type: "spring", stiffness: 300 }}
+          />
+        ))}
+      </motion.div>
+    </div>
+  );
+}
+
+function FolderWindowContent() {
+  const [openFolder, setOpenFolder] = useState<number | null>(null);
+  const [unlocked, setUnlocked] = useState(false);
+  const [activeSidebar, setActiveSidebar] = useState("yanliu");
+
+  return (
+    <div className="flex justify-center">
+      <div className="w-full max-w-[1000px] font-[family-name:var(--font-noto)]">
+        {/* Window chrome */}
+        <div className="relative bg-[#F5F5F4] border border-stone-200 rounded-xl shadow-lg overflow-hidden">
+          {/* Title bar */}
+          <div className="flex items-center gap-2 px-4 py-2.5 border-b border-stone-200 bg-gradient-to-b from-[#FAFAF9] to-[#F0EFED]">
+            <div className="flex gap-1.5">
+              <div className="w-[11px] h-[11px] rounded-full bg-[#FF5F57] border border-[#E0443E]" />
+              <div className="w-[11px] h-[11px] rounded-full bg-[#FEBC2E] border border-[#DEA123]" />
+              <div className="w-[11px] h-[11px] rounded-full bg-[#28C840] border border-[#1AAB29]" />
+            </div>
+            <div className="flex-1 text-center">
+              <span className="text-[11px] text-stone-400">
+                ~/yan-liu/portfolio
+              </span>
+            </div>
+            <div className="w-[52px]" />
+          </div>
+
+          {/* Content area — realistic window height */}
+          <div className="relative h-[620px] min-w-[1000px] overflow-hidden flex">
+            {/* Finder sidebar */}
+            <div className="w-[170px] shrink-0 bg-[#F0EFED]/60 backdrop-blur-sm border-r border-stone-200/60 py-3 px-2 overflow-y-auto">
+              <p className="text-[11px] font-medium text-stone-400 px-2 mb-1">Favorites</p>
+              {sidebarItems.map((item) => (
+                <button
+                  key={item.id}
+                  onClick={() => { setActiveSidebar(item.id); setOpenFolder(null); }}
+                  className={`w-full flex items-center gap-2 px-2 py-[5px] rounded-md text-[12px] text-left cursor-pointer transition-colors ${
+                    activeSidebar === item.id
+                      ? "bg-[#D4E4F7] text-stone-800"
+                      : "text-stone-600 hover:bg-stone-200/40"
+                  }`}
+                >
+                  {item.icon}
+                  <span>{item.label}</span>
+                </button>
+              ))}
+            </div>
+
+            {/* Main content */}
+            <div className="relative flex-1 min-h-[620px] overflow-hidden">
+              {/* Lock screen layers */}
+              <AnimatePresence>
+                {!unlocked && (
+                  <motion.div
+                    className="absolute inset-0 z-10 backdrop-blur-md bg-white/30"
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.5 }}
+                  />
+                )}
+              </AnimatePresence>
+              <AnimatePresence>
+                {!unlocked && (
+                  <LockNotification onUnlock={() => setUnlocked(true)} />
+                )}
+              </AnimatePresence>
+
+              {/* Main area content — crossfade between sidebar views */}
+              <AnimatePresence mode="wait">
+                {activeSidebar === "yanliu" ? (
+                  <motion.div
+                    key="yanliu"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.2 }}
+                    className="h-full"
+                  >
+                    <div className={`pt-10 pl-10 pr-6 ${!unlocked ? "select-none pointer-events-none" : ""}`}>
+                      <div className="flex gap-x-14 gap-y-8 flex-wrap content-start">
+                        {siteConfig.sections.map((section, i) => (
+                          <FolderIcon
+                            key={section.id}
+                            color={folderColors[i]}
+                            title={section.title}
+                            icon={folderIcons[i]}
+                            isSelected={openFolder === i}
+                            onClick={() => setOpenFolder(openFolder === i ? null : i)}
+                          />
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Side sheet overlay */}
+                    <AnimatePresence>
+                      {openFolder !== null && unlocked && (
+                        <FolderSideSheet
+                          key="sheet"
+                          folderIndex={openFolder}
+                          onClose={() => setOpenFolder(null)}
+                          onNavigate={(i) => setOpenFolder(i)}
+                        />
+                      )}
+                    </AnimatePresence>
+                  </motion.div>
+                ) : activeSidebar === "applications" ? (
+                  <motion.div
+                    key="applications"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.2 }}
+                    className="h-full overflow-y-auto"
+                  >
+                    <div className="grid grid-cols-5 gap-y-6 gap-x-2 px-8 py-8 justify-items-center">
+                      {appTools.map((tool, i) => (
+                        <div key={i} className="flex flex-col items-center gap-1.5">
+                          <img src={tool.icon} alt={tool.label} className="w-[56px] h-[56px] object-cover rounded-[13px] shadow-sm" />
+                          <span className="text-[11px] text-stone-600 text-center leading-tight">{tool.label}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </motion.div>
+                ) : activeSidebar === "documents" ? (
+                  <motion.div
+                    key="documents"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.2 }}
+                    className="h-[620px] overflow-y-auto"
+                  >
+                    {/* Finder list view header */}
+                    <div className="flex items-center px-4 py-1.5 border-b border-stone-200/60 text-[10px] text-stone-400 uppercase tracking-wider">
+                      <span className="flex-1">Name</span>
+                      <span className="w-[100px]">Date Modified</span>
+                      <span className="w-[60px]">Size</span>
+                      <span className="w-[80px]">Kind</span>
+                    </div>
+                    {[
+                      { name: "page.tsx", date: "Today, 7:42 PM", size: "62 KB", kind: "TypeScript" },
+                      { name: "globals.css", date: "Today, 6:15 PM", size: "8 KB", kind: "CSS" },
+                      { name: "siteConfig.ts", date: "Today, 5:30 PM", size: "3 KB", kind: "TypeScript" },
+                      { name: "package.json", date: "Today, 4:20 PM", size: "1 KB", kind: "JSON" },
+                      { name: "README.md", date: "Yesterday", size: "2 KB", kind: "Markdown" },
+                      { name: "page-flip-test.html", date: "Yesterday", size: "18 KB", kind: "HTML" },
+                      { name: "tsconfig.json", date: "Mar 8", size: "1 KB", kind: "JSON" },
+                      { name: "renderBold.tsx", date: "Mar 7", size: "1 KB", kind: "TypeScript" },
+                      { name: ".env.local", date: "Mar 5", size: "0.2 KB", kind: "ENV" },
+                      { name: "tailwind.config.ts", date: "Mar 4", size: "2 KB", kind: "TypeScript" },
+                      { name: "layout.tsx", date: "Mar 3", size: "1 KB", kind: "TypeScript" },
+                      { name: "next.config.mjs", date: "Mar 1", size: "1 KB", kind: "JavaScript" },
+                    ].map((file, i) => (
+                      <div key={i} className={`flex items-center px-4 py-[6px] text-[12px] border-b border-stone-100/60 ${i % 2 === 0 ? "" : "bg-stone-50/30"}`}>
+                        <div className="flex items-center gap-2 flex-1 min-w-0">
+                          <svg width="18" height="22" viewBox="0 0 18 22" fill="none" xmlns="http://www.w3.org/2000/svg" className="shrink-0">
+                            <path d="M2 0.5h9.5l5.5 5.5v14.5a1 1 0 01-1 1H2a1 1 0 01-1-1V1.5a1 1 0 011-1z" fill="white" stroke="#C8C8C8" strokeWidth="0.7"/>
+                            <path d="M11.5 0.5v4.5a1 1 0 001 1h4.5" fill="#EBEBEB" stroke="#C8C8C8" strokeWidth="0.7" strokeLinejoin="round"/>
+                          </svg>
+                          <span className="text-stone-700 truncate">{file.name}</span>
+                        </div>
+                        <span className="w-[100px] text-stone-400 text-[11px]">{file.date}</span>
+                        <span className="w-[60px] text-stone-400 text-[11px]">{file.size}</span>
+                        <span className="w-[80px] text-stone-400 text-[11px]">{file.kind}</span>
+                      </div>
+                    ))}
+                  </motion.div>
+                ) : activeSidebar === "desktop" ? (
+                  <motion.div
+                    key="desktop"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.2 }}
+                    className="h-[620px] overflow-y-auto"
+                  >
+                    <DesktopWidgets />
+                  </motion.div>
+                ) : activeSidebar === "recents" ? (
+                  <motion.div
+                    key="recents"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.2 }}
+                    className="h-[620px] overflow-y-auto"
+                  >
+                    <RecentStatus />
+                  </motion.div>
+                ) : (
+                  <motion.div
+                    key="empty"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.2 }}
+                    className="h-[620px]"
+                  />
+                )}
+              </AnimatePresence>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ── Portfolio Viewer ── */
+function PortfolioViewer() {
+  return (
+    <motion.section
+      className="flex flex-col items-center px-6 pt-52 pb-12"
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, ease: "easeOut" }}
+      viewport={{ once: true, margin: "-60px" }}
+    >
+      <FolderWindowContent />
+    </motion.section>
+  );
+}
+
+/* ── Flip book (preserved for future use) ──
+function FlipBookView() {
+  return (
+    <div className="w-full flex justify-center">
+      <div className="w-full max-w-[1200px]">
         <iframe
           src="/page-flip-test.html"
           className="w-full border-none"
           style={{ height: "800px" }}
           title="Portfolio flip book"
         />
-      </motion.div>
+      </div>
     </div>
   );
 }
+── */
 
 /* ── Click burst particles ── */
 const particleColors = ["#e8445a", "#f4a8b5", "#ffb347", "#a78bfa", "#67e8f9", "#fbbf24", "#f9a8d4"];
@@ -1510,13 +2407,6 @@ function ScatterBoard({
 
   return (
     <>
-      <motion.p
-        className="text-center font-[family-name:var(--font-courier-prime)] text-[13px] text-[#A8A29E] mb-1"
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        transition={{ duration: 0.5 }}
-        viewport={{ once: true, margin: "-100px" }}
-      >Drag and drop to move</motion.p>
       <motion.div
         className="w-full flex justify-center px-6 pt-4 pb-4"
         initial={{ opacity: 0, y: 150, scale: 0.85 }}
@@ -1756,10 +2646,10 @@ export default function Home() {
               }} />
             </div>
           </div>
-          <p className="font-[family-name:var(--font-courier-prime)] text-sm md:text-base text-text-secondary text-center tracking-[0.2em] uppercase hero-entrance" style={{ lineHeight: "1.8", animation: "hero-fade-in 0.5s cubic-bezier(0.4,0,0.2,1) 1.9s both" }}>
+          <p className="font-[family-name:var(--font-noto)] text-xs md:text-sm text-stone-400 text-center tracking-[0.2em] uppercase hero-entrance" style={{ lineHeight: "1.8", animation: "hero-fade-in 0.5s cubic-bezier(0.4,0,0.2,1) 1.9s both" }}>
             Design like a strategist
           </p>
-          <p className="font-[family-name:var(--font-courier-prime)] text-sm md:text-base text-text-secondary text-center tracking-[0.2em] uppercase hero-entrance" style={{ lineHeight: "1.8", animation: "hero-fade-in 0.5s cubic-bezier(0.4,0,0.2,1) 2.15s both" }}>
+          <p className="font-[family-name:var(--font-noto)] text-xs md:text-sm text-stone-400 text-center tracking-[0.2em] uppercase hero-entrance" style={{ lineHeight: "1.8", animation: "hero-fade-in 0.5s cubic-bezier(0.4,0,0.2,1) 2.15s both" }}>
             Ship like a builder
           </p>
         </div>
@@ -1779,14 +2669,14 @@ export default function Home() {
       />
 
       {/* Ripped paper quote + bio with decorative images */}
-      <div className="mt-[360px]" />
+      <div className="mt-[260px]" />
       <div className="relative" style={{ transform: "translateX(-20px)" }}>
         <RippedPaperNote />
         <ScrollRevealText />
       </div>
 
-      {/* Page flip book — portfolio sections */}
-      <FlipBookParallax />
+      {/* Portfolio — folder view / book view */}
+      <PortfolioViewer />
 
       {/* Social icons */}
       <motion.div
@@ -1820,7 +2710,7 @@ export default function Home() {
       >
         <div className="flex items-center gap-3">
           <img src="/star.svg" alt="" className="w-5 h-5 brightness-0 opacity-70 animate-spin" style={{ animationDuration: "4s" }} draggable={false} />
-          <p className="font-[family-name:var(--font-courier-prime)] text-[15px] tracking-wide" style={{ color: "#212121" }}>
+          <p className="font-[family-name:var(--font-noto)] text-[11px] tracking-wide" style={{ color: "#212121" }}>
             Vibe-coded by Yan Liu · Learning by building
           </p>
           <img src="/star.svg" alt="" className="w-5 h-5 brightness-0 opacity-70 animate-spin" style={{ animationDuration: "4s" }} draggable={false} />
