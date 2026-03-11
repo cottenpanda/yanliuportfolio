@@ -1882,6 +1882,104 @@ function IdeaWidget() {
   );
 }
 
+const circumference = 2 * Math.PI * 32;
+
+function EnergyCircle() {
+  const [hovered, setHovered] = useState(false);
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.1 }}
+      className="bg-white/80 rounded-xl p-3 flex flex-col items-center cursor-pointer"
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+    >
+      <div className="text-[9px] text-stone-400 uppercase tracking-wider self-start mb-2">Energy Level</div>
+      <div className="relative w-[80px] h-[80px]">
+        <svg width="80" height="80" viewBox="0 0 80 80">
+          <circle cx="40" cy="40" r="32" fill="none" stroke="#e7e5e4" strokeWidth="6" />
+          <motion.circle
+            key={hovered ? "active" : "idle"}
+            cx="40" cy="40" r="32"
+            fill="none" stroke="#10b981" strokeWidth="6"
+            strokeLinecap="butt"
+            strokeDasharray={circumference}
+            initial={hovered ? { strokeDashoffset: circumference } : false}
+            animate={{ strokeDashoffset: circumference * (1 - 0.95) }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            transform="rotate(-90 40 40)"
+          />
+        </svg>
+        <div className="absolute inset-0 flex flex-col items-center justify-center">
+          <span className="text-[18px] font-semibold text-stone-700 leading-none">95%</span>
+        </div>
+      </div>
+      <div className="text-[9px] text-stone-400 mt-1">Feeling great</div>
+    </motion.div>
+  );
+}
+
+const radarStats = [
+  { label: "Coffee", value: 90 },
+  { label: "Tea", value: 65 },
+  { label: "Music", value: 80 },
+  { label: "Sunlight", value: 55 },
+  { label: "Curiosity", value: 100 },
+  { label: "Ideas", value: 95 },
+];
+const radarCx = 65, radarCy = 62, radarMaxR = 45, radarLevels = 4, radarN = radarStats.length;
+const radarAngle = (i: number) => (Math.PI * 2 * i) / radarN - Math.PI / 2;
+const radarPt = (i: number, r: number) => `${radarCx + r * Math.cos(radarAngle(i))},${radarCy + r * Math.sin(radarAngle(i))}`;
+
+function FuelMixRadar() {
+  const [hovered, setHovered] = useState(false);
+  const zeroPoints = radarStats.map((_, i) => radarPt(i, 0)).join(" ");
+  const dataPoints = radarStats.map((s, i) => radarPt(i, (s.value / 100) * radarMaxR)).join(" ");
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.15 }}
+      className="bg-white/80 rounded-xl p-3 flex flex-col items-center cursor-pointer"
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+    >
+      <div className="text-[9px] text-stone-400 uppercase tracking-wider self-start mb-1">Fuel Mix</div>
+      <svg width="130" height="130" viewBox="0 0 130 130">
+        {[...Array(radarLevels)].map((_, l) => {
+          const r = radarMaxR * ((l + 1) / radarLevels);
+          const pts = radarStats.map((_, i) => radarPt(i, r)).join(" ");
+          return <polygon key={l} points={pts} fill="none" stroke="#e7e5e4" strokeWidth="0.5" />;
+        })}
+        {radarStats.map((_, i) => (
+          <line key={i} x1={radarCx} y1={radarCy} x2={Number(radarPt(i, radarMaxR).split(",")[0])} y2={Number(radarPt(i, radarMaxR).split(",")[1])} stroke="#e7e5e4" strokeWidth="0.5" />
+        ))}
+        <motion.polygon
+          key={hovered ? "active" : "idle"}
+          initial={hovered ? { points: zeroPoints } : false}
+          animate={{ points: dataPoints }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+          fill="rgba(59,130,246,0.15)"
+          stroke="#3b82f6"
+          strokeWidth="1.5"
+        />
+        {radarStats.map((_, i) => {
+          const [x, y] = radarPt(i, (radarStats[i].value / 100) * radarMaxR).split(",").map(Number);
+          return <circle key={i} cx={x} cy={y} r="2" fill="#3b82f6" />;
+        })}
+        {radarStats.map((s, i) => {
+          const lR = radarMaxR + 14;
+          const x = radarCx + lR * Math.cos(radarAngle(i));
+          const y = radarCy + lR * Math.sin(radarAngle(i));
+          return <text key={i} x={x} y={y} textAnchor="middle" dominantBaseline="middle" className="text-[7px] fill-stone-400">{s.label}</text>;
+        })}
+      </svg>
+    </motion.div>
+  );
+}
+
 function DesktopWidgets() {
   const today = new Date();
   const currentDay = today.getDate();
@@ -1920,82 +2018,9 @@ function DesktopWidgets() {
           </ul>
         </motion.div>
 
-        <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-white/80 rounded-xl p-3 flex flex-col items-center">
-          <div className="text-[9px] text-stone-400 uppercase tracking-wider self-start mb-2">Energy</div>
-          <div className="relative w-[80px] h-[80px]">
-            <svg width="80" height="80" viewBox="0 0 80 80">
-              <circle cx="40" cy="40" r="32" fill="none" stroke="#e7e5e4" strokeWidth="6" />
-              <motion.circle
-                cx="40" cy="40" r="32"
-                fill="none" stroke="#10b981" strokeWidth="6"
-                strokeLinecap="butt"
-                strokeDasharray={`${2 * Math.PI * 32}`}
-                initial={{ strokeDashoffset: 2 * Math.PI * 32 }}
-                animate={{ strokeDashoffset: 2 * Math.PI * 32 * (1 - 0.95) }}
-                transition={{ delay: 0.2, duration: 1, ease: "easeOut" }}
-                transform="rotate(-90 40 40)"
-              />
-            </svg>
-            <div className="absolute inset-0 flex flex-col items-center justify-center">
-              <span className="text-[18px] font-semibold text-stone-700 leading-none">95%</span>
-            </div>
-          </div>
-          <div className="text-[9px] text-stone-400 mt-1">Feeling great</div>
-        </motion.div>
+        <EnergyCircle />
 
-        <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="bg-white/80 rounded-xl p-3 flex flex-col items-center">
-          <div className="text-[9px] text-stone-400 uppercase tracking-wider self-start mb-1">Fuel Mix</div>
-          {(() => {
-            const stats = [
-              { label: "Coffee", value: 90 },
-              { label: "Tea", value: 65 },
-              { label: "Music", value: 80 },
-              { label: "Sunlight", value: 55 },
-              { label: "Curiosity", value: 100 },
-              { label: "Ideas", value: 95 },
-            ];
-            const cx = 65, cy = 62, maxR = 45, levels = 4, n = stats.length;
-            const angle = (i: number) => (Math.PI * 2 * i) / n - Math.PI / 2;
-            const pt = (i: number, r: number) => `${cx + r * Math.cos(angle(i))},${cy + r * Math.sin(angle(i))}`;
-            const dataPoints = stats.map((s, i) => pt(i, (s.value / 100) * maxR));
-            return (
-              <svg width="130" height="130" viewBox="0 0 130 130">
-                {/* Grid rings */}
-                {[...Array(levels)].map((_, l) => {
-                  const r = maxR * ((l + 1) / levels);
-                  const pts = stats.map((_, i) => pt(i, r)).join(" ");
-                  return <polygon key={l} points={pts} fill="none" stroke="#e7e5e4" strokeWidth="0.5" />;
-                })}
-                {/* Axis lines */}
-                {stats.map((_, i) => (
-                  <line key={i} x1={cx} y1={cy} x2={Number(pt(i, maxR).split(",")[0])} y2={Number(pt(i, maxR).split(",")[1])} stroke="#e7e5e4" strokeWidth="0.5" />
-                ))}
-                {/* Data shape */}
-                <motion.polygon
-                  points={dataPoints.join(" ")}
-                  fill="rgba(59,130,246,0.15)"
-                  stroke="#3b82f6"
-                  strokeWidth="1.5"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.3, duration: 0.6 }}
-                />
-                {/* Data dots */}
-                {dataPoints.map((p, i) => {
-                  const [x, y] = p.split(",").map(Number);
-                  return <circle key={i} cx={x} cy={y} r="2" fill="#3b82f6" />;
-                })}
-                {/* Labels */}
-                {stats.map((s, i) => {
-                  const lR = maxR + 14;
-                  const x = cx + lR * Math.cos(angle(i));
-                  const y = cy + lR * Math.sin(angle(i));
-                  return <text key={i} x={x} y={y} textAnchor="middle" dominantBaseline="middle" className="text-[7px] fill-stone-400">{s.label}</text>;
-                })}
-              </svg>
-            );
-          })()}
-        </motion.div>
+        <FuelMixRadar />
       </div>
 
       {/* Bottom row: Weather + To-Do (left), Goals (right) */}
