@@ -1819,6 +1819,7 @@ const ideaFrequency = [2, 5, 3, 7, 4, 8, 6, 9, 5, 7, 3, 6];
 
 function IdeaWidget() {
   const [idea, setIdea] = useState(randomIdeas[0]);
+  const [activeBar, setActiveBar] = useState<number | null>(null);
 
   const generate = () => {
     let next;
@@ -1833,17 +1834,19 @@ function IdeaWidget() {
       {/* Top: Idea Frequency spark graph */}
       <div className="flex items-baseline justify-between mb-2">
         <div className="text-[9px] text-stone-400 uppercase tracking-wider">Idea Frequency</div>
-        <div className="text-[9px] text-violet-400">This year</div>
       </div>
-      <div className="flex items-end gap-[3px] h-[75px] mb-4">
+      <div className="flex items-end gap-[3px] h-[75px] mb-4" onMouseLeave={() => setActiveBar(null)}>
         {ideaFrequency.map((val, i) => (
-          <motion.div
-            key={i}
-            initial={{ height: 0 }}
-            animate={{ height: `${(val / maxF) * 100}%` }}
-            transition={{ delay: 0.3 + i * 0.04, duration: 0.5, ease: "easeOut" }}
-            className="flex-1 bg-violet-200 rounded-sm"
-          />
+          <div key={i} className="flex-1 h-full flex items-end" onMouseEnter={() => setActiveBar(i)}>
+            <motion.div
+              key={activeBar === i ? `active` : `idle`}
+              initial={activeBar === i ? { height: 0 } : false}
+              animate={{ height: `${(val / maxF) * 100}%` }}
+              transition={{ duration: 0.4, ease: "easeOut" }}
+              className="w-full rounded-sm cursor-pointer"
+              style={{ backgroundColor: activeBar === i ? "#8b5cf6" : activeBar !== null ? "#e9e5f5" : "#ddd6fe" }}
+            />
+          </div>
         ))}
       </div>
 
