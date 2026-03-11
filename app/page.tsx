@@ -1980,6 +1980,35 @@ function FuelMixRadar() {
   );
 }
 
+function WeatherCard() {
+  const [hovered, setHovered] = useState(false);
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.2 }}
+      style={{ boxShadow: hovered ? "0 4px 20px rgba(251,191,36,0.3), 0 0 40px rgba(251,191,36,0.12)" : "none" }}
+      className="bg-white/80 rounded-xl px-3 py-2.5 cursor-pointer overflow-hidden relative transition-all duration-300"
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+    >
+      <div className="text-[9px] text-stone-400 uppercase tracking-wider mb-1">Seattle</div>
+      <div className="flex items-center gap-1.5">
+        <motion.span
+          className="material-symbols-outlined text-amber-400"
+          style={{ fontSize: 18 }}
+          animate={{ y: hovered ? -2 : 0 }}
+          transition={{ duration: 0.4, ease: "easeOut" }}
+        >
+          sunny
+        </motion.span>
+        <span className="text-[18px] font-light text-stone-700 leading-none">72°</span>
+      </div>
+      <div className="text-[9px] text-stone-400 mt-1">Sunny, perfect weather for building things</div>
+    </motion.div>
+  );
+}
+
 function DesktopWidgets() {
   const today = new Date();
   const currentDay = today.getDate();
@@ -2027,14 +2056,7 @@ function DesktopWidgets() {
       <div className="grid grid-cols-3 gap-3">
         {/* Left column: Weather + To-Do stacked */}
         <div className="flex flex-col gap-3">
-          <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-white/80 rounded-xl px-3 py-2.5">
-            <div className="text-[9px] text-stone-400 uppercase tracking-wider mb-1">Seattle</div>
-            <div className="flex items-center gap-1.5">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" strokeWidth="1.5"><path d="M18 10a6 6 0 00-12 0 4 4 0 000 8h12a3 3 0 100-6 3 3 0 00-1-2"/></svg>
-              <span className="text-[18px] font-light text-stone-700 leading-none">52°</span>
-            </div>
-            <div className="text-[9px] text-stone-400 mt-1">Perfect weather for building things</div>
-          </motion.div>
+          <WeatherCard />
 
           <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="bg-white/80 rounded-xl p-3 flex-1">
             <div className="text-[9px] text-stone-400 uppercase tracking-wider mb-3">To-Do</div>
