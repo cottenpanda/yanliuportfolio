@@ -303,7 +303,7 @@ export function FolderWindowContent() {
           </div>
 
           <div className="relative h-[620px] min-w-[1000px] overflow-hidden flex">
-            <div className="w-[170px] shrink-0 bg-[#F0EFED]/60 backdrop-blur-sm border-r border-stone-200/60 py-3 px-2 overflow-y-auto">
+            <div className="w-[170px] shrink-0 bg-[#F0EFED]/60 backdrop-blur-sm border-r border-stone-200/60 py-3 px-2">
               <p className="text-[11px] font-medium text-stone-400 px-2 mb-1">Favorites</p>
               {sidebarItems.map((item) => (
                 <button
@@ -380,7 +380,7 @@ export function FolderWindowContent() {
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.2 }}
-                    className="h-full overflow-y-auto"
+                    className="h-full overflow-hidden"
                   >
                     <div className="grid grid-cols-5 gap-y-6 gap-x-2 px-8 py-8 justify-items-center">
                       {appTools.map((tool, i) => (
@@ -398,7 +398,7 @@ export function FolderWindowContent() {
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.2 }}
-                    className="h-[620px] overflow-y-auto"
+                    className="h-[620px] overflow-hidden"
                   >
                     <div className="grid grid-cols-4 gap-x-2 gap-y-4 p-5 items-start content-start">
                       {[
@@ -443,7 +443,7 @@ export function FolderWindowContent() {
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.2 }}
-                    className="h-[620px] overflow-y-auto"
+                    className="h-[620px] overflow-hidden"
                   >
                     <DesktopWidgets />
                   </motion.div>
@@ -454,7 +454,7 @@ export function FolderWindowContent() {
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.2 }}
-                    className="h-[620px] overflow-y-auto"
+                    className="h-[620px] overflow-hidden"
                   >
                     <RecentStatus />
                   </motion.div>
