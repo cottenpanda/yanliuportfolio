@@ -1584,7 +1584,6 @@ const sidebarItems = [
   { id: "yanliu", label: "yanliu", icon: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2196F3" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg> },
   { id: "desktop", label: "Desktop", icon: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2196F3" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg> },
   { id: "recents", label: "Recents", icon: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2196F3" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> },
-  { id: "documents", label: "Documents", icon: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2196F3" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> },
 ];
 
 const statusItems = [
@@ -1981,9 +1980,11 @@ function FuelMixRadar() {
 }
 
 const reminders = [
-  "Stay away from drama and negativity",
-  "A small step every day",
-  "Work hard in silence",
+  "Think deeply",
+  "Stay data-driven",
+  "Experiment often",
+  "Simplify complexity",
+  "Detail-focused",
   "Stay curious, stay humble",
 ];
 
@@ -2007,25 +2008,44 @@ function ReminderCard() {
     <motion.div
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
-      whileHover={{ rotate: -2, scale: 1.02, boxShadow: "4px 4px 12px rgba(0,0,0,0.08)" }}
+      whileHover={{ rotate: -2, scale: 1.02, boxShadow: "4px 6px 16px rgba(0,0,0,0.1)" }}
       transition={{ delay: 0.05 }}
-      className="bg-white/80 rounded-xl p-3 cursor-pointer origin-top-left"
+      className="cursor-pointer origin-top-left relative flex flex-col"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
-      <div className="text-[9px] text-stone-400 uppercase tracking-wider mb-2">Reminder</div>
-      <ul className="space-y-[5px] list-disc list-inside text-[11px] text-stone-500 leading-snug">
-        {reminders.slice(0, visibleCount).map((r, i) => (
-          <motion.li
-            key={i}
-            initial={{ opacity: 0, x: -8 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.25 }}
-          >
-            {r}
-          </motion.li>
-        ))}
-      </ul>
+      {/* Binder clip */}
+      <div className="flex justify-center -mb-[6px] relative z-10">
+        <svg width="28" height="14" viewBox="0 0 28 14" fill="none">
+          <rect x="8" y="0" width="12" height="10" rx="2" fill="#57534e" />
+          <rect x="10" y="2" width="8" height="6" rx="1" fill="#44403c" />
+          <path d="M6 10 C6 6, 10 4, 14 4 C18 4, 22 6, 22 10" stroke="#78716c" strokeWidth="2" fill="none" />
+        </svg>
+      </div>
+      {/* Dark backing (stacked pad) */}
+      <div className="relative">
+        <div className="absolute top-[4px] left-[3px] right-[-6px] bottom-[-6px] bg-stone-700 rounded-[4px]" />
+      {/* Paper */}
+      <div className="bg-white rounded-[3px] shadow-[0_1px_4px_rgba(0,0,0,0.08)] relative overflow-hidden">
+        {/* Torn top edge */}
+        <div className="h-[3px] w-full" style={{ background: "repeating-linear-gradient(90deg, #e7e5e4 0px, #e7e5e4 3px, transparent 3px, transparent 6px)" }} />
+        {/* Ruled lines background */}
+        <div className="p-3 pt-2">
+          <div className="text-[9px] text-stone-400 uppercase tracking-wider mb-2 font-medium">Design Notes</div>
+          <ul className="space-y-[4px] text-[11px] text-stone-600 leading-snug">
+            {reminders.map((r, i) => (
+              <motion.li
+                key={i}
+                animate={{ opacity: i < visibleCount ? 1 : 0, x: i < visibleCount ? 0 : -8 }}
+                transition={{ duration: 0.25 }}
+              >
+                • {r}
+              </motion.li>
+            ))}
+          </ul>
+        </div>
+      </div>
+      </div>
     </motion.div>
   );
 }
@@ -2266,40 +2286,42 @@ function FolderWindowContent() {
                     transition={{ duration: 0.2 }}
                     className="h-[620px] overflow-y-auto"
                   >
-                    {/* Finder list view header */}
-                    <div className="flex items-center px-4 py-1.5 border-b border-stone-200/60 text-[10px] text-stone-400 uppercase tracking-wider">
-                      <span className="flex-1">Name</span>
-                      <span className="w-[100px]">Date Modified</span>
-                      <span className="w-[60px]">Size</span>
-                      <span className="w-[80px]">Kind</span>
+                    <div className="grid grid-cols-4 gap-x-2 gap-y-4 p-5 items-start content-start">
+                      {[
+                        { name: "Yan Liu\nresume.pdf", color: "#3b82f6" },
+                        { name: "Portfolio\nCase Study.pdf", color: "#8b5cf6" },
+                      ].map((doc, i) => (
+                        <motion.a
+                          key={doc.name}
+                          href="https://yanliu.design/"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: i * 0.1 }}
+                          whileHover={{ y: -4 }}
+                          className="flex flex-col items-center gap-1.5 cursor-pointer group"
+                        >
+                          {/* macOS file icon with folded corner */}
+                          <div className="relative w-[90px] h-[110px]">
+                            <svg width="90" height="110" viewBox="0 0 90 110" fill="none">
+                              <path d="M6 2h58l20 20v82a4 4 0 01-4 4H6a4 4 0 01-4-4V6a4 4 0 014-4z" fill="white" stroke="#d4d4d4" strokeWidth="0.8"/>
+                              <path d="M64 2v16a4 4 0 004 4h16" fill="#ebebeb" stroke="#d4d4d4" strokeWidth="0.8" strokeLinejoin="round"/>
+                              <rect x="12" y="28" width="30" height="3" rx="1.5" fill="#c8c8c8"/>
+                              <rect x="12" y="36" width="56" height="2" rx="1" fill="#e0e0e0"/>
+                              <rect x="12" y="42" width="50" height="2" rx="1" fill="#e0e0e0"/>
+                              <rect x="12" y="48" width="54" height="2" rx="1" fill="#e0e0e0"/>
+                              <rect x="12" y="54" width="42" height="2" rx="1" fill="#e0e0e0"/>
+                              <rect x="12" y="60" width="56" height="2" rx="1" fill="#e0e0e0"/>
+                              <rect x="12" y="66" width="38" height="2" rx="1" fill="#e0e0e0"/>
+                              <rect x="12" y="72" width="48" height="2" rx="1" fill="#e0e0e0"/>
+                              <text x="45" y="95" textAnchor="middle" fill="#a8a29e" fontSize="12" fontWeight="500">PDF</text>
+                            </svg>
+                          </div>
+                          <span className="text-[11px] text-stone-600 group-hover:text-stone-800 text-center leading-tight max-w-[100px] transition-colors whitespace-pre-line">{doc.name}</span>
+                        </motion.a>
+                      ))}
                     </div>
-                    {[
-                      { name: "page.tsx", date: "Today, 7:42 PM", size: "62 KB", kind: "TypeScript" },
-                      { name: "globals.css", date: "Today, 6:15 PM", size: "8 KB", kind: "CSS" },
-                      { name: "siteConfig.ts", date: "Today, 5:30 PM", size: "3 KB", kind: "TypeScript" },
-                      { name: "package.json", date: "Today, 4:20 PM", size: "1 KB", kind: "JSON" },
-                      { name: "README.md", date: "Yesterday", size: "2 KB", kind: "Markdown" },
-                      { name: "page-flip-test.html", date: "Yesterday", size: "18 KB", kind: "HTML" },
-                      { name: "tsconfig.json", date: "Mar 8", size: "1 KB", kind: "JSON" },
-                      { name: "renderBold.tsx", date: "Mar 7", size: "1 KB", kind: "TypeScript" },
-                      { name: ".env.local", date: "Mar 5", size: "0.2 KB", kind: "ENV" },
-                      { name: "tailwind.config.ts", date: "Mar 4", size: "2 KB", kind: "TypeScript" },
-                      { name: "layout.tsx", date: "Mar 3", size: "1 KB", kind: "TypeScript" },
-                      { name: "next.config.mjs", date: "Mar 1", size: "1 KB", kind: "JavaScript" },
-                    ].map((file, i) => (
-                      <div key={i} className={`flex items-center px-4 py-[6px] text-[12px] border-b border-stone-100/60 ${i % 2 === 0 ? "" : "bg-stone-50/30"}`}>
-                        <div className="flex items-center gap-2 flex-1 min-w-0">
-                          <svg width="18" height="22" viewBox="0 0 18 22" fill="none" xmlns="http://www.w3.org/2000/svg" className="shrink-0">
-                            <path d="M2 0.5h9.5l5.5 5.5v14.5a1 1 0 01-1 1H2a1 1 0 01-1-1V1.5a1 1 0 011-1z" fill="white" stroke="#C8C8C8" strokeWidth="0.7"/>
-                            <path d="M11.5 0.5v4.5a1 1 0 001 1h4.5" fill="#EBEBEB" stroke="#C8C8C8" strokeWidth="0.7" strokeLinejoin="round"/>
-                          </svg>
-                          <span className="text-stone-700 truncate">{file.name}</span>
-                        </div>
-                        <span className="w-[100px] text-stone-400 text-[11px]">{file.date}</span>
-                        <span className="w-[60px] text-stone-400 text-[11px]">{file.size}</span>
-                        <span className="w-[80px] text-stone-400 text-[11px]">{file.kind}</span>
-                      </div>
-                    ))}
                   </motion.div>
                 ) : activeSidebar === "desktop" ? (
                   <motion.div
