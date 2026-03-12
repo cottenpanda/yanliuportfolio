@@ -233,7 +233,7 @@ function FuelMixRadar() {
       onMouseLeave={stopReveal}
     >
       <div className="text-[9px] text-stone-400 uppercase tracking-wider self-start mb-1">Fuel Mix</div>
-      <svg width="130" height="130" viewBox="0 0 130 130">
+      <svg width="150" height="130" viewBox="-10 0 150 130">
         {[...Array(radarLevels)].map((_, l) => {
           const r = radarMaxR * ((l + 1) / radarLevels);
           const pts = radarStats.map((_, i) => radarPt(i, r)).join(" ");
