@@ -2062,19 +2062,24 @@ function WeatherCard() {
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
-      <div className="text-[9px] text-stone-400 uppercase tracking-wider mb-1">Seattle</div>
-      <div className="flex items-center gap-1.5">
-        <motion.span
-          className="material-symbols-outlined text-amber-400"
-          style={{ fontSize: 18 }}
-          animate={{ y: hovered ? -2 : 0 }}
-          transition={{ duration: 0.4, ease: "easeOut" }}
-        >
-          sunny
-        </motion.span>
-        <span className="text-[18px] font-light text-stone-700 leading-none">72°</span>
+      <div className="flex items-center gap-2">
+        <img src="/weather-thumbnail.jpg" alt="Seattle" className="w-[48px] h-[48px] rounded-lg object-cover flex-shrink-0" />
+        <div>
+          <div className="text-[9px] text-stone-400 uppercase tracking-wider mb-1">Seattle</div>
+          <div className="flex items-center gap-1.5">
+            <motion.span
+              className="material-symbols-outlined text-amber-400"
+              style={{ fontSize: 18 }}
+              animate={{ y: hovered ? -2 : 0 }}
+              transition={{ duration: 0.4, ease: "easeOut" }}
+            >
+              sunny
+            </motion.span>
+            <span className="text-[18px] font-light text-stone-700 leading-none">72°</span>
+          </div>
+          <div className="text-[9px] text-stone-400 mt-1">Sunny, perfect weather for building things</div>
+        </div>
       </div>
-      <div className="text-[9px] text-stone-400 mt-1">Sunny, perfect weather for building things</div>
     </motion.div>
   );
 }
