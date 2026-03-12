@@ -63,7 +63,7 @@ function ScatterImage({
 
   const scrollX = useTransform(scrollYProgress, [0, moveStart, moveEnd], [startX, startX, 0]);
   const scrollY = useTransform(scrollYProgress, [0, moveStart, moveEnd], [startY, startY, 0]);
-  const scrollOpacity = useTransform(scrollYProgress, [0.1, 0.3, 0.85, 1], [0, 1, 1, 1]);
+  const scrollOpacity = useTransform(scrollYProgress, [0.25, 0.45, 0.85, 1], [0, 1, 1, 1]);
 
   const dragX = useMotionValue(0);
   const dragY = useMotionValue(0);

@@ -172,7 +172,7 @@ export default function Home() {
 
 
       {/* Bulletin board */}
-      <div className="mt-8" />
+      <div className="mt-32" />
       <ScatterBoard
         imgZIndex={imgZIndex}
         setImgZIndex={setImgZIndex}
