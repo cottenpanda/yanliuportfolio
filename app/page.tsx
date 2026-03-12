@@ -2090,8 +2090,8 @@ function DesktopWidgets() {
   const [todos, setTodos] = useState([
     { text: "Fix that weird animation bug", done: false },
     { text: "Ship the tiny tool I started", done: false },
-    { text: "Sketch 3 new interaction ideas", done: false },
-    { text: "Try a new AI experiment", done: false },
+    { text: "Prototype 3 new ideas", done: false },
+    { text: "Try OpenClaw", done: false },
     { text: "Try not to open 20 tabs", done: false },
     { text: "Clean up my messy desktop", done: false },
     { text: "Celebrate small wins", done: false },
