@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { motion, useScroll, useTransform, useMotionValueEvent, useMotionValue } from "framer-motion";
 import { ClickBurst } from "./click-burst";
 
@@ -67,14 +67,27 @@ function ScatterImage({
 
   const dragX = useMotionValue(0);
   const dragY = useMotionValue(0);
+  const imgRef = useRef<HTMLDivElement>(null);
+  const [tilt, setTilt] = useState({ rotateX: 0, rotateY: 0 });
+
+  const handleMouseMove = useCallback((e: React.MouseEvent) => {
+    const el = imgRef.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width - 0.5;
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
+    setTilt({ rotateX: -y * 20, rotateY: x * 20 });
+  }, []);
+
+  const handleMouseLeave = useCallback(() => {
+    setTilt({ rotateX: 0, rotateY: 0 });
+  }, []);
 
   return (
-    <motion.img
-      src={img.src}
-      alt={`Showcase ${index + 1}`}
+    <motion.div
+      ref={imgRef}
       drag={landed}
       dragMomentum={false}
-      whileHover={{ scale: 1.05 }}
       whileDrag={{ scale: 1.08 }}
       onDragStart={() => {
         zCounterRef.current += 1;
@@ -84,7 +97,9 @@ function ScatterImage({
         const evt = e as unknown as MouseEvent;
         setBursts((prev) => [...prev, { id: Date.now(), x: evt.clientX, y: evt.clientY }]);
       }}
-      className="absolute rounded-md shadow-lg cursor-grab active:cursor-grabbing"
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      className="absolute cursor-grab active:cursor-grabbing"
       style={{
         top: img.top,
         left: img.left,
@@ -94,9 +109,22 @@ function ScatterImage({
         x: landed ? dragX : scrollX,
         y: landed ? dragY : scrollY,
         opacity: scrollOpacity,
+        perspective: 600,
       }}
-      draggable={false}
-    />
+    >
+      <motion.img
+        src={img.src}
+        alt={`Showcase ${index + 1}`}
+        className="w-full rounded-md shadow-lg"
+        animate={{
+          rotateX: tilt.rotateX,
+          rotateY: tilt.rotateY,
+          scale: tilt.rotateX !== 0 || tilt.rotateY !== 0 ? 1.05 : 1,
+        }}
+        transition={{ type: "spring", stiffness: 300, damping: 20 }}
+        draggable={false}
+      />
+    </motion.div>
   );
 }
 
@@ -183,7 +211,6 @@ export function ScatterBoard({
                   alt={`Showcase ${i + 1}`}
                   drag
                   dragMomentum={false}
-                  whileHover={{ scale: 1.05 }}
                   whileDrag={{ scale: 1.08 }}
                   onDragStart={() => {
                     zCounterRef.current += 1;
