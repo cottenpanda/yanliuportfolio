@@ -73,8 +73,8 @@ const funFacts = [
 const stackRotations = [3, -2, 5];
 const spreadX = [-165, 0, 165];
 
-function PolaroidCard({ fact, index, spread, isFlipped, onFlip }: {
-  fact: typeof funFacts[0]; index: number; spread: boolean; isFlipped: boolean; onFlip: (i: number) => void;
+function PolaroidCard({ fact, index, spread, isFlipped, onFlip, onHoverCard }: {
+  fact: typeof funFacts[0]; index: number; spread: boolean; isFlipped: boolean; onFlip: (i: number) => void; onHoverCard: () => void;
 }) {
   return (
     <motion.div
@@ -86,7 +86,8 @@ function PolaroidCard({ fact, index, spread, isFlipped, onFlip }: {
       }}
       transition={{ type: "spring", stiffness: 200, damping: 22 }}
       className="absolute cursor-pointer"
-      style={{ width: 155, perspective: 800, pointerEvents: spread ? "auto" : "none" }}
+      style={{ width: 155, perspective: 800 }}
+      onMouseEnter={onHoverCard}
       onClick={(e) => { e.stopPropagation(); if (spread) onFlip(index); }}
     >
       <motion.div
@@ -130,7 +131,6 @@ function FunFactsWidget() {
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.25 }}
       className="col-span-2 bg-white/80 rounded-xl p-3 flex flex-col"
-      onMouseEnter={() => setSpread(true)}
       onMouseLeave={() => { setSpread(false); setFlippedSet(new Set()); }}
     >
       <div className="text-[9px] text-stone-400 uppercase tracking-wider mb-2">Fun Facts</div>
@@ -147,6 +147,7 @@ function FunFactsWidget() {
               if (next.has(idx)) next.delete(idx); else next.add(idx);
               return next;
             })}
+            onHoverCard={() => setSpread(true)}
           />
         ))}
       </div>
