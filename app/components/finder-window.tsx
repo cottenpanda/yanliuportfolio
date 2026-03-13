@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { siteConfig } from "@/lib/siteConfig";
 import { renderBold } from "@/lib/renderBold";
@@ -134,6 +134,12 @@ function FolderSideSheet({ folderIndex, onClose, onNavigate }: {
   const image = folderImages[folderIndex];
   const icon = folderIcons[folderIndex];
   const nextIndex = (folderIndex + 1) % folderContent.length;
+  const dirRef = useRef(1);
+  const prevIndexRef = useRef(folderIndex);
+  if (folderIndex !== prevIndexRef.current) {
+    dirRef.current = folderIndex > prevIndexRef.current ? 1 : -1;
+    prevIndexRef.current = folderIndex;
+  }
 
   return (
     <motion.div
@@ -179,14 +185,21 @@ function FolderSideSheet({ folderIndex, onClose, onNavigate }: {
           </button>
         </div>
 
-        <div className="relative h-[calc(100%-45px)] overflow-y-auto">
-          <AnimatePresence mode="wait">
+        <div className="relative h-[calc(100%-45px)] overflow-hidden">
+          <AnimatePresence initial={false} custom={dirRef.current}>
             <motion.div
               key={folderIndex}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.2 }}
+              custom={dirRef.current}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              variants={{
+                enter: (dir: number) => ({ x: dir * -480 }),
+                center: { x: 0 },
+                exit: (dir: number) => ({ x: dir * 480 }),
+              }}
+              transition={{ type: "spring", stiffness: 300, damping: 30 }}
+              style={{ position: "absolute", top: 0, left: 0, right: 0 }}
             >
               <div className="relative w-full">
                 <img src={image} alt={content.title} className="w-full h-auto object-contain" />
