@@ -14,7 +14,7 @@ import { RippedPaperNote } from "./components/ripped-paper";
 import { PortfolioViewer } from "./components/finder-window";
 import { ScatterBoard } from "./components/scatter-board";
 import { ClickBurst } from "./components/click-burst";
-import { CursorTrail } from "./components/cursor-trail";
+import { PencilCursor } from "./components/cursor-trail";
 
 /* ── Tab definitions ── */
 const tabs = siteConfig.sections.map((s) => ({
@@ -46,6 +46,7 @@ export default function Home() {
 
   return (
     <div className="relative" style={{ overflowX: "clip" }} onClick={handlePageClick}>
+      <PencilCursor />
       <StarBackground />
       {pageBursts.map((b) => (
         <ClickBurst key={b.id} x={b.x} y={b.y} onDone={() => setPageBursts((prev) => prev.filter((p) => p.id !== b.id))} />

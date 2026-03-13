@@ -7,6 +7,7 @@ html {
 }
 
 body {
+  cursor: none;
   background-color: #FAF8F5;
   background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='40' height='40'><line x1='20' y1='15' x2='20' y2='25' stroke='rgba(0,0,0,0.1)' stroke-width='1'/><line x1='15' y1='20' x2='25' y2='20' stroke='rgba(0,0,0,0.1)' stroke-width='1'/></svg>");
   color: #1C1917;
