@@ -387,6 +387,9 @@ body::before {
 }
 
 .vinyl-spin {
+  animation: none;
+}
+.group\/vinyl:hover .vinyl-spin {
   animation: vinyl-spin 12s linear infinite;
 }
 
