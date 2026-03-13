@@ -194,11 +194,11 @@ export function ScatterBoard({
               backgroundImage: `radial-gradient(circle, rgba(180, 160, 130, 0.3) 1.2px, transparent 1.2px)`,
               backgroundSize: "24px 24px",
             }} />
-            {/* Row numbers */}
+            {/* Coordinates */}
             <div className="absolute top-0 left-0 bottom-0 w-[24px] flex flex-col pointer-events-none select-none">
-              {Array.from({ length: 16 }).map((_, i) => (
-                <span key={i} className="font-mono text-[9px] text-stone-400 text-right pr-1" style={{ height: "36px", lineHeight: "36px" }}>
-                  {i + 1}
+              {"47.6062°N 122.3321°W".split("").map((ch, i) => (
+                <span key={i} className="font-mono text-[9px] text-stone-400 text-center" style={{ height: "29px", lineHeight: "29px" }}>
+                  {ch}
                 </span>
               ))}
             </div>

@@ -169,38 +169,8 @@ export function ScrollRevealText() {
           cardRotate={cell.cardRotate}
         />
       ))}
-      {/* Left: computer */}
-      <div
-        className="hidden lg:block absolute -left-[175px] top-[48px] w-[160px] transition-all duration-700 ease-out"
-        style={{
-          opacity: visible ? 1 : 0,
-          transform: visible ? "translateX(0) rotate(-15deg)" : "translateX(-60px) rotate(-15deg)",
-        }}
-      >
-        <img
-          src="/computer.png"
-          alt=""
-          className="w-full transition-transform duration-300 ease-out hover:scale-110 hover:-translate-y-2 cursor-pointer"
-          draggable={false}
-        />
-      </div>
-
-      {/* Right: earbuds */}
-      <div
-        className="hidden lg:block absolute -right-[170px] top-[20px] w-[140px] transition-all duration-700 ease-out"
-        style={{
-          opacity: visible ? 1 : 0,
-          transform: visible ? "translateX(0) rotate(-5deg)" : "translateX(60px) rotate(-5deg)",
-          transitionDelay: "0.2s",
-        }}
-      >
-        <img
-          src="/earbuds.png"
-          alt=""
-          className="w-full transition-transform duration-300 ease-out hover:scale-110 hover:-translate-y-2 cursor-pointer"
-          draggable={false}
-        />
-      </div>
+      {/* Left: computer (hidden) */}
+      {/* Right: earbuds (hidden) */}
 
       <p
         className="font-[family-name:var(--font-courier-prime)] text-[17px] md:text-[20px] text-stone-600 leading-relaxed transition-all duration-700 ease-out"
