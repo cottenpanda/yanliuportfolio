@@ -14,6 +14,7 @@ import { RippedPaperNote } from "./components/ripped-paper";
 import { PortfolioViewer } from "./components/finder-window";
 import { ScatterBoard } from "./components/scatter-board";
 import { ClickBurst } from "./components/click-burst";
+import { CursorTrail } from "./components/cursor-trail";
 
 /* ── Tab definitions ── */
 const tabs = siteConfig.sections.map((s) => ({
