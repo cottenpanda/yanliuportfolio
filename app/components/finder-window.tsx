@@ -89,7 +89,7 @@ function FolderIcon({ color, title, onClick, isSelected, icon }: {
   return (
     <motion.button
       onClick={onClick}
-      className="flex flex-col items-center gap-2.5 group cursor-pointer"
+      className="flex flex-col items-center gap-2.5 group cursor-pointer w-[100px]"
       whileHover={{ scale: 1.08 }}
       whileTap={{ scale: 0.95 }}
       transition={{ duration: 0.2 }}
@@ -116,7 +116,7 @@ function FolderIcon({ color, title, onClick, isSelected, icon }: {
           style={{ filter: "brightness(0) saturate(0)", opacity: 0.1, mixBlendMode: "multiply" }}
         />
       </div>
-      <span className={`text-[11px] leading-tight text-center max-w-[100px] transition-colors duration-200 ${
+      <span className={`text-[11px] leading-tight text-center max-w-[100px] min-h-[28px] transition-colors duration-200 ${
         isSelected ? "text-stone-900 font-medium" : "text-stone-500 group-hover:text-stone-700"
       }`}>
         {title}
@@ -373,10 +373,14 @@ export function FolderWindowContent() {
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.2 }}
-                    className="h-full"
+                    className="h-full flex"
                   >
-                    <div className={`pt-10 pl-10 pr-6 ${!unlocked ? "select-none pointer-events-none" : ""}`}>
-                      <div className="flex gap-x-14 gap-y-8 flex-wrap content-start">
+                    {/* Left: Folders */}
+                    <div
+                      className="pt-8 pl-8 pr-6 shrink-0"
+                      style={{ width: openFolder !== null ? 280 : "100%" }}
+                    >
+                      <div className={`grid ${openFolder !== null ? "grid-cols-2" : "grid-cols-5"} gap-x-10 gap-y-6 content-start`}>
                         {siteConfig.sections.map((section, i) => (
                           <FolderIcon
                             key={section.id}
@@ -390,14 +394,55 @@ export function FolderWindowContent() {
                       </div>
                     </div>
 
+                    {/* Right: Content preview */}
                     <AnimatePresence>
-                      {openFolder !== null && unlocked && (
-                        <FolderSideSheet
-                          key="sheet"
-                          folderIndex={openFolder}
-                          onClose={() => setOpenFolder(null)}
-                          onNavigate={(i) => setOpenFolder(i)}
-                        />
+                      {openFolder !== null && (
+                        <motion.div
+                          key="preview"
+                          className="border-l border-stone-200/60 overflow-y-auto h-[620px] w-[460px] shrink-0 ml-auto"
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          exit={{ opacity: 0 }}
+                          transition={{ duration: 0.25 }}
+                          style={{ backgroundColor: "#FAF8F5" }}
+                        >
+                          <AnimatePresence mode="wait">
+                            <motion.div
+                              key={openFolder}
+                              initial={{ opacity: 0 }}
+                              animate={{ opacity: 1 }}
+                              exit={{ opacity: 0 }}
+                              transition={{ duration: 0.2 }}
+                            >
+                              <div className="relative w-full">
+                                <img src={folderImages[openFolder]} alt={folderContent[openFolder].title} className="w-full h-auto object-contain" />
+                              </div>
+                              <div className="p-5 space-y-4">
+                                <h3 className="text-[16px] font-medium text-stone-800">{folderContent[openFolder].title}</h3>
+                                {folderContent[openFolder].description.split("\n\n").map((para, i) => (
+                                  <p key={i} className="text-stone-600 leading-relaxed text-[14px]">
+                                    {renderBold(para)}
+                                  </p>
+                                ))}
+                                {folderContent[openFolder].cta && (
+                                  <div className="flex gap-4 flex-wrap">
+                                    {(Array.isArray(folderContent[openFolder].cta) ? folderContent[openFolder].cta : [folderContent[openFolder].cta]).map((link, i) => (
+                                      <a
+                                        key={i}
+                                        href={(link as {label: string; url: string}).url}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="inline-block text-[13px] px-4 py-1.5 rounded-md border border-stone-700 text-stone-700 hover:bg-stone-700 hover:text-white transition-colors"
+                                      >
+                                        {(link as {label: string; url: string}).label}
+                                      </a>
+                                    ))}
+                                  </div>
+                                )}
+                              </div>
+                            </motion.div>
+                          </AnimatePresence>
+                        </motion.div>
                       )}
                     </AnimatePresence>
                   </motion.div>
