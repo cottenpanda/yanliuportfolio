@@ -378,7 +378,7 @@ export function FolderWindowContent() {
                   >
                     {/* Left: Folders */}
                     <div
-                      className="pt-8 pl-8 pr-6 shrink-0 transition-[width] duration-300 ease-in-out"
+                      className="pt-8 pl-8 pr-6 shrink-0 transition-[width] duration-[350ms] ease-out"
                       style={{ width: openFolder !== null ? 280 : "100%" }}
                     >
                       <div className={`grid ${openFolder !== null ? "grid-cols-2" : "grid-cols-5"} gap-x-10 gap-y-6 content-start`}>
@@ -401,10 +401,10 @@ export function FolderWindowContent() {
                         <motion.div
                           key="preview"
                           className="relative border-l border-stone-200/60 h-[620px] w-[460px] shrink-0 ml-auto flex flex-col"
-                          initial={{ opacity: 0 }}
-                          animate={{ opacity: 1 }}
-                          exit={{ opacity: 0 }}
-                          transition={{ duration: 0.25 }}
+                          initial={{ opacity: 0, x: 40 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          exit={{ opacity: 0, x: 40 }}
+                          transition={{ duration: 0.35, ease: "easeOut" }}
                           style={{ backgroundColor: "#FAF8F5" }}
                         >
                           <button
