@@ -64,7 +64,7 @@ export function RetroWindows() {
             <span className="text-[11px] text-stone-400 select-none">yan-liu — zsh</span>
             <div className="w-[52px]" />
           </div>
-          <div className="w-full h-[220px] p-3 overflow-hidden font-mono text-[11px] leading-[1.7]">
+          <div className="w-full h-[200px] p-3 overflow-hidden font-mono text-[11px] leading-[1.7]">
             {terminalLines.map((line, i) => (
               <div key={i}>
                 {display[i * 2] !== undefined && (
@@ -88,14 +88,9 @@ export function RetroWindows() {
               </div>
             )}
             {showCat && (
-              <>
-                <div className="text-stone-800 mb-1">
-                  <span className="text-emerald-600">~</span> $ cat dance.sh
-                </div>
-                <div className="flex justify-center">
-                  <img src="/cat-dance.gif" alt="Dancing cat" className="h-[90px]" draggable={false} />
-                </div>
-              </>
+              <div className="flex justify-center">
+                <img src="/cat-dance.gif" alt="Dancing cat" className="h-[90px]" draggable={false} />
+              </div>
             )}
           </div>
         </div>
