@@ -238,11 +238,11 @@ export function NameBadge() {
             }} />
             {/* Name */}
             <div className="relative z-10">
-              <h3 className="text-white font-extrabold text-[32px] leading-[1.05] tracking-[0.15em]">刘彦</h3>
-              <p className="font-[family-name:var(--font-noto)] text-white/50 text-[9px] uppercase tracking-[0.1em] mt-2">Seattle-based<br />Senior Product Designer</p>
+              <h3 className="text-white font-extrabold text-[20px] leading-[1.05] tracking-[0.08em]">Designer</h3>
+              <p className="font-[family-name:var(--font-noto)] text-white/50 text-[11px] tracking-[0.05em] mt-2 leading-relaxed">Love exploring, prototyping,<br />storytelling, and visual craft</p>
             </div>
             {/* Starburst accent */}
-            <img src="/yellow-star.svg" alt="" className="absolute top-3 right-3 z-10 w-12 h-12" draggable={false} />
+            {/* <img src="/yellow-star.svg" alt="" className="absolute top-3 right-3 z-10 w-12 h-12" draggable={false} /> */}
           </div>
 
           {/* Bottom section — dark with profile photo */}
