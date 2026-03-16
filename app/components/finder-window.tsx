@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useRef } from "react";
+import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
 import { siteConfig } from "@/lib/siteConfig";
 import { renderBold } from "@/lib/renderBold";
@@ -203,7 +204,7 @@ function FolderSideSheet({ folderIndex, onClose, onNavigate }: {
               style={{ position: "absolute", top: 0, left: 0, right: 0 }}
             >
               <div className="relative w-full">
-                <img src={image} alt={content.title} className="w-full h-auto object-contain" />
+                <Image src={image} alt={content.title} width={480} height={300} className="w-full h-auto object-contain" priority />
               </div>
 
               <div className="relative p-5 space-y-4">
@@ -425,7 +426,7 @@ export function FolderWindowContent() {
                                 transition={{ duration: 0.2 }}
                               >
                                 <div className="relative w-full">
-                                  <img src={folderImages[openFolder]} alt={folderContent[openFolder].title} className="w-full h-auto object-contain" />
+                                  <Image src={folderImages[openFolder]} alt={folderContent[openFolder].title} width={460} height={300} className="w-full h-auto object-contain" priority />
                                 </div>
                                 <div className="p-5 space-y-4">
                                   <h3 className="text-[16px] font-medium text-stone-800">{folderContent[openFolder].title}</h3>
