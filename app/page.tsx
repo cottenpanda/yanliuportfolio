@@ -15,6 +15,7 @@ import { PortfolioViewer } from "./components/finder-window";
 import { ScatterBoard } from "./components/scatter-board";
 import { ClickBurst } from "./components/click-burst";
 import { NavHeader } from "./components/nav-header";
+import { CursorHint } from "./components/cursor-hint";
 
 /* ── Tab definitions ── */
 const tabs = siteConfig.sections.map((s) => ({
@@ -53,6 +54,7 @@ export default function Home() {
       ))}
 
       {/* Hero — full viewport, centered */}
+      <CursorHint label="Hover on items">
       <div className="min-h-screen flex items-center justify-center px-4 relative z-10">
       <div className="relative w-[1400px] h-[900px] overflow-visible" style={{ maxWidth: "100vw", transform: "translateX(-25px)" }}>
         <MacFolder />
@@ -167,7 +169,7 @@ export default function Home() {
         </div>
       </div>
       </div>
-
+      </CursorHint>
 
       {/* Bulletin board */}
       <div id="playground" className="mt-32 scroll-mt-16" />
