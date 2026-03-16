@@ -189,7 +189,7 @@ function EnergyCircle() {
           <span className="text-[18px] font-semibold text-stone-700 leading-none">95%</span>
         </div>
       </div>
-      <div className="text-[9px] text-stone-400 mt-1">Feeling great</div>
+      <div className="text-[10px] text-stone-600 mt-1">Feeling great</div>
     </motion.div>
   );
 }
@@ -234,7 +234,7 @@ function FuelMixRadar() {
       onMouseLeave={stopReveal}
     >
       <div className="text-[9px] text-stone-400 uppercase tracking-wider self-start mb-1">Fuel Mix</div>
-      <svg width="150" height="130" viewBox="-10 0 150 130">
+      <svg width="170" height="150" viewBox="-20 -10 170 150">
         {[...Array(radarLevels)].map((_, l) => {
           const r = radarMaxR * ((l + 1) / radarLevels);
           const pts = radarStats.map((_, i) => radarPt(i, r)).join(" ");
@@ -262,10 +262,10 @@ function FuelMixRadar() {
           );
         })}
         {radarStats.map((s, i) => {
-          const lR = radarMaxR + 14;
+          const lR = radarMaxR + 18;
           const x = radarCx + lR * Math.cos(radarAngle(i));
           const y = radarCy + lR * Math.sin(radarAngle(i));
-          return <text key={i} x={x} y={y} textAnchor="middle" dominantBaseline="middle" className="text-[8px] fill-stone-600">{s.label}</text>;
+          return <text key={i} x={x} y={y} textAnchor="middle" dominantBaseline="middle" className="text-[10px] fill-stone-600">{s.label}</text>;
         })}
       </svg>
     </motion.div>
