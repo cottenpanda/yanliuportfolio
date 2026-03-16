@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+// hover state removed — typing auto-starts on load
 
 const terminalLines = [
   { prompt: "$ whoami", output: "Yan Liu — Senior Product Designer with 7+ years experience" },
@@ -8,14 +9,12 @@ const terminalLines = [
 ];
 
 export function RetroWindows() {
-  const [hovered, setHovered] = useState(false);
   const [display, setDisplay] = useState<string[]>([]);
   const [showCat, setShowCat] = useState(false);
 
   useEffect(() => {
-    if (!hovered) { setDisplay([]); setShowCat(false); return; }
     const timeouts: ReturnType<typeof setTimeout>[] = [];
-    let delay = 0;
+    let delay = 3800; // start after hero entrance animations
 
     terminalLines.forEach((line, lineIdx) => {
       for (let c = 1; c <= line.prompt.length; c++) {
@@ -42,12 +41,12 @@ export function RetroWindows() {
     timeouts.push(setTimeout(() => setShowCat(true), delay));
 
     return () => timeouts.forEach(clearTimeout);
-  }, [hovered]);
+  }, []);
 
   const allDone = display.length > 0 && display[terminalLines.length * 2 - 1] !== undefined;
 
   return (
-    <div className="hidden lg:block absolute top-[500px] right-[310px] z-20 hero-entrance" style={{ animation: "hero-slide-up 0.7s cubic-bezier(0.4,0,0.2,1) 3.55s both" }} onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}>
+    <div className="hidden lg:block absolute top-[500px] right-[310px] z-20 hero-entrance" style={{ animation: "hero-slide-up 0.7s cubic-bezier(0.4,0,0.2,1) 3.55s both" }}>
       <div className="w-[340px] transition-transform duration-300 hover:scale-105 cursor-pointer">
         <div className="rounded-lg overflow-hidden" style={{ background: "#ffffff", boxShadow: "0 4px 20px rgba(0,0,0,0.15), 0 1px 3px rgba(0,0,0,0.1)", border: "1px solid #e7e5e4" }}>
           <div

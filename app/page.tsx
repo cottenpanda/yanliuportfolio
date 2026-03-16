@@ -14,6 +14,7 @@ import { RippedPaperNote } from "./components/ripped-paper";
 import { PortfolioViewer } from "./components/finder-window";
 import { ScatterBoard } from "./components/scatter-board";
 import { ClickBurst } from "./components/click-burst";
+import { NavHeader } from "./components/nav-header";
 
 /* ── Tab definitions ── */
 const tabs = siteConfig.sections.map((s) => ({
@@ -45,6 +46,7 @@ export default function Home() {
 
   return (
     <div className="relative" style={{ overflowX: "clip" }} onClick={handlePageClick}>
+      <NavHeader />
       <StarBackground />
       {pageBursts.map((b) => (
         <ClickBurst key={b.id} x={b.x} y={b.y} onDone={() => setPageBursts((prev) => prev.filter((p) => p.id !== b.id))} />
@@ -104,10 +106,6 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Local time */}
-        <div className="hidden lg:block absolute right-[10px] top-[20px] z-20 hero-entrance" style={{ animation: "hero-fade-in 0.6s cubic-bezier(0.4,0,0.2,1) 3.7s both" }}>
-          <LocalTime />
-        </div>
 
         {/* Concert ticket */}
         <div
@@ -172,7 +170,7 @@ export default function Home() {
 
 
       {/* Bulletin board */}
-      <div className="mt-32" />
+      <div id="playground" className="mt-32 scroll-mt-16" />
       <ScatterBoard
         imgZIndex={imgZIndex}
         setImgZIndex={setImgZIndex}
@@ -183,13 +181,14 @@ export default function Home() {
       />
 
       {/* Ripped paper quote + bio with decorative images */}
-      <div className="mt-[260px]" />
+      <div id="about" className="mt-[260px] scroll-mt-16" />
       <div className="relative" style={{ transform: "translateX(-20px)" }}>
         <RippedPaperNote />
         <ScrollRevealText />
       </div>
 
       {/* Portfolio — folder view / book view */}
+      <div id="work" className="scroll-mt-16" />
       <PortfolioViewer />
 
       {/* Social icons */}
