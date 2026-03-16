@@ -377,7 +377,7 @@ export function FolderWindowContent() {
                   >
                     {/* Left: Folders */}
                     <div
-                      className="pt-8 pl-8 pr-6 shrink-0"
+                      className="pt-8 pl-8 pr-6 shrink-0 transition-[width] duration-300 ease-in-out"
                       style={{ width: openFolder !== null ? 280 : "100%" }}
                     >
                       <div className={`grid ${openFolder !== null ? "grid-cols-2" : "grid-cols-5"} gap-x-10 gap-y-6 content-start`}>
