@@ -47,7 +47,7 @@ export function DotMatrixBoard() {
       href={siteConfig.links.figma}
       target="_blank"
       rel="noopener noreferrer"
-      className="hidden lg:block absolute right-[250px] top-[280px] z-20 cursor-pointer transition-transform duration-300 ease-out rotate-[8deg] scale-[0.65] hover:scale-[0.72] hover:rotate-[3deg] group/matrix hero-entrance"
+      className="hidden lg:block absolute right-[250px] top-[280px] z-20 cursor-pointer transition-transform duration-300 ease-out rotate-[8deg] scale-[0.55] hover:scale-[0.62] hover:rotate-[3deg] group/matrix hero-entrance"
       style={{ willChange: "transform", animation: "hero-slide-right 0.7s cubic-bezier(0.4,0,0.2,1) 2.95s both" }}
     >
       <div className="rounded-2xl p-3" style={{

@@ -188,7 +188,6 @@ export default function Home() {
       </div>
 
       {/* Portfolio — folder view / book view */}
-      <div id="work" className="scroll-mt-16" />
       <PortfolioViewer />
 
       {/* Social icons */}

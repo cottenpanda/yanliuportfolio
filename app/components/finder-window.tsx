@@ -508,7 +508,9 @@ export function FolderWindowContent() {
 export function PortfolioViewer() {
   return (
     <motion.section
+      id="work"
       className="flex flex-col items-center px-6 pt-52 pb-12"
+      style={{ scrollMarginTop: "-180px" }}
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, ease: "easeOut" }}
