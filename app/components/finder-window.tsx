@@ -438,9 +438,12 @@ export function FolderWindowContent() {
                               </motion.div>
                             </AnimatePresence>
                           </div>
-                          {folderContent[openFolder!]?.cta && (
+                          {openFolder !== null && folderContent[openFolder]?.cta && (() => {
+                            const cta = folderContent[openFolder].cta;
+                            const links = Array.isArray(cta) ? cta.flat() : [cta];
+                            return (
                             <div className="flex gap-4 flex-wrap px-5 py-4 border-t border-stone-200/60">
-                              {(Array.isArray(folderContent[openFolder!].cta) ? folderContent[openFolder!].cta : [folderContent[openFolder!].cta]).map((link, i) => (
+                              {links.map((link, i) => (
                                 <a
                                   key={i}
                                   href={(link as {label: string; url: string}).url}
@@ -452,7 +455,8 @@ export function FolderWindowContent() {
                                 </a>
                               ))}
                             </div>
-                          )}
+                            );
+                          })()}
                         </motion.div>
                       )}
                     </AnimatePresence>
