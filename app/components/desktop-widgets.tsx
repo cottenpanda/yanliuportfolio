@@ -339,6 +339,51 @@ function ReminderCard() {
   );
 }
 
+function JourneyTimeline({ steps }: { steps: string[] }) {
+  const [hovered, setHovered] = useState(false);
+  const [visibleCount, setVisibleCount] = useState(0);
+
+  React.useEffect(() => {
+    if (!hovered) {
+      setVisibleCount(0);
+      return;
+    }
+    if (visibleCount >= steps.length) return;
+    const timer = setTimeout(() => setVisibleCount((c) => c + 1), 150);
+    return () => clearTimeout(timer);
+  }, [hovered, visibleCount, steps.length]);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.25 }}
+      className="bg-white/80 rounded-xl p-3 flex-1 cursor-default"
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+    >
+      <div className="text-[9px] text-stone-400 uppercase tracking-wider mb-3">My Journey</div>
+      <div className="space-y-0">
+        {steps.map((step, i) => (
+          <div
+            key={i}
+            className="flex items-start gap-2 transition-opacity duration-300"
+            style={{ opacity: hovered ? (i < visibleCount ? 1 : 0) : 1 }}
+          >
+            <div className="flex flex-col items-center shrink-0">
+              <div className="w-1.5 h-1.5 rounded-full bg-stone-400 mt-[5px]" />
+              {i < steps.length - 1 && (
+                <div className="w-0 flex-1 border-l border-dashed border-stone-300 min-h-[16px]" />
+              )}
+            </div>
+            <span className="text-[11px] text-stone-600 pb-1.5">{step}</span>
+          </div>
+        ))}
+      </div>
+    </motion.div>
+  );
+}
+
 function WeatherCard() {
   const [hovered, setHovered] = useState(false);
   return (
@@ -381,19 +426,17 @@ export function DesktopWidgets() {
   const monthName = today.toLocaleString("default", { month: "short" });
   const year = today.getFullYear();
 
-  const [todos, setTodos] = useState([
-    { text: "Fix that weird animation bug", done: false },
-    { text: "Ship the tiny tool I started", done: false },
-    { text: "Prototype 3 new ideas", done: false },
-    { text: "Try OpenClaw", done: false },
-    { text: "Try not to open 20 tabs", done: false },
-    { text: "Clean up my messy desktop", done: false },
-    { text: "Celebrate small wins", done: false },
-  ]);
-
-  const toggleTodo = (index: number) => {
-    setTodos(prev => prev.map((t, i) => i === index ? { ...t, done: !t.done } : t));
-  };
+  const journeySteps = [
+    "Studied law",
+    "Worked in robotics",
+    "Moved to Seattle",
+    "Became a product designer",
+    "Designing AI products",
+    "Building with AI",
+    "Won a vibe-coding challenge",
+    "Launched my first Chrome extension",
+    "Still exploring",
+  ];
 
 
 
@@ -412,21 +455,7 @@ export function DesktopWidgets() {
       <div className="grid grid-cols-3 gap-3">
         {/* Left column: Weather + To-Do stacked */}
         <div className="flex flex-col gap-3">
-          <WeatherCard />
-
-          <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="bg-white/80 rounded-xl p-3 flex-1">
-            <div className="text-[9px] text-stone-400 uppercase tracking-wider mb-3">To-Do</div>
-            <div className="space-y-2.5">
-              {todos.map((item, i) => (
-                <div key={i} className="flex items-center gap-1.5 text-[11px] cursor-pointer" onClick={() => toggleTodo(i)}>
-                  <div className={`w-3.5 h-3.5 rounded-[3px] border-[1.5px] flex items-center justify-center shrink-0 transition-colors ${item.done ? "bg-blue-500 border-blue-500" : "border-stone-300"}`}>
-                    {item.done && <svg width="8" height="8" viewBox="0 0 12 12" fill="none"><path d="M2.5 6l2.5 2.5 4.5-5" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>}
-                  </div>
-                  <span className={`transition-colors ${item.done ? "text-stone-400 line-through" : "text-stone-600"}`}>{item.text}</span>
-                </div>
-              ))}
-            </div>
-          </motion.div>
+          <JourneyTimeline steps={journeySteps} />
         </div>
 
         {/* Goals - spans 2 columns, matches height of weather + todo */}
