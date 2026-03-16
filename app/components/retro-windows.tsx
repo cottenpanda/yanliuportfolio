@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 
 const terminalLines = [
-  { prompt: "$ whoami", output: "Yan Liu — Product Designer @ Getty Images" },
+  { prompt: "$ whoami", output: "Yan Liu — Senior Product Designer with 7+ years experience" },
   { prompt: "$ ls interests/", output: "AI/  designs/  doodles/  photography/" },
 ];
 
