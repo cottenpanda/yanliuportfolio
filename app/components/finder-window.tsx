@@ -308,7 +308,7 @@ function LockNotification({ onUnlock }: { onUnlock: () => void }) {
 
 export function FolderWindowContent() {
   const [openFolder, setOpenFolder] = useState<number | null>(null);
-  const [unlocked, setUnlocked] = useState(false);
+  const [unlocked, setUnlocked] = useState(true);
   const [activeSidebar, setActiveSidebar] = useState("yanliu");
 
   return (
