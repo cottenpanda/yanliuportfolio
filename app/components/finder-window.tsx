@@ -399,49 +399,60 @@ export function FolderWindowContent() {
                       {openFolder !== null && (
                         <motion.div
                           key="preview"
-                          className="border-l border-stone-200/60 overflow-y-auto h-[620px] w-[460px] shrink-0 ml-auto"
+                          className="relative border-l border-stone-200/60 h-[620px] w-[460px] shrink-0 ml-auto flex flex-col"
                           initial={{ opacity: 0 }}
                           animate={{ opacity: 1 }}
                           exit={{ opacity: 0 }}
                           transition={{ duration: 0.25 }}
                           style={{ backgroundColor: "#FAF8F5" }}
                         >
-                          <AnimatePresence mode="wait">
-                            <motion.div
-                              key={openFolder}
-                              initial={{ opacity: 0 }}
-                              animate={{ opacity: 1 }}
-                              exit={{ opacity: 0 }}
-                              transition={{ duration: 0.2 }}
-                            >
-                              <div className="relative w-full">
-                                <img src={folderImages[openFolder]} alt={folderContent[openFolder].title} className="w-full h-auto object-contain" />
-                              </div>
-                              <div className="p-5 space-y-4">
-                                <h3 className="text-[16px] font-medium text-stone-800">{folderContent[openFolder].title}</h3>
-                                {folderContent[openFolder].description.split("\n\n").map((para, i) => (
-                                  <p key={i} className="text-stone-600 leading-relaxed text-[14px]">
-                                    {renderBold(para)}
-                                  </p>
-                                ))}
-                                {folderContent[openFolder].cta && (
-                                  <div className="flex gap-4 flex-wrap">
-                                    {(Array.isArray(folderContent[openFolder].cta) ? folderContent[openFolder].cta : [folderContent[openFolder].cta]).map((link, i) => (
-                                      <a
-                                        key={i}
-                                        href={(link as {label: string; url: string}).url}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="inline-block text-[13px] px-4 py-1.5 rounded-md border border-stone-700 text-stone-700 hover:bg-stone-700 hover:text-white transition-colors"
-                                      >
-                                        {(link as {label: string; url: string}).label}
-                                      </a>
-                                    ))}
-                                  </div>
-                                )}
-                              </div>
-                            </motion.div>
-                          </AnimatePresence>
+                          <button
+                            onClick={() => setOpenFolder(null)}
+                            className="absolute top-2 right-2 z-10 w-6 h-6 flex items-center justify-center rounded-full hover:bg-stone-200/60 text-stone-400 hover:text-stone-600 transition-colors cursor-pointer"
+                          >
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                              <line x1="18" y1="6" x2="6" y2="18" />
+                              <line x1="6" y1="6" x2="18" y2="18" />
+                            </svg>
+                          </button>
+                          <div className="flex-1 overflow-y-auto">
+                            <AnimatePresence mode="wait">
+                              <motion.div
+                                key={openFolder}
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                exit={{ opacity: 0 }}
+                                transition={{ duration: 0.2 }}
+                              >
+                                <div className="relative w-full">
+                                  <img src={folderImages[openFolder]} alt={folderContent[openFolder].title} className="w-full h-auto object-contain" />
+                                </div>
+                                <div className="p-5 space-y-4">
+                                  <h3 className="text-[16px] font-medium text-stone-800">{folderContent[openFolder].title}</h3>
+                                  {folderContent[openFolder].description.split("\n\n").map((para, i) => (
+                                    <p key={i} className="text-stone-600 leading-relaxed text-[14px]">
+                                      {renderBold(para)}
+                                    </p>
+                                  ))}
+                                </div>
+                              </motion.div>
+                            </AnimatePresence>
+                          </div>
+                          {folderContent[openFolder!]?.cta && (
+                            <div className="flex gap-4 flex-wrap px-5 py-4 border-t border-stone-200/60">
+                              {(Array.isArray(folderContent[openFolder!].cta) ? folderContent[openFolder!].cta : [folderContent[openFolder!].cta]).map((link, i) => (
+                                <a
+                                  key={i}
+                                  href={(link as {label: string; url: string}).url}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="inline-block text-[13px] px-4 py-1.5 rounded-md border border-stone-700 text-stone-700 hover:bg-stone-700 hover:text-white transition-colors"
+                                >
+                                  {(link as {label: string; url: string}).label}
+                                </a>
+                              ))}
+                            </div>
+                          )}
                         </motion.div>
                       )}
                     </AnimatePresence>
