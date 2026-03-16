@@ -33,7 +33,7 @@ const folderIcons = [
 
 const folderContent = [
   {
-    title: "Design for AI Products",
+    title: "Projects at Work",
     description: "From **multimodal conversational interfaces to search and AI modification**, turning complex ideas into intuitive product experiences.\n\nRecent work includes natural language search, search trend dashboards, contributor platform redesigns, internal search editing tools, and watermark systems for Getty Images and iStock.",
     cta: { label: "Projects at work (password required)", url: "https://yanliu.design" },
   },
