@@ -70,6 +70,7 @@ const appTools = [
   { label: "Lovable", icon: "/app-lovable.jpg" },
   { label: "Codex", icon: "/app-codex.jpg" },
   { label: "GitHub", icon: "/app-github.jpg" },
+  { label: "ChatGPT", icon: "/app-chatgpt.jpg" },
 ];
 
 const sidebarItems = [

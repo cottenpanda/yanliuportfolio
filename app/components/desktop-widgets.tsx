@@ -11,6 +11,7 @@ const appTools = [
   { label: "Lovable", icon: "/app-lovable.jpg" },
   { label: "Codex", icon: "/app-codex.jpg" },
   { label: "GitHub", icon: "/app-github.jpg" },
+  { label: "ChatGPT", icon: "/app-chatgpt.jpg" },
 ];
 
 export function WidgetClock() {
@@ -433,7 +434,7 @@ export function DesktopWidgets() {
       </div>
 
       {/* Dock: tool icons */}
-      <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-white/60 backdrop-blur-sm rounded-xl px-6 py-7 flex justify-evenly">
+      <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-white/60 backdrop-blur-sm rounded-xl px-4 py-7 flex justify-evenly">
         {appTools.map((tool, i) => (
           <motion.img
             key={i}
