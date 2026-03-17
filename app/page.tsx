@@ -57,7 +57,7 @@ export default function Home() {
       ))}
 
       {/* Hero — full viewport, centered */}
-      <CursorHint label="Hover on items" delay={7}>
+      <CursorHint label="Hover on items" delay={5}>
       <div className="min-h-screen flex items-center justify-center px-4 relative z-10">
       <div className="relative w-[1400px] h-[900px] overflow-visible" style={{ maxWidth: "100vw", transform: "translateX(-25px)" }}>
         <MacFolder />
@@ -157,7 +157,7 @@ export default function Home() {
           <div className="relative mb-4 hero-entrance overflow-hidden" style={{ animation: "hero-blur-in 0.6s ease-out 0.3s both" }}>
             <img src="/yan-liu.svg" alt="Yan Liu" className="h-[80px] md:h-[100px]" draggable={false} />
             {/* Glare sweep */}
-            <div className="absolute inset-0 pointer-events-none" style={{ animation: "hero-glare 1.2s ease-in-out 6.5s both" }}>
+            <div className="absolute inset-0 pointer-events-none" style={{ animation: "hero-glare 1.2s ease-in-out 5s both" }}>
               <div className="absolute top-0 h-full w-[60%] -skew-x-12" style={{
                 background: "linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.25) 25%, rgba(255,255,255,0.8) 48%, rgba(255,255,255,1) 50%, rgba(255,255,255,0.8) 52%, rgba(255,255,255,0.25) 75%, transparent 100%)",
               }} />

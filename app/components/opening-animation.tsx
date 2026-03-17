@@ -123,9 +123,9 @@ export function OpeningAnimation({ onComplete }: { onComplete: () => void }) {
       await animate(yEl.el,
         { x: yCenterX, y: yStartY, scale: 4, opacity: 0.5 },
         { x: yCenterX, y: yEndY, scale: 1.2, opacity: 1 },
-        800, easeOutCubic
+        700, easeOutCubic
       );
-      await delay(300);
+      await delay(150);
 
       // STEP 2: L falls from top
       const lStartX = CENTER_X - lEl.el.offsetWidth / 2 + 20;
@@ -136,7 +136,7 @@ export function OpeningAnimation({ onComplete }: { onComplete: () => void }) {
       await animate(lEl.el,
         { x: lStartX, y: lStartY, scale: 1, opacity: 1 },
         { x: lStartX, y: lCollideY, scale: 1, opacity: 1 },
-        700, easeInQuad
+        600, easeInQuad
       );
 
       // STEP 3: Collision flash + shake
@@ -157,9 +157,8 @@ export function OpeningAnimation({ onComplete }: { onComplete: () => void }) {
           150, easeOutCubic
         ),
       ]);
-      await delay(100);
 
-      // STEP 4: Other letters burst out
+      // STEP 4: Other letters burst out immediately
       const burstLetters = [
         { obj: els[1], angle: -140, dist: 250, burstX: 0, burstY: 0 },
         { obj: els[2], angle: -200, dist: 220, burstX: 0, burstY: 0 },
@@ -174,12 +173,12 @@ export function OpeningAnimation({ onComplete }: { onComplete: () => void }) {
         return animate(bl.obj.el,
           { x: CENTER_X - 25, y: CENTER_Y - FONT_SIZE / 2, scale: 0.3, opacity: 0, rotate: (Math.random() - 0.5) * 60 },
           { x: bl.burstX, y: bl.burstY, scale: 1.1, opacity: 1, rotate: (Math.random() - 0.5) * 20 },
-          500, easeOutCubic
+          450, easeOutCubic
         );
       });
       await Promise.all(burstPromises);
       container!.style.animation = "";
-      await delay(400);
+      await delay(200);
 
       // STEP 5: Settle into final positions
       const settlePromises = els.map((obj, i) => {
@@ -188,13 +187,13 @@ export function OpeningAnimation({ onComplete }: { onComplete: () => void }) {
         return animate(obj.el,
           { x: currentX, y: currentY, scale: parseFloat(obj.el.style.transform?.match(/scale\(([^)]+)\)/)?.[1] || "1"), opacity: 1, rotate: 0 },
           { x: finalPos[i].x, y: finalPos[i].y, scale: 1, opacity: 1, rotate: 0 },
-          900, easeOutBack
+          800, easeOutBack
         );
       });
       await Promise.all(settlePromises);
 
-      // STEP 6: Dot of "i" bounces in
-      await delay(300);
+      // STEP 6: Dot of "i" bounces in immediately
+      await delay(100);
       const iEl = els[4].el;
       const iRect = iEl.getBoundingClientRect();
       const dotFinalX = iRect.left + iRect.width / 2 - 11;
@@ -203,23 +202,23 @@ export function OpeningAnimation({ onComplete }: { onComplete: () => void }) {
       await animate(iDot,
         { x: dotFinalX, y: -50, scale: 1, opacity: 1 },
         { x: dotFinalX, y: dotFinalY, scale: 1, opacity: 1 },
-        500, easeInQuad
+        400, easeInQuad
       );
       await animate(iDot,
         { x: dotFinalX, y: dotFinalY, scale: 1.3, opacity: 1 },
-        { x: dotFinalX, y: dotFinalY - 20, scale: 1, opacity: 1 },
-        200, easeOutCubic
+        { x: dotFinalX, y: dotFinalY - 15, scale: 1, opacity: 1 },
+        150, easeOutCubic
       );
       await animate(iDot,
-        { x: dotFinalX, y: dotFinalY - 20, scale: 1, opacity: 1 },
+        { x: dotFinalX, y: dotFinalY - 15, scale: 1, opacity: 1 },
         { x: dotFinalX, y: dotFinalY, scale: 1, opacity: 1 },
-        250, easeInQuad
+        200, easeInQuad
       );
 
-      // Done — fade out
-      await delay(600);
+      // Done — slide out
+      await delay(400);
       setFadeOut(true);
-      setTimeout(onComplete, 800);
+      setTimeout(onComplete, 700);
     }
 
     const timer = setTimeout(run, 100);
@@ -233,7 +232,7 @@ export function OpeningAnimation({ onComplete }: { onComplete: () => void }) {
       style={{
         backgroundColor: "#1e1e1e",
         transform: fadeOut ? "translateY(100%)" : "translateY(0)",
-        transition: "transform 0.8s cubic-bezier(0.4, 0, 0.2, 1)",
+        transition: "transform 0.7s cubic-bezier(0.4, 0, 0.2, 1)",
         fontFamily: "'Noto Sans', sans-serif",
       }}
     >
