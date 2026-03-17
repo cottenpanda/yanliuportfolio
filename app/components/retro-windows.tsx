@@ -11,6 +11,7 @@ const terminalLines = [
 export function RetroWindows() {
   const [display, setDisplay] = useState<string[]>([]);
   const [showCat, setShowCat] = useState(false);
+  const [hovered, setHovered] = useState(false);
 
   useEffect(() => {
     const timeouts: ReturnType<typeof setTimeout>[] = [];
@@ -38,7 +39,7 @@ export function RetroWindows() {
       delay += 300;
     });
 
-    timeouts.push(setTimeout(() => setShowCat(true), delay));
+    // cat now shows on hover instead of auto
 
     return () => timeouts.forEach(clearTimeout);
   }, []);
@@ -47,7 +48,7 @@ export function RetroWindows() {
 
   return (
     <div className="hidden lg:block absolute top-[500px] right-[310px] z-20 hero-entrance" style={{ animation: "hero-slide-up 0.7s cubic-bezier(0.4,0,0.2,1) 3.55s both" }}>
-      <div className="w-[340px] transition-transform duration-300 hover:scale-105 cursor-pointer">
+      <div className="w-[340px] transition-transform duration-300 hover:scale-105 cursor-pointer" onMouseEnter={() => allDone && setHovered(true)} onMouseLeave={() => setHovered(false)}>
         <div className="rounded-lg overflow-hidden" style={{ background: "#ffffff", boxShadow: "0 4px 20px rgba(0,0,0,0.15), 0 1px 3px rgba(0,0,0,0.1)", border: "1px solid #e7e5e4" }}>
           <div
             className="flex items-center justify-between px-3 py-2"
@@ -81,13 +82,7 @@ export function RetroWindows() {
                 )}
               </div>
             ))}
-            {allDone && !showCat && (
-              <div className="text-stone-800">
-                <span className="text-emerald-600">~</span> $
-                <span className="inline-block w-[6px] h-[12px] bg-stone-400 ml-[1px] align-text-bottom" style={{ animation: "blink 1s step-end infinite" }} />
-              </div>
-            )}
-            {showCat && (
+            {hovered && allDone && (
               <div className="flex justify-center">
                 <img src="/cat-dance.gif" alt="Dancing cat" className="h-[90px]" draggable={false} />
               </div>
