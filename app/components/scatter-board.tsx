@@ -171,7 +171,7 @@ export function ScatterBoard({
         transition={{ duration: 1, ease: "easeOut" }}
         viewport={{ once: true, margin: "-150px" }}
       >
-        <div className="w-full max-w-[1000px] board-float">
+        <div className="w-full max-w-[1200px] board-float">
           <div className="rounded-3xl p-[14px]" style={{
             background: "linear-gradient(160deg, #d6cfc4 0%, #c9c0b3 20%, #bfb5a6 80%, #b5aa9a 100%)",
             boxShadow: "0 10px 30px rgba(0,0,0,0.12), 0 24px 70px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.5), inset 0 -1px 0 rgba(0,0,0,0.1)",

@@ -303,7 +303,7 @@ function ReminderCard() {
       animate={{ opacity: 1, y: 0 }}
       whileHover={{ rotate: -2, scale: 1.02, boxShadow: "4px 6px 16px rgba(0,0,0,0.1)" }}
       transition={{ delay: 0.05 }}
-      className="cursor-pointer origin-top-left relative flex flex-col"
+      className="cursor-pointer origin-top-left relative flex flex-col h-full"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
@@ -319,9 +319,9 @@ function ReminderCard() {
         <div className="absolute top-[4px] left-[3px] right-[-6px] bottom-[-6px] bg-stone-700 rounded-[4px]" />
       <div className="bg-white rounded-[3px] shadow-[0_1px_4px_rgba(0,0,0,0.08)] relative overflow-hidden">
         <div className="h-[3px] w-full" style={{ background: "repeating-linear-gradient(90deg, #e7e5e4 0px, #e7e5e4 3px, transparent 3px, transparent 6px)" }} />
-        <div className="p-3 pt-2">
+        <div className="p-3 pt-2 pb-5">
           <div className="text-[9px] text-stone-400 uppercase tracking-wider mb-2 font-medium">Design Notes</div>
-          <ul className="space-y-[4px] text-[11px] text-stone-600 leading-snug">
+          <ul className="space-y-[7px] text-[11px] text-stone-600 leading-snug">
             {reminders.map((r, i) => (
               <motion.li
                 key={i}

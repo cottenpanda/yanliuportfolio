@@ -315,7 +315,7 @@ export function FolderWindowContent() {
 
   return (
     <div className="flex justify-center">
-      <div className="w-full max-w-[1000px] font-[family-name:var(--font-noto)]">
+      <div className="w-full max-w-[1200px] font-[family-name:var(--font-noto)]">
         <div className="relative bg-[#F5F5F4] border border-stone-200 rounded-xl shadow-lg overflow-hidden">
           <div className="flex items-center gap-2 px-4 py-2.5 border-b border-stone-200 bg-gradient-to-b from-[#FAFAF9] to-[#F0EFED]">
             <div className="flex gap-1.5">
@@ -331,7 +331,7 @@ export function FolderWindowContent() {
             <div className="w-[52px]" />
           </div>
 
-          <div className="relative h-[620px] min-w-[1000px] overflow-hidden flex">
+          <div className="relative h-[620px] min-w-[1200px] overflow-hidden flex">
             <div className="w-[170px] shrink-0 bg-[#F0EFED]/60 backdrop-blur-sm border-r border-stone-200/60 py-3 px-2">
               <p className="text-[11px] font-medium text-stone-400 px-2 mb-1">Favorites</p>
               {sidebarItems.map((item) => (
@@ -379,9 +379,9 @@ export function FolderWindowContent() {
                     {/* Left: Folders */}
                     <div
                       className="pt-8 pl-8 pr-6 shrink-0 transition-[width] duration-[350ms] ease-out"
-                      style={{ width: openFolder !== null ? 280 : "100%" }}
+                      style={{ width: openFolder !== null ? 420 : "100%" }}
                     >
-                      <div className={`grid ${openFolder !== null ? "grid-cols-2" : "grid-cols-5"} gap-x-10 gap-y-6 content-start`}>
+                      <div className={`grid ${openFolder !== null ? "grid-cols-3" : "grid-cols-5"} gap-x-6 gap-y-6 content-start w-fit`}>
                         {siteConfig.sections.map((section, i) => (
                           <FolderIcon
                             key={section.id}
@@ -400,7 +400,7 @@ export function FolderWindowContent() {
                       {openFolder !== null && (
                         <motion.div
                           key="preview"
-                          className="relative border-l border-stone-200/60 h-[620px] w-[460px] shrink-0 ml-auto flex flex-col"
+                          className="relative border-l border-stone-200/60 h-[620px] w-[580px] shrink-0 ml-auto flex flex-col"
                           initial={{ opacity: 0, x: 40 }}
                           animate={{ opacity: 1, x: 0 }}
                           exit={{ opacity: 0, x: 40 }}
@@ -425,8 +425,8 @@ export function FolderWindowContent() {
                                 exit={{ opacity: 0 }}
                                 transition={{ duration: 0.2 }}
                               >
-                                <div className="relative w-full">
-                                  <Image src={folderImages[openFolder]} alt={folderContent[openFolder].title} width={460} height={300} className="w-full h-auto object-contain" priority />
+                                <div className="relative w-full h-[340px] overflow-hidden">
+                                  <Image src={folderImages[openFolder]} alt={folderContent[openFolder].title} width={580} height={340} className="w-full h-full object-cover" priority />
                                 </div>
                                 <div className="p-5 space-y-4">
                                   <h3 className="text-[16px] font-medium text-stone-800">{folderContent[openFolder].title}</h3>
