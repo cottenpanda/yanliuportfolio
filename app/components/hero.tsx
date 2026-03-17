@@ -187,7 +187,7 @@ export function MacFolder() {
 /* ── Hanging name badge ── */
 export function NameBadge() {
   return (
-    <div className="hidden lg:flex flex-col items-center absolute left-[40px] top-[-80px] z-20 badge-drop">
+    <div className="hidden lg:flex flex-col items-center absolute left-[40px] top-[-80px] z-20">
      <a href="https://www.linkedin.com/in/uwyanliudesign" target="_blank" rel="noopener noreferrer" className="badge-swing flex flex-col items-center cursor-pointer group/badge">
       {/* Lanyard strap — extra tall to avoid gap when swinging */}
       <div className="w-[26px] h-[240px] bg-stone-800 relative shadow-sm z-0">
@@ -238,7 +238,7 @@ export function NameBadge() {
             }} />
             {/* Name */}
             <div className="relative z-10">
-              <h3 className="text-white font-extrabold text-[20px] leading-[1.05] tracking-[0.08em]">Designer</h3>
+              <h3 className="text-white font-extrabold text-[28px] leading-[1.05] tracking-[0.15em]">刘彦</h3>
               <p className="font-[family-name:var(--font-noto)] text-white/50 text-[11px] tracking-[0.05em] mt-2 leading-relaxed">Love exploring, prototyping,<br />storytelling, and visual craft</p>
             </div>
             {/* Starburst accent */}

@@ -16,6 +16,7 @@ import { ScatterBoard } from "./components/scatter-board";
 import { ClickBurst } from "./components/click-burst";
 import { NavHeader } from "./components/nav-header";
 import { CursorHint } from "./components/cursor-hint";
+import { OpeningAnimation } from "./components/opening-animation";
 
 /* ── Tab definitions ── */
 const tabs = siteConfig.sections.map((s) => ({
@@ -36,6 +37,7 @@ export default function Home() {
   const zCounterRef = useRef(10);
   const [arrowVisible, setArrowVisible] = useState(false);
   const onArrowVisible = useRef(() => setArrowVisible(true)).current;
+  const [showOpening, setShowOpening] = useState(true);
   const [pageBursts, setPageBursts] = useState<{ id: number; x: number; y: number }[]>([]);
   const burstCounter = useRef(0);
   const handlePageClick = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -47,14 +49,15 @@ export default function Home() {
 
   return (
     <div className="relative" style={{ overflowX: "clip" }} onClick={handlePageClick}>
-      <NavHeader />
+      {showOpening && <OpeningAnimation onComplete={() => setShowOpening(false)} />}
+      <div style={{ opacity: showOpening ? 0 : 1 }}><NavHeader /></div>
       <StarBackground />
       {pageBursts.map((b) => (
         <ClickBurst key={b.id} x={b.x} y={b.y} onDone={() => setPageBursts((prev) => prev.filter((p) => p.id !== b.id))} />
       ))}
 
       {/* Hero — full viewport, centered */}
-      <CursorHint label="Hover on items">
+      <CursorHint label="Hover on items" delay={7}>
       <div className="min-h-screen flex items-center justify-center px-4 relative z-10">
       <div className="relative w-[1400px] h-[900px] overflow-visible" style={{ maxWidth: "100vw", transform: "translateX(-25px)" }}>
         <MacFolder />
@@ -154,7 +157,7 @@ export default function Home() {
           <div className="relative mb-4 hero-entrance overflow-hidden" style={{ animation: "hero-blur-in 0.6s ease-out 0.3s both" }}>
             <img src="/yan-liu.svg" alt="Yan Liu" className="h-[80px] md:h-[100px]" draggable={false} />
             {/* Glare sweep */}
-            <div className="absolute inset-0 pointer-events-none" style={{ animation: "hero-glare 1.2s ease-in-out 1.0s both" }}>
+            <div className="absolute inset-0 pointer-events-none" style={{ animation: "hero-glare 1.2s ease-in-out 6.5s both" }}>
               <div className="absolute top-0 h-full w-[60%] -skew-x-12" style={{
                 background: "linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.25) 25%, rgba(255,255,255,0.8) 48%, rgba(255,255,255,1) 50%, rgba(255,255,255,0.8) 52%, rgba(255,255,255,0.25) 75%, transparent 100%)",
               }} />

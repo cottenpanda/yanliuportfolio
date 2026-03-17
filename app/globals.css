@@ -403,10 +403,7 @@ body::before {
 
 .badge-swing {
   transform-origin: top center;
-}
-
-.badge-swing:hover {
-  animation: badge-swing 2.5s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+  animation: badge-swing 3s cubic-bezier(0.45, 0, 0.55, 1) infinite;
 }
 
 /* Badge drop and bounce */
@@ -421,7 +418,7 @@ body::before {
 }
 
 .badge-drop {
-  animation: badge-drop 1.6s ease-in-out 3.8s both;
+  animation: badge-drop 1.6s ease-in-out 6s both;
 }
 
 /* Scrollbar for tabs */
