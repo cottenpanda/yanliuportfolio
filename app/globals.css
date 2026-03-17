@@ -395,15 +395,14 @@ body::before {
 
 /* Name badge swing on hover */
 @keyframes badge-swing {
-  0% { transform: rotate(0deg); }
-  25% { transform: rotate(3deg); }
-  75% { transform: rotate(-3deg); }
-  100% { transform: rotate(0deg); }
+  0% { transform: rotate(3deg); }
+  50% { transform: rotate(-3deg); }
+  100% { transform: rotate(3deg); }
 }
 
 .badge-swing {
   transform-origin: top center;
-  animation: badge-swing 3s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+  animation: badge-swing 3s ease-in-out infinite;
 }
 
 /* Badge drop and bounce */
