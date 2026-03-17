@@ -381,7 +381,7 @@ export function FolderWindowContent() {
                       className="pt-8 pl-8 pr-6 shrink-0 transition-[width] duration-[350ms] ease-out"
                       style={{ width: openFolder !== null ? 420 : "100%" }}
                     >
-                      <div className={`grid ${openFolder !== null ? "grid-cols-3" : "grid-cols-5"} gap-x-6 gap-y-6 content-start w-fit`}>
+                      <div className={`grid ${openFolder !== null ? "grid-cols-3" : "grid-cols-5"} gap-x-10 gap-y-6 content-start w-fit`}>
                         {siteConfig.sections.map((section, i) => (
                           <FolderIcon
                             key={section.id}
