@@ -426,7 +426,7 @@ export function FolderWindowContent() {
                                 transition={{ duration: 0.2 }}
                               >
                                 <div className="relative w-full h-[340px] overflow-hidden">
-                                  <Image src={folderImages[openFolder]} alt={folderContent[openFolder].title} width={580} height={340} className="w-full h-full object-cover" priority />
+                                  <Image src={folderImages[openFolder]} alt={folderContent[openFolder].title} width={580} height={340} className="w-full h-full object-contain" priority />
                                 </div>
                                 <div className="p-5 space-y-4">
                                   <h3 className="text-[16px] font-medium text-stone-800">{folderContent[openFolder].title}</h3>
