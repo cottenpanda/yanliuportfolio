@@ -181,11 +181,11 @@ export function ScatterBoard({
             borderBottom: "2px solid rgba(0,0,0,0.12)",
           }}>
           <div ref={boardRef} className="min-h-[578px] rounded-xl relative overflow-visible" style={{
-            background: "linear-gradient(150deg, #f5f0e8 0%, #efe9df 35%, #e8e1d5 100%)",
+            background: "#F7F1E8",
             boxShadow: "inset 0 2px 6px rgba(0,0,0,0.06)",
           }}>
             {/* Paper texture noise */}
-            <div className="absolute inset-0 pointer-events-none opacity-[0.08]" style={{
+            <div className="absolute inset-0 pointer-events-none opacity-[0.15]" style={{
               backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
               backgroundSize: "200px 200px",
             }} />
