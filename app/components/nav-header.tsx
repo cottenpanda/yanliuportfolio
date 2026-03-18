@@ -3,9 +3,9 @@
 import React from "react";
 
 const navLinks = [
-  { label: "Playground", href: "#playground" },
   { label: "About", href: "#about" },
   { label: "Work", href: "#work" },
+  { label: "Playground", href: "#playground" },
 ];
 
 export function NavHeader() {

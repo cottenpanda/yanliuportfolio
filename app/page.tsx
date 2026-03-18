@@ -174,6 +174,16 @@ export default function Home() {
       </div>
       </CursorHint>
 
+      {/* Ripped paper quote + bio with decorative images */}
+      <div id="about" className="mt-[120px] scroll-mt-16" />
+      <div className="relative" style={{ transform: "translateX(-20px)" }}>
+        <RippedPaperNote />
+        <ScrollRevealText />
+      </div>
+
+      {/* Portfolio — folder view / book view */}
+      <PortfolioViewer />
+
       {/* Bulletin board */}
       <div id="playground" className="mt-32 scroll-mt-16" />
       <ScatterBoard
@@ -184,16 +194,6 @@ export default function Home() {
         setBursts={setBursts}
         bursts={bursts}
       />
-
-      {/* Ripped paper quote + bio with decorative images */}
-      <div id="about" className="mt-[260px] scroll-mt-16" />
-      <div className="relative" style={{ transform: "translateX(-20px)" }}>
-        <RippedPaperNote />
-        <ScrollRevealText />
-      </div>
-
-      {/* Portfolio — folder view / book view */}
-      <PortfolioViewer />
 
       {/* Social icons */}
       <motion.div

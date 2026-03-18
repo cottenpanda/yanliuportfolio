@@ -135,9 +135,9 @@ export const gridAnimations = [
 
 export const easterEggCells = [
   { col: -2, row: -3, animIdx: 0, cardOffset: [60, -50] as [number, number], cardRotate: 2 },
-  { col: -3, row: 3, animIdx: 1, cardOffset: [60, -50] as [number, number], cardRotate: -2 },
+  { col: -3, row: 5, animIdx: 1, cardOffset: [60, -50] as [number, number], cardRotate: -2 },
   { col: 16, row: -3, animIdx: 2, cardOffset: [-170, -50] as [number, number], cardRotate: -2 },
-  { col: 17, row: 3, animIdx: 3, cardOffset: [-170, -50] as [number, number], cardRotate: 2 },
+  { col: 17, row: 5, animIdx: 3, cardOffset: [-170, -50] as [number, number], cardRotate: 2 },
 ];
 
 export function EasterEggCell({ containerRef, col, row, animIdx, cardOffset, cardRotate }: {
@@ -146,26 +146,34 @@ export function EasterEggCell({ containerRef, col, row, animIdx, cardOffset, car
   cardOffset: [number, number]; cardRotate: number;
 }) {
   const GRID = 56;
+  const [revealed, setRevealed] = useState(false);
   const [open, setOpen] = useState(false);
-  const [snapOffset, setSnapOffset] = useState({ x: 0, y: 0 });
-  const [sparkled, setSparkled] = useState(false);
   const [blinking, setBlinking] = useState(false);
+  const [snapOffset, setSnapOffset] = useState({ x: 0, y: 0 });
   const Anim = gridAnimations[animIdx];
   const cardW = 160;
   const cardH = 160;
   const cellRef = useRef<HTMLDivElement>(null);
-  const cardRef = useRef<HTMLDivElement>(null);
 
+  // Scroll-triggered reveal
   useEffect(() => {
-    if (!open) return;
-    const handleClick = (e: MouseEvent) => {
-      if (cellRef.current?.contains(e.target as Node)) return;
-      if (cardRef.current?.contains(e.target as Node)) return;
-      setOpen(false);
-    };
-    document.addEventListener("mousedown", handleClick);
-    return () => document.removeEventListener("mousedown", handleClick);
-  }, [open]);
+    const el = cellRef.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => {
+          setRevealed(true);
+          setOpen(true);
+          // Blink the grid cell
+          setBlinking(true);
+          setTimeout(() => setBlinking(false), 1200);
+        }, animIdx * 300);
+        obs.disconnect();
+      }
+    }, { threshold: 0.3 });
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, [animIdx]);
 
   useEffect(() => {
     const compute = () => {
@@ -186,81 +194,59 @@ export function EasterEggCell({ containerRef, col, row, animIdx, cardOffset, car
   const cellX = snapOffset.x + col * GRID;
   const cellY = snapOffset.y + row * GRID;
 
-
   return (
-    <>
-      {/* Grid cell */}
+    <div
+      ref={cellRef}
+      className="absolute hidden lg:block z-10 cursor-pointer"
+      style={{ left: cellX, top: cellY, width: GRID, height: GRID }}
+      onClick={() => { if (revealed) setOpen(!open); }}
+    >
+      {/* Dashed cell with dark highlight */}
       <div
-        ref={cellRef}
-        className="absolute hidden lg:block cursor-pointer z-10 group/egg"
-        style={{ left: cellX, top: cellY, width: GRID, height: GRID }}
-        onClick={() => setOpen(!open)}
+        className="w-full h-full relative border border-dashed rounded-[1px] egg-border"
+        style={{
+          borderColor: blinking ? "rgba(28, 25, 23, 0.8)" : revealed ? "rgba(28, 25, 23, 0.3)" : "rgba(214, 211, 209, 0.6)",
+          transition: "border-color 0.2s",
+        }}
       >
-        {!open ? (
-          <div
-            className="w-full h-full relative border border-dashed rounded-[1px] egg-border"
-            ref={(el) => {
-              if (el && !sparkled) {
-                const obs = new IntersectionObserver(([entry]) => {
-                  if (entry.isIntersecting) {
-                    setTimeout(() => {
-                      let count = 0;
-                      const dark = "rgba(28, 25, 23, 0.8)";
-                      const light = "rgba(214, 211, 209, 1)";
-                      setBlinking(true);
-                      const interval = setInterval(() => {
-                        el.style.borderColor = count % 2 === 0 ? dark : light;
-                        count++;
-                        if (count >= 6) { clearInterval(interval); el.style.borderColor = ""; setBlinking(false); }
-                      }, 200);
-                      setSparkled(true);
-                    }, animIdx * 250);
-                    obs.disconnect();
-                  }
-                }, { threshold: 0.5 });
-                obs.observe(el);
-              }
-            }}
-          >
-            <div className={`absolute inset-0 flex items-center justify-center transition-opacity duration-200 ${blinking ? "opacity-100" : "opacity-0 group-hover/egg:opacity-100"}`}>
-              <span className="text-stone-700 text-lg font-light select-none">+</span>
-            </div>
+        {revealed && !open && (
+          <div className="absolute inset-0 flex items-center justify-center">
+            <span className="text-stone-700 text-lg font-light select-none">+</span>
           </div>
-        ) : (
-          <div className="w-full h-full flex items-center justify-center">
+        )}
+        {revealed && open && (
+          <div className="absolute inset-0 flex items-center justify-center">
             <div className="w-[16px] h-[16px] bg-stone-900" />
           </div>
         )}
       </div>
 
+      {/* Wireframe card — reveals on scroll, toggleable */}
       {open && (
-        <>
+        <div
+          className="absolute z-30"
+          style={{
+            left: cardOffset[0],
+            top: cardOffset[1],
+            width: cardW, height: cardH,
+            transform: `rotate(${cardRotate}deg)`,
+            animation: "grid-flip-in 0.5s ease-out both",
+          }}
+        >
           <div
-            ref={cardRef}
-            className="absolute hidden lg:block z-30"
+            className="relative w-full h-full rounded-xl flex items-center justify-center overflow-hidden"
             style={{
-              left: cellX + cardOffset[0],
-              top: cellY + cardOffset[1],
-              width: cardW, height: cardH,
-              transform: `rotate(${cardRotate}deg)`,
-              animation: "grid-flip-in 0.4s ease-out both",
+              background: "rgba(255,255,255,0.6)",
+              backdropFilter: "blur(28px) saturate(1.6)",
+              WebkitBackdropFilter: "blur(28px) saturate(1.6)",
+              border: "1px solid rgba(255,255,255,0.7)",
+              boxShadow: "0 8px 32px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.8)",
             }}
           >
-            <div
-              className="relative w-full h-full rounded-xl flex items-center justify-center overflow-hidden"
-              style={{
-                background: "rgba(255,255,255,0.6)",
-                backdropFilter: "blur(28px) saturate(1.6)",
-                WebkitBackdropFilter: "blur(28px) saturate(1.6)",
-                border: "1px solid rgba(255,255,255,0.7)",
-                boxShadow: "0 8px 32px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.8)",
-              }}
-            >
-              <Anim />
-            </div>
+            <Anim />
           </div>
-        </>
+        </div>
       )}
-    </>
+    </div>
   );
 }
