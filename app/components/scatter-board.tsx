@@ -52,9 +52,11 @@ function ScatterImage({
   const finalX = parseFloat(img.left) / 100 * BOARD_W;
   const finalY = parseFloat(img.top) / 100 * BOARD_H;
 
+  const jitterL = [0, 30, -20, 15, -10, 25, -15, 20, -25, 10];
+  const jitterR = [0, -30, 20, -15, 10, -25, 15, -20, 25, -10];
   const spreadX = img.side === "left"
-    ? (sideIndex - 2) * 50 + [0, 30, -20, 15, -10][sideIndex]
-    : (sideIndex - 2) * -50 + [0, -30, 20, -15, 10][sideIndex];
+    ? (sideIndex - 2) * 50 + (jitterL[sideIndex] ?? 0)
+    : (sideIndex - 2) * -50 + (jitterR[sideIndex] ?? 0);
   const spreadY = sideIndex * 70;
 
   const startX = (stackCenterX + spreadX) - finalX;
