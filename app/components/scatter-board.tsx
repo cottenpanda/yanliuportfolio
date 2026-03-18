@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef, useCallback } from "react";
+import { createPortal } from "react-dom";
 import { motion, useScroll, useTransform, useMotionValueEvent, useMotionValue, AnimatePresence } from "framer-motion";
 import { ClickBurst } from "./click-burst";
 
@@ -80,7 +81,7 @@ function ScatterImage({
     const x = (e.clientX - rect.left) / rect.width - 0.5;
     const y = (e.clientY - rect.top) / rect.height - 0.5;
     setTilt({ rotateX: -y * 20, rotateY: x * 20 });
-    setTooltipPos({ x: e.clientX - rect.left + 14, y: e.clientY - rect.top + 14 });
+    setTooltipPos({ x: e.clientX + 14, y: e.clientY + 14 });
   }, []);
 
   const handleMouseLeave = useCallback(() => {
@@ -130,21 +131,24 @@ function ScatterImage({
         transition={{ type: "spring", stiffness: 300, damping: 20 }}
         draggable={false}
       />
-      {/* Cursor tooltip */}
-      <AnimatePresence>
-        {hovered && (
-          <motion.div
-            className="absolute z-50 pointer-events-none px-3 py-1.5 rounded-full bg-stone-900 text-white text-[11px] font-[family-name:var(--font-noto)] whitespace-nowrap"
-            style={{ left: tooltipPos.x, top: tooltipPos.y }}
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.9 }}
-            transition={{ duration: 0.15 }}
-          >
-            {img.label}
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {/* Cursor tooltip — portaled to body to escape parent transforms */}
+      {typeof document !== "undefined" && createPortal(
+        <AnimatePresence>
+          {hovered && (
+            <motion.div
+              className="fixed pointer-events-none px-3 py-1.5 rounded-full bg-stone-900 text-white text-[11px] font-[family-name:var(--font-noto)] whitespace-nowrap"
+              style={{ left: tooltipPos.x, top: tooltipPos.y, zIndex: 9999 }}
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+              transition={{ duration: 0.15 }}
+            >
+              {img.label}
+            </motion.div>
+          )}
+        </AnimatePresence>,
+        document.body
+      )}
     </motion.div>
   );
 }
