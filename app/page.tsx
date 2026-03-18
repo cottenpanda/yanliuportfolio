@@ -193,8 +193,7 @@ export default function Home() {
       <PortfolioViewer />
 
       {/* Bulletin board */}
-      <div id="playground" className="mt-32 scroll-mt-16" />
-      <div className="lg:contents scale-[0.55] lg:scale-100 origin-top -mb-[35%] lg:mb-0">
+      <div id="playground" className="mt-12 lg:mt-32 scroll-mt-16" />
       <ScatterBoard
         imgZIndex={imgZIndex}
         setImgZIndex={setImgZIndex}
@@ -203,7 +202,6 @@ export default function Home() {
         setBursts={setBursts}
         bursts={bursts}
       />
-      </div>
 
       {/* Social icons */}
       <motion.div
