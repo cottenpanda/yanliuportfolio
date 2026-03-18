@@ -426,7 +426,9 @@ function ReminderCard() {
                     left: target.x,
                     top: target.y,
                     transform: `rotate(${target.angle}rad)`,
-                    transition: hovered && !physicsActive ? "all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)" : "none",
+                    transition: hovered && !physicsActive
+                      ? `left 0.5s ease-in ${i * 0.06}s, top 0.5s ease-in ${i * 0.06}s, transform 0.5s ease-in ${i * 0.06}s`
+                      : "none",
                   }}
                 >
                   {chip.label}
