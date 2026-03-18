@@ -2,7 +2,7 @@
 
 import React, { useState, useRef } from "react";
 import Image from "next/image";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useScroll, useTransform } from "framer-motion";
 import { siteConfig } from "@/lib/siteConfig";
 import { renderBold } from "@/lib/renderBold";
 import { DesktopWidgets } from "./desktop-widgets";
@@ -567,17 +567,25 @@ export function FolderWindowContent() {
 }
 
 export function PortfolioViewer() {
+  const ref = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "end start"],
+  });
+  const y = useTransform(scrollYProgress, [0, 1], [200, -200]);
+  const scale = useTransform(scrollYProgress, [0, 0.5], [0.9, 1]);
+  const rotate = useTransform(scrollYProgress, [0, 0.5], [2, 0]);
+
   return (
-    <motion.section
+    <section
+      ref={ref}
       id="work"
-      className="flex flex-col items-center px-6 pt-52 pb-12"
+      className="flex flex-col items-center px-6 pt-52 pb-12 overflow-visible"
       style={{ scrollMarginTop: "-180px" }}
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, ease: "easeOut" }}
-      viewport={{ once: true, margin: "-60px" }}
     >
-      <FolderWindowContent />
-    </motion.section>
+      <motion.div style={{ y, scale, rotate }}>
+        <FolderWindowContent />
+      </motion.div>
+    </section>
   );
 }

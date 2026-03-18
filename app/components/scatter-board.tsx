@@ -1,21 +1,22 @@
 "use client";
 
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import { motion, useScroll, useTransform, useMotionValueEvent, useMotionValue } from "framer-motion";
+import { motion, useScroll, useTransform, useMotionValueEvent, useMotionValue, AnimatePresence } from "framer-motion";
 import { ClickBurst } from "./click-burst";
 
 /* ── Board images data ── */
 const BOARD_IMAGES = [
-  { src: "/bulletin/1.jpg", top: "1%", left: "8%", rotate: "-5deg", w: 220, z: 1, side: "left" as const, startVY: 0.1 },
-  { src: "/bulletin/2.jpg", top: "6%", left: "58%", rotate: "3deg", w: 210, z: 1, side: "right" as const, startVY: 0.15 },
-  { src: "/bulletin/3.jpg", top: "40%", left: "60%", rotate: "2deg", w: 280, z: 1, side: "right" as const, startVY: 0.45 },
-  { src: "/bulletin/11.jpg", top: "34%", left: "2%", rotate: "4deg", w: 215, z: 1, side: "left" as const, startVY: 0.4 },
-  { src: "/bulletin/5.jpg", top: "31%", left: "30%", rotate: "6deg", w: 270, z: 3, side: "right" as const, startVY: 0.35 },
-  { src: "/bulletin/6.jpg", top: "3%", left: "31%", rotate: "-2deg", w: 210, z: 1, side: "left" as const, startVY: 0.05 },
-  { src: "/bulletin/7.jpg", top: "74%", left: "12%", rotate: "-3deg", w: 240, z: 1, side: "left" as const, startVY: 0.7 },
-  { src: "/bulletin/8.jpg", top: "70%", left: "42%", rotate: "5deg", w: 215, z: 2, side: "right" as const, startVY: 0.65 },
-  { src: "/bulletin/9.jpg", top: "65%", left: "72%", rotate: "-4deg", w: 205, z: 1, side: "left" as const, startVY: 0.75 },
-  { src: "/bulletin/10.jpg", top: "12%", left: "80%", rotate: "6deg", w: 235, z: 1, side: "right" as const, startVY: 0.2 },
+  { src: "/bulletin/1.jpg", top: "1%", left: "8%", rotate: "-5deg", w: 220, z: 1, side: "left" as const, startVY: 0.1, label: "Search trend tools (GettyImages & iStock)" },
+  { src: "/bulletin/6.jpg", top: "3%", left: "32%", rotate: "-2deg", w: 210, z: 1, side: "left" as const, startVY: 0.05, label: "50 emojis (Figma design)" },
+  { src: "/bulletin/2.jpg", top: "4%", left: "55%", rotate: "3deg", w: 210, z: 1, side: "right" as const, startVY: 0.15, label: "Contribution submission app (GettyImages & iStock)" },
+  { src: "/bulletin/10.jpg", top: "2%", left: "80%", rotate: "6deg", w: 235, z: 1, side: "right" as const, startVY: 0.2, label: "Abstract poster/wallpaper (Figma design)" },
+  { src: "/bulletin/11.jpg", top: "30%", left: "2%", rotate: "4deg", w: 215, z: 1, side: "left" as const, startVY: 0.4, label: "Anonymous Letters Across Time (Figma Make)" },
+  { src: "/bulletin/5.jpg", top: "28%", left: "26%", rotate: "6deg", w: 270, z: 3, side: "right" as const, startVY: 0.35, label: "yanliuos (Claude Code)" },
+  { src: "/bulletin/3.jpg", top: "33%", left: "52%", rotate: "2deg", w: 340, z: 1, side: "right" as const, startVY: 0.45, label: "Vibe coding playlist (Claude Code)" },
+  { src: "/bulletin/9.jpg", top: "30%", left: "84%", rotate: "-4deg", w: 205, z: 1, side: "right" as const, startVY: 0.5, label: "Food delivery app (Figma design)" },
+  { src: "/bulletin/7.jpg", top: "72%", left: "5%", rotate: "-3deg", w: 240, z: 1, side: "left" as const, startVY: 0.7, label: "Abstract elements (Figma design)" },
+  { src: "/bulletin/12.jpg", top: "70%", left: "32%", rotate: "-3deg", w: 270, z: 1, side: "right" as const, startVY: 0.7, label: "Landing pages (Figma design)" },
+  { src: "/bulletin/8.jpg", top: "70%", left: "68%", rotate: "5deg", w: 215, z: 2, side: "right" as const, startVY: 0.65, label: "3D cabin (Claude Artifact)" },
 ];
 
 /* ── ScatterImage — scroll-driven fly-in ── */
@@ -69,6 +70,8 @@ function ScatterImage({
   const dragY = useMotionValue(0);
   const imgRef = useRef<HTMLDivElement>(null);
   const [tilt, setTilt] = useState({ rotateX: 0, rotateY: 0 });
+  const [hovered, setHovered] = useState(false);
+  const [tooltipPos, setTooltipPos] = useState({ x: 0, y: 0 });
 
   const handleMouseMove = useCallback((e: React.MouseEvent) => {
     const el = imgRef.current;
@@ -77,10 +80,12 @@ function ScatterImage({
     const x = (e.clientX - rect.left) / rect.width - 0.5;
     const y = (e.clientY - rect.top) / rect.height - 0.5;
     setTilt({ rotateX: -y * 20, rotateY: x * 20 });
+    setTooltipPos({ x: e.clientX - rect.left + 14, y: e.clientY - rect.top + 14 });
   }, []);
 
   const handleMouseLeave = useCallback(() => {
     setTilt({ rotateX: 0, rotateY: 0 });
+    setHovered(false);
   }, []);
 
   return (
@@ -97,6 +102,7 @@ function ScatterImage({
         const evt = e as unknown as MouseEvent;
         setBursts((prev) => [...prev, { id: Date.now(), x: evt.clientX, y: evt.clientY }]);
       }}
+      onMouseEnter={() => setHovered(true)}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       className="absolute cursor-grab active:cursor-grabbing"
@@ -114,7 +120,7 @@ function ScatterImage({
     >
       <motion.img
         src={img.src}
-        alt={`Showcase ${index + 1}`}
+        alt={img.label}
         className="w-full rounded-md shadow-lg"
         animate={{
           rotateX: tilt.rotateX,
@@ -124,6 +130,21 @@ function ScatterImage({
         transition={{ type: "spring", stiffness: 300, damping: 20 }}
         draggable={false}
       />
+      {/* Cursor tooltip */}
+      <AnimatePresence>
+        {hovered && (
+          <motion.div
+            className="absolute z-50 pointer-events-none px-3 py-1.5 rounded-full bg-stone-900 text-white text-[11px] font-[family-name:var(--font-noto)] whitespace-nowrap"
+            style={{ left: tooltipPos.x, top: tooltipPos.y }}
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.9 }}
+            transition={{ duration: 0.15 }}
+          >
+            {img.label}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.div>
   );
 }
@@ -180,7 +201,7 @@ export function ScatterBoard({
             borderRight: "1px solid rgba(0,0,0,0.08)",
             borderBottom: "2px solid rgba(0,0,0,0.12)",
           }}>
-          <div ref={boardRef} className="min-h-[578px] rounded-xl relative overflow-visible" style={{
+          <div ref={boardRef} className="min-h-[750px] rounded-xl relative overflow-visible" style={{
             background: "#F7F1E8",
             boxShadow: "inset 0 2px 6px rgba(0,0,0,0.06)",
           }}>

@@ -33,7 +33,7 @@ export default function Home() {
   const { displayed, done } = useTypingEffect(siteConfig.name, 80);
   const activeSection = siteConfig.sections[activeTab];
   const [bursts, setBursts] = useState<{ id: number; x: number; y: number }[]>([]);
-  const [imgZIndex, setImgZIndex] = useState<number[]>([1, 1, 2, 3, 3, 1, 1, 4, 1, 1]);
+  const [imgZIndex, setImgZIndex] = useState<number[]>([1, 1, 2, 3, 3, 1, 1, 4, 1, 1, 1]);
   const zCounterRef = useRef(10);
   const [arrowVisible, setArrowVisible] = useState(false);
   const onArrowVisible = useRef(() => setArrowVisible(true)).current;
