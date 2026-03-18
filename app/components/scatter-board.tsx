@@ -14,10 +14,10 @@ const BOARD_IMAGES = [
   { src: "/bulletin/11.jpg", top: "30%", left: "2%", rotate: "4deg", w: 215, z: 1, side: "left" as const, startVY: 0.4, label: "Anonymous Letters Across Time (Figma Make)" },
   { src: "/bulletin/5.jpg", top: "28%", left: "26%", rotate: "6deg", w: 270, z: 3, side: "right" as const, startVY: 0.35, label: "yanliuos (Claude Code)" },
   { src: "/bulletin/3.jpg", top: "33%", left: "52%", rotate: "2deg", w: 340, z: 1, side: "right" as const, startVY: 0.45, label: "Vibe coding playlist (Claude Code)" },
-  { src: "/bulletin/9.jpg", top: "30%", left: "84%", rotate: "-4deg", w: 205, z: 1, side: "right" as const, startVY: 0.5, label: "Food delivery app (Figma design)" },
+  { src: "/bulletin/9.jpg", top: "30%", left: "78%", rotate: "-4deg", w: 260, z: 1, side: "right" as const, startVY: 0.5, label: "Food delivery app (Figma design)" },
   { src: "/bulletin/7.jpg", top: "72%", left: "5%", rotate: "-3deg", w: 240, z: 1, side: "left" as const, startVY: 0.7, label: "Abstract elements (Figma design)" },
   { src: "/bulletin/12.jpg", top: "70%", left: "32%", rotate: "-3deg", w: 270, z: 1, side: "right" as const, startVY: 0.7, label: "Landing pages (Figma design)" },
-  { src: "/bulletin/8.jpg", top: "70%", left: "68%", rotate: "5deg", w: 215, z: 2, side: "right" as const, startVY: 0.65, label: "3D cabin (Claude Artifact)" },
+  { src: "/bulletin/8.jpg", top: "70%", left: "63%", rotate: "5deg", w: 300, z: 2, side: "right" as const, startVY: 0.65, label: "3D cabin (Claude Artifact)" },
 ];
 
 /* ── ScatterImage — scroll-driven fly-in ── */
