@@ -207,7 +207,7 @@ export function ScatterBoard({
             borderRight: "1px solid rgba(0,0,0,0.08)",
             borderBottom: "2px solid rgba(0,0,0,0.12)",
           }}>
-          <div ref={boardRef} className="min-h-[750px] rounded-xl relative overflow-visible" style={{
+          <div ref={boardRef} className="min-h-[750px] rounded-xl relative overflow-hidden" style={{
             background: "#F7F1E8",
             boxShadow: "inset 0 2px 6px rgba(0,0,0,0.06)",
           }}>

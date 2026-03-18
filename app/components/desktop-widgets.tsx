@@ -1,18 +1,18 @@
 "use client";
 
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import { motion } from "framer-motion";
+import { motion, useMotionValue, useTransform } from "framer-motion";
 import Matter from "matter-js";
 
 const appTools = [
-  { label: "Claude", icon: "/app-claude.jpg" },
-  { label: "Figma", icon: "/app-figma.jpg" },
-  { label: "Cursor", icon: "/app-cursor.jpg" },
-  { label: "Google AI Studio", icon: "/app-google-ai.jpg" },
-  { label: "Lovable", icon: "/app-lovable.jpg" },
-  { label: "Codex", icon: "/app-codex.jpg" },
-  { label: "GitHub", icon: "/app-github.jpg" },
-  { label: "ChatGPT", icon: "/app-chatgpt.jpg" },
+  { label: "Claude", icon: "/app-claude.jpg", glow: "#D97706" },
+  { label: "Figma", icon: "/app-figma.jpg", glow: "#A259FF" },
+  { label: "Cursor", icon: "/app-cursor.jpg", glow: "#3B82F6" },
+  { label: "Google AI Studio", icon: "/app-google-ai.jpg", glow: "#4285F4" },
+  { label: "Lovable", icon: "/app-lovable.jpg", glow: "#F472B6" },
+  { label: "Codex", icon: "/app-codex.jpg", glow: "#10B981" },
+  { label: "GitHub", icon: "/app-github.jpg", glow: "#8B5CF6" },
+  { label: "ChatGPT", icon: "/app-chatgpt.jpg", glow: "#10A37F" },
 ];
 
 export function WidgetClock() {
@@ -443,6 +443,72 @@ function ReminderCard() {
   );
 }
 
+/* ── Dock with macOS-style magnification + brand glow ── */
+const BASE_SIZE = 36;
+const MAX_SIZE = 54;
+const MAGNIFY_RANGE = 150;
+
+function DockBar() {
+  const mouseX = useMotionValue(-1000);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.35 }}
+      className="bg-white/60 backdrop-blur-sm rounded-xl px-4 flex justify-evenly items-end"
+      style={{ height: MAX_SIZE + 28 }}
+      onMouseMove={(e) => mouseX.set(e.clientX)}
+      onMouseLeave={() => mouseX.set(-1000)}
+    >
+      {appTools.map((tool, i) => (
+        <DockIcon key={i} tool={tool} mouseX={mouseX} />
+      ))}
+    </motion.div>
+  );
+}
+
+function DockIcon({ tool, mouseX }: {
+  tool: typeof appTools[number]; mouseX: ReturnType<typeof useMotionValue<number>>;
+}) {
+  const iconRef = useRef<HTMLDivElement>(null);
+
+  const distance = useTransform(mouseX, (mx: number) => {
+    if (!iconRef.current) return MAGNIFY_RANGE + 1;
+    const rect = iconRef.current.getBoundingClientRect();
+    return mx - (rect.left + rect.width / 2);
+  });
+
+  const size = useTransform(distance, [-MAGNIFY_RANGE, 0, MAGNIFY_RANGE], [BASE_SIZE, MAX_SIZE, BASE_SIZE]);
+  const glowOpacity = useTransform(distance, [-MAGNIFY_RANGE, 0, MAGNIFY_RANGE], [0, 0.7, 0]);
+
+  return (
+    <div ref={iconRef} className="relative flex items-end justify-center" style={{ marginBottom: 14 }}>
+      {/* Brand glow */}
+      <motion.div
+        className="absolute rounded-full pointer-events-none"
+        style={{
+          bottom: -8,
+          left: "50%",
+          x: "-50%",
+          width: useTransform(size, (s: number) => s + 16),
+          height: useTransform(size, (s: number) => s + 16),
+          background: `radial-gradient(circle, ${tool.glow}60 0%, transparent 70%)`,
+          opacity: glowOpacity,
+        }}
+      />
+      <motion.img
+        src={tool.icon}
+        alt={tool.label}
+        title={tool.label}
+        className="object-cover rounded-[9px] cursor-default relative z-[1]"
+        style={{ width: size, height: size }}
+        draggable={false}
+      />
+    </div>
+  );
+}
+
 function JourneyTimeline({ steps }: { steps: string[] }) {
   const [hovered, setHovered] = useState(false);
   const [visibleCount, setVisibleCount] = useState(0);
@@ -566,20 +632,8 @@ export function DesktopWidgets() {
         <FunFactsWidget />
       </div>
 
-      {/* Dock: tool icons */}
-      <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-white/60 backdrop-blur-sm rounded-xl px-4 py-7 flex justify-evenly">
-        {appTools.map((tool, i) => (
-          <motion.img
-            key={i}
-            src={tool.icon}
-            alt={tool.label}
-            title={tool.label}
-            className="w-[36px] h-[36px] object-cover rounded-[9px] cursor-default"
-            whileHover={{ scale: 1.2, y: -4 }}
-            transition={{ type: "spring", stiffness: 300 }}
-          />
-        ))}
-      </motion.div>
+      {/* Dock: tool icons with magnification */}
+      <DockBar />
     </div>
   );
 }
