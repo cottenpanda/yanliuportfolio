@@ -17,6 +17,8 @@ import { ClickBurst } from "./components/click-burst";
 import { NavHeader } from "./components/nav-header";
 import { CursorHint } from "./components/cursor-hint";
 import { OpeningAnimation } from "./components/opening-animation";
+import { MobileBanner } from "./components/mobile-banner";
+import { MobileHero } from "./components/mobile-hero";
 
 /* ── Tab definitions ── */
 const tabs = siteConfig.sections.map((s) => ({
@@ -56,9 +58,15 @@ export default function Home() {
         <ClickBurst key={b.id} x={b.x} y={b.y} onDone={() => setPageBursts((prev) => prev.filter((p) => p.id !== b.id))} />
       ))}
 
-      {/* Hero — full viewport, centered */}
+      {/* Mobile banner — only visible on small screens */}
+      {!showOpening && <MobileBanner />}
+
+      {/* Mobile hero — stacked layout for small screens */}
+      <MobileHero />
+
+      {/* Hero — full viewport, centered (desktop only) */}
       <CursorHint label="Hover on items" delay={5}>
-      <div className="min-h-screen flex items-center justify-center px-4 relative z-10">
+      <div className="hidden lg:flex min-h-screen items-center justify-center px-4 relative z-10">
       <div className="relative w-[1400px] h-[900px] overflow-visible" style={{ maxWidth: "100vw", transform: "translateX(-25px)" }}>
         <MacFolder />
         <DotMatrixBoard />
@@ -176,7 +184,7 @@ export default function Home() {
 
       {/* Ripped paper quote + bio with decorative images */}
       <div id="about" className="mt-[120px] scroll-mt-16" />
-      <div className="relative" style={{ transform: "translateX(-20px)" }}>
+      <div className="relative translate-x-0 lg:-translate-x-[20px]">
         <RippedPaperNote />
         <ScrollRevealText />
       </div>

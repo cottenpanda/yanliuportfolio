@@ -240,7 +240,8 @@ body::before {
   transition-delay: 0ms;
 }
 
-.group\/matrix:hover .dot-on {
+.group\/matrix:hover .dot-on,
+.dot-matrix-active .dot-on {
   background: radial-gradient(circle at 40% 35%, var(--dot-color), var(--dot-color) 50%, transparent 100%);
   box-shadow: 0 0 4px var(--dot-color), 0 0 8px var(--dot-color), 0 0 16px var(--dot-color);
   transition-duration: 0ms;
@@ -401,7 +402,8 @@ body::before {
 .vinyl-spin {
   animation: none;
 }
-.group\/vinyl:hover .vinyl-spin {
+.group\/vinyl:hover .vinyl-spin,
+.vinyl-spin-active {
   animation: vinyl-spin 12s linear infinite;
 }
 
