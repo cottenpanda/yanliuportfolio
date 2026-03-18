@@ -380,6 +380,18 @@ body::before {
   animation: flower-glitch 1.5s ease-in-out infinite;
 }
 
+/* Vinyl neon rotating gradient border */
+@keyframes vinyl-border-rotate {
+  from { --vinyl-angle: 0deg; }
+  to { --vinyl-angle: 360deg; }
+}
+
+@property --vinyl-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
 /* Vinyl spin */
 @keyframes vinyl-spin {
   from { transform: rotate(0deg); }

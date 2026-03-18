@@ -17,9 +17,17 @@ export function VinylCard() {
           />
         </div>
         {/* Card */}
-        <div className="relative bg-white border border-editor-border rounded-2xl shadow-sm flex flex-col items-center w-[240px] pt-6 pb-6 overflow-hidden">
+        {/* Rotating gradient border — visible on hover */}
+        <div
+          className="absolute inset-[-1px] rounded-2xl opacity-0 transition-opacity duration-400 group-hover/vinyl:opacity-100 pointer-events-none"
+          style={{
+            background: "conic-gradient(from var(--vinyl-angle), #39FF14, #FAEF5D, transparent, transparent, #39FF14)",
+            animation: "vinyl-border-rotate 3s linear infinite",
+          }}
+        />
+        <div className="relative bg-white border border-editor-border rounded-2xl shadow-sm flex flex-col items-center w-[240px] pt-6 pb-6">
           {/* Animated blobs — hidden by default, appear on hover */}
-          <div className="absolute inset-0 pointer-events-none opacity-0 transition-opacity duration-500 ease-out group-hover/vinyl:opacity-100">
+          <div className="absolute inset-0 rounded-2xl overflow-hidden pointer-events-none opacity-0 transition-opacity duration-500 ease-out group-hover/vinyl:opacity-100">
             <div className="vinyl-blob vinyl-blob-1" />
             <div className="vinyl-blob vinyl-blob-2" />
             <div className="vinyl-blob vinyl-blob-3" />

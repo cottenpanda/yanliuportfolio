@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { motion } from "framer-motion";
+import Matter from "matter-js";
 
 const appTools = [
   { label: "Claude", icon: "/app-claude.jpg" },
@@ -169,7 +170,7 @@ function EnergyCircle() {
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
-      <div className="text-[9px] text-stone-400 uppercase tracking-wider self-start mb-2">Energy Level</div>
+      <div className="text-[9px] text-stone-400 uppercase tracking-wider self-start mb-4">Energy Level</div>
       <div className="relative w-[80px] h-[80px]">
         <svg width="80" height="80" viewBox="0 0 80 80">
           <circle cx="40" cy="40" r="32" fill="none" stroke="#e7e5e4" strokeWidth="6" />
@@ -272,40 +273,130 @@ function FuelMixRadar() {
   );
 }
 
-const reminders = [
-  "Think deeply",
-  "Stay data-driven",
-  "Experiment often",
-  "Simplify complexity",
-  "Detail-focused",
-  "Stay curious, stay humble",
+const designChips = [
+  { label: "Think deeply", color: "#10b981" },
+  { label: "Data-driven", color: "#3b82f6" },
+  { label: "Detail-focused", color: "#a78bfa" },
+  { label: "Stay curious", color: "#f59e0b" },
+  { label: "Exploring often", color: "#f472b6" },
+  { label: "Learn by building", color: "#06b6d4" },
 ];
+
+const CHIP_W = 95;
+const CHIP_H = 22;
+const AREA_W = 280;
+const AREA_H = 155;
+
+/* Organized grid positions for hover state */
+const organizedPositions = (() => {
+  const gap = 6;
+  const rows: { x: number; y: number }[][] = [];
+  let row: { x: number; y: number }[] = [];
+  let cx = 0;
+  const chipWidths = [85, 78, 95, 82, 100, 110];
+  designChips.forEach((_, i) => {
+    const w = chipWidths[i];
+    if (cx + w > AREA_W && row.length > 0) {
+      rows.push(row);
+      row = [];
+      cx = 0;
+    }
+    row.push({ x: cx, y: 0 });
+    cx += w + gap;
+  });
+  if (row.length) rows.push(row);
+  const totalH = rows.length * (CHIP_H + gap) - gap;
+  const startY = (AREA_H - totalH) / 2;
+  const result: { x: number; y: number }[] = [];
+  let idx = 0;
+  rows.forEach((r, ri) => {
+    const rowW = r.length > 0 ? r[r.length - 1].x + (chipWidths[idx + r.length - 1] || CHIP_W) : 0;
+    const offsetX = (AREA_W - rowW) / 2;
+    r.forEach((pos) => {
+      result.push({ x: pos.x + offsetX, y: startY + ri * (CHIP_H + gap) });
+      idx++;
+    });
+  });
+  return result;
+})();
 
 function ReminderCard() {
   const [hovered, setHovered] = useState(false);
-  const [visibleCount, setVisibleCount] = useState(reminders.length);
+  const [physicsActive, setPhysicsActive] = useState(false);
+  const [chipStates, setChipStates] = useState<{ x: number; y: number; angle: number }[]>(
+    designChips.map(() => ({ x: AREA_W / 2, y: -30, angle: 0 }))
+  );
+  const engineRef = useRef<Matter.Engine | null>(null);
+  const rafRef = useRef<number>(0);
+  const hasLandedRef = useRef(false);
 
-  useEffect(() => {
-    if (hovered) {
-      setVisibleCount(0);
-      const timers = reminders.map((_, i) =>
-        setTimeout(() => setVisibleCount(i + 1), (i + 1) * 200)
+  const startPhysics = useCallback(() => {
+    if (engineRef.current) Matter.Engine.clear(engineRef.current);
+    if (rafRef.current) cancelAnimationFrame(rafRef.current);
+
+    const engine = Matter.Engine.create({ gravity: { x: 0, y: 0.56 } });
+    engineRef.current = engine;
+
+    const floor = Matter.Bodies.rectangle(AREA_W / 2, AREA_H + 10, AREA_W + 40, 20, { isStatic: true });
+    const wallL = Matter.Bodies.rectangle(-10, AREA_H / 2, 20, AREA_H * 2, { isStatic: true });
+    const wallR = Matter.Bodies.rectangle(AREA_W + 10, AREA_H / 2, 20, AREA_H * 2, { isStatic: true });
+    Matter.Composite.add(engine.world, [floor, wallL, wallR]);
+
+    const startXs = [35, 110, 190, 55, 160, 240];
+    const bodies = designChips.map((_, i) => {
+      return Matter.Bodies.rectangle(
+        startXs[i], -20 - i * 35,
+        CHIP_W, CHIP_H,
+        { restitution: 0.25, friction: 0.5, frictionAir: 0.01, angle: ((Math.random() - 0.5) * Math.PI) / 5 }
       );
-      return () => timers.forEach(clearTimeout);
-    } else {
-      setVisibleCount(reminders.length);
-    }
-  }, [hovered]);
+    });
+    Matter.Composite.add(engine.world, bodies);
+
+    setPhysicsActive(true);
+    const step = () => {
+      Matter.Engine.update(engine, 1000 / 60);
+      setChipStates(bodies.map(b => ({
+        x: b.position.x - CHIP_W / 2,
+        y: b.position.y - CHIP_H / 2,
+        angle: b.angle,
+      })));
+      // Check if all bodies are nearly still
+      const allStopped = bodies.every(b => {
+        const speed = Math.sqrt(b.velocity.x ** 2 + b.velocity.y ** 2);
+        return speed < 0.3;
+      });
+      if (allStopped && bodies[bodies.length - 1].position.y > 0) {
+        hasLandedRef.current = true;
+        // Keep the final positions, stop the loop
+        cancelAnimationFrame(rafRef.current);
+        setPhysicsActive(false);
+        return;
+      }
+      rafRef.current = requestAnimationFrame(step);
+    };
+    rafRef.current = requestAnimationFrame(step);
+  }, []);
+
+  // Run physics on mount (first landing on desktop)
+  useEffect(() => {
+    startPhysics();
+    return () => { if (rafRef.current) cancelAnimationFrame(rafRef.current); };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <motion.div
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
-      whileHover={{ rotate: -2, scale: 1.02, boxShadow: "4px 6px 16px rgba(0,0,0,0.1)" }}
+      whileHover={{ boxShadow: "4px 6px 16px rgba(0,0,0,0.1)" }}
       transition={{ delay: 0.05 }}
       className="cursor-pointer origin-top-left relative flex flex-col h-full"
       onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
+      onMouseLeave={() => {
+        setHovered(false);
+        // Re-run physics on mouse leave
+        startPhysics();
+      }}
     >
       {/* Binder clip */}
       <div className="flex justify-center -mb-[6px] relative z-10">
@@ -320,18 +411,29 @@ function ReminderCard() {
       <div className="bg-white rounded-[3px] shadow-[0_1px_4px_rgba(0,0,0,0.08)] relative overflow-hidden">
         <div className="h-[3px] w-full" style={{ background: "repeating-linear-gradient(90deg, #e7e5e4 0px, #e7e5e4 3px, transparent 3px, transparent 6px)" }} />
         <div className="p-3 pt-2 pb-5">
-          <div className="text-[9px] text-stone-400 uppercase tracking-wider mb-2 font-medium">Design Notes</div>
-          <ul className="space-y-[7px] text-[11px] text-stone-600 leading-snug">
-            {reminders.map((r, i) => (
-              <motion.li
-                key={i}
-                animate={{ opacity: i < visibleCount ? 1 : 0, x: i < visibleCount ? 0 : -8 }}
-                transition={{ duration: 0.25 }}
-              >
-                • {r}
-              </motion.li>
-            ))}
-          </ul>
+          <div className="text-[9px] text-stone-400 uppercase tracking-wider mb-3 font-medium">Design Notes</div>
+          <div className="relative" style={{ width: AREA_W, height: AREA_H }}>
+            {designChips.map((chip, i) => {
+              const target = hovered && !physicsActive
+                ? { x: organizedPositions[i].x, y: organizedPositions[i].y, angle: 0 }
+                : chipStates[i];
+              return (
+                <span
+                  key={chip.label}
+                  className="absolute px-[10px] py-[4px] rounded-full text-[10px] font-medium text-white whitespace-nowrap"
+                  style={{
+                    backgroundColor: chip.color,
+                    left: target.x,
+                    top: target.y,
+                    transform: `rotate(${target.angle}rad)`,
+                    transition: hovered && !physicsActive ? "all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)" : "none",
+                  }}
+                >
+                  {chip.label}
+                </span>
+              );
+            })}
+          </div>
         </div>
       </div>
       </div>
