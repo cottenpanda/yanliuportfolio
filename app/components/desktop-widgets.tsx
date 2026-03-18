@@ -72,7 +72,7 @@ const funFacts = [
 ];
 
 const stackRotations = [3, -2, 5];
-const spreadX = [-165, 0, 165];
+const spreadX = [-190, 0, 190];
 
 function PolaroidCard({ fact, index, spread, isFlipped, onFlip, onHoverCard }: {
   fact: typeof funFacts[0]; index: number; spread: boolean; isFlipped: boolean; onFlip: (i: number) => void; onHoverCard: () => void;
