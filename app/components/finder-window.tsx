@@ -312,10 +312,15 @@ export function FolderWindowContent() {
   const [openFolder, setOpenFolder] = useState<number | null>(null);
   const [unlocked, setUnlocked] = useState(true);
   const [activeSidebar, setActiveSidebar] = useState("yanliu");
+  const [isMobile, setIsMobile] = useState(false);
+
+  React.useEffect(() => {
+    setIsMobile(window.innerWidth < 1024);
+  }, []);
 
   return (
-    <div className="flex justify-center">
-      <div className="w-full max-w-[1200px] font-[family-name:var(--font-noto)]">
+    <div className="flex justify-center px-4 lg:px-0">
+      <div className="w-[calc(100vw-32px)] lg:w-full max-w-[1200px] font-[family-name:var(--font-noto)]">
         <div className="relative bg-[#F5F5F4] border border-stone-200 rounded-xl shadow-lg overflow-hidden">
           <div className="flex items-center gap-2 px-4 py-2.5 border-b border-stone-200 bg-gradient-to-b from-[#FAFAF9] to-[#F0EFED]">
             <div className="flex gap-1.5">
@@ -331,8 +336,27 @@ export function FolderWindowContent() {
             <div className="w-[52px]" />
           </div>
 
-          <div className="relative h-[660px] min-w-[1200px] overflow-hidden flex">
-            <div className="w-[170px] shrink-0 bg-[#F0EFED]/60 backdrop-blur-sm border-r border-stone-200/60 py-3 px-2">
+          {/* Mobile top tabs */}
+          <div className="lg:hidden flex border-b border-stone-200/60 bg-[#F0EFED]/60">
+            {sidebarItems.map((item) => (
+              <button
+                key={item.id}
+                onClick={() => { setActiveSidebar(item.id); setOpenFolder(null); }}
+                className={`flex-1 flex items-center justify-center gap-1.5 px-2 py-2 text-[11px] cursor-pointer transition-colors ${
+                  activeSidebar === item.id
+                    ? "bg-[#D4E4F7] text-stone-800 font-medium"
+                    : "text-stone-500"
+                }`}
+              >
+                {item.icon}
+                <span>{item.label}</span>
+              </button>
+            ))}
+          </div>
+
+          <div className="relative h-[500px] lg:h-[660px] lg:min-w-[1200px] overflow-hidden flex w-full">
+            {/* Desktop sidebar */}
+            <div className="hidden lg:block w-[170px] shrink-0 bg-[#F0EFED]/60 backdrop-blur-sm border-r border-stone-200/60 py-3 px-2">
               <p className="text-[11px] font-medium text-stone-400 px-2 mb-1">Favorites</p>
               {sidebarItems.map((item) => (
                 <button
@@ -350,7 +374,7 @@ export function FolderWindowContent() {
               ))}
             </div>
 
-            <div className="relative flex-1 min-h-[660px] overflow-hidden">
+            <div className="relative flex-1 min-h-[500px] lg:min-h-[660px] overflow-hidden min-w-0 w-full">
               <AnimatePresence>
                 {!unlocked && (
                   <motion.div
@@ -378,10 +402,10 @@ export function FolderWindowContent() {
                   >
                     {/* Left: Folders */}
                     <div
-                      className="pt-8 pl-8 pr-6 shrink-0 transition-[width] duration-[350ms] ease-out"
-                      style={{ width: openFolder !== null ? 420 : "100%" }}
+                      className="pt-6 lg:pt-8 pl-4 lg:pl-8 pr-4 lg:pr-6 w-full lg:shrink-0 lg:transition-[width] lg:duration-[350ms] lg:ease-out"
+                      style={!isMobile ? { width: openFolder !== null ? 420 : "100%" } : undefined}
                     >
-                      <div className={`grid ${openFolder !== null ? "grid-cols-3" : "grid-cols-5"} gap-x-10 gap-y-6 content-start w-fit`}>
+                      <div className={`grid grid-cols-3 ${openFolder !== null ? "lg:grid-cols-3" : "lg:grid-cols-5"} gap-x-4 lg:gap-x-10 gap-y-4 lg:gap-y-6 content-start w-fit mx-auto lg:mx-0`}>
                         {siteConfig.sections.map((section, i) => (
                           <FolderIcon
                             key={section.id}
@@ -400,7 +424,7 @@ export function FolderWindowContent() {
                       {openFolder !== null && (
                         <motion.div
                           key="preview"
-                          className="relative border-l border-stone-200/60 h-[660px] w-[580px] shrink-0 ml-auto flex flex-col"
+                          className="absolute lg:relative inset-0 lg:inset-auto border-l-0 lg:border-l border-stone-200/60 h-full lg:h-[660px] w-full lg:w-[580px] shrink-0 ml-auto flex flex-col z-10"
                           initial={{ opacity: 0, x: 40 }}
                           animate={{ opacity: 1, x: 0 }}
                           exit={{ opacity: 0, x: 40 }}
@@ -532,7 +556,8 @@ export function FolderWindowContent() {
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.2 }}
-                    className="h-[660px] overflow-hidden"
+                    className="h-auto lg:h-[660px] overflow-hidden origin-top-left"
+                    style={isMobile ? { transform: "scale(0.48)", width: "208%", height: "auto" } : undefined}
                   >
                     <DesktopWidgets />
                   </motion.div>
@@ -543,7 +568,8 @@ export function FolderWindowContent() {
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.2 }}
-                    className="h-[660px] overflow-hidden"
+                    className="h-auto lg:h-[660px] overflow-hidden origin-top-left"
+                    style={isMobile ? { transform: "scale(0.48)", width: "208%", height: "auto" } : undefined}
                   >
                     <RecentStatus />
                   </motion.div>
@@ -580,7 +606,7 @@ export function PortfolioViewer() {
     <section
       ref={ref}
       id="work"
-      className="flex flex-col items-center px-6 pt-52 pb-12 overflow-visible"
+      className="flex flex-col items-center px-0 lg:px-6 pt-52 pb-12 overflow-hidden lg:overflow-visible"
       style={{ scrollMarginTop: "-180px" }}
     >
       <motion.div style={{ y, scale, rotate }}>
