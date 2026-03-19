@@ -594,6 +594,8 @@ export function FolderWindowContent() {
 
 export function PortfolioViewer() {
   const ref = useRef<HTMLDivElement>(null);
+  const [isMobileView, setIsMobileView] = useState(false);
+  React.useEffect(() => { setIsMobileView(window.innerWidth < 1024); }, []);
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start end", "end start"],
@@ -606,8 +608,8 @@ export function PortfolioViewer() {
     <section
       ref={ref}
       id="work"
-      className="flex flex-col items-center px-0 lg:px-6 pt-20 lg:pt-52 pb-12 overflow-hidden lg:overflow-visible"
-      style={{ scrollMarginTop: "-180px" }}
+      className="flex flex-col items-center px-0 lg:px-6 pt-20 lg:pt-52 pb-12 overflow-hidden lg:overflow-visible scroll-mt-16"
+      style={!isMobileView ? { scrollMarginTop: "-180px" } : undefined}
     >
       <motion.div style={{ y, scale, rotate }}>
         <FolderWindowContent />
