@@ -450,7 +450,54 @@ export function FolderWindowContent() {
                                 transition={{ duration: 0.2 }}
                               >
                                 <div className="relative w-full h-[340px] overflow-hidden">
-                                  <Image src={folderImages[openFolder]} alt={folderContent[openFolder].title} width={580} height={340} className="w-full h-full object-contain" priority />
+                                  {openFolder === 0 ? (
+                                    <video
+                                      src="/projects-at-work.mp4"
+                                      autoPlay
+                                      muted
+                                      loop
+                                      playsInline
+                                      className="w-full h-full object-cover"
+                                    />
+                                  ) : openFolder === 1 ? (
+                                    <video
+                                      src="/design-with-ai.mp4"
+                                      autoPlay
+                                      muted
+                                      loop
+                                      playsInline
+                                      className="w-full h-full object-cover"
+                                    />
+                                  ) : openFolder === 2 ? (
+                                    <video
+                                      src="/design-impact.mp4"
+                                      autoPlay
+                                      muted
+                                      loop
+                                      playsInline
+                                      className="w-full h-full object-cover"
+                                    />
+                                  ) : openFolder === 4 ? (
+                                    <video
+                                      src="/sketch-to-merch.mp4"
+                                      autoPlay
+                                      muted
+                                      loop
+                                      playsInline
+                                      className="w-full h-full object-cover"
+                                    />
+                                  ) : openFolder === 3 ? (
+                                    <video
+                                      src="/2025-nature.mp4"
+                                      autoPlay
+                                      muted
+                                      loop
+                                      playsInline
+                                      className="w-full h-full object-cover"
+                                    />
+                                  ) : (
+                                    <Image src={folderImages[openFolder]} alt={folderContent[openFolder].title} width={580} height={340} className="w-full h-full object-contain" priority />
+                                  )}
                                 </div>
                                 <div className="p-5 space-y-4">
                                   <h3 className="text-[16px] font-medium text-stone-800">{folderContent[openFolder].title}</h3>
