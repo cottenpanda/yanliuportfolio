@@ -456,8 +456,8 @@ function DockBar() {
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.35 }}
-      className="bg-white/60 backdrop-blur-sm rounded-xl px-4 flex justify-evenly items-end"
-      style={{ height: MAX_SIZE + 28 }}
+      className="bg-white/60 backdrop-blur-sm rounded-xl px-4 flex justify-evenly items-center"
+      style={{ height: MAX_SIZE + 60 }}
       onMouseMove={(e) => mouseX.set(e.clientX)}
       onMouseLeave={() => mouseX.set(-1000)}
     >
