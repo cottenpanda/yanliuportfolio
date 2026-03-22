@@ -354,7 +354,7 @@ export function FolderWindowContent() {
             ))}
           </div>
 
-          <div className="relative h-[500px] lg:h-[660px] lg:min-w-[1200px] overflow-hidden flex w-full">
+          <div className="relative h-[500px] lg:h-[800px] lg:min-w-[1200px] overflow-hidden flex w-full">
             {/* Desktop sidebar */}
             <div className="hidden lg:block w-[170px] shrink-0 bg-[#F0EFED]/60 backdrop-blur-sm border-r border-stone-200/60 py-3 px-2">
               <p className="text-[11px] font-medium text-stone-400 px-2 mb-1">Favorites</p>
@@ -374,7 +374,7 @@ export function FolderWindowContent() {
               ))}
             </div>
 
-            <div className="relative flex-1 min-h-[500px] lg:min-h-[660px] overflow-hidden min-w-0 w-full">
+            <div className="relative flex-1 min-h-[500px] lg:min-h-[800px] overflow-hidden min-w-0 w-full">
               <AnimatePresence>
                 {!unlocked && (
                   <motion.div
@@ -424,7 +424,7 @@ export function FolderWindowContent() {
                       {openFolder !== null && (
                         <motion.div
                           key="preview"
-                          className="absolute lg:relative inset-0 lg:inset-auto border-l-0 lg:border-l border-stone-200/60 h-full lg:h-[660px] w-full lg:w-[580px] shrink-0 ml-auto flex flex-col z-10"
+                          className="absolute lg:relative inset-0 lg:inset-auto border-l-0 lg:border-l border-stone-200/60 h-full lg:h-[800px] w-full lg:w-[580px] shrink-0 ml-auto flex flex-col z-10"
                           initial={{ opacity: 0, x: 40 }}
                           animate={{ opacity: 1, x: 0 }}
                           exit={{ opacity: 0, x: 40 }}
@@ -558,7 +558,7 @@ export function FolderWindowContent() {
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.2 }}
-                    className="h-[660px] overflow-hidden"
+                    className="h-[800px] overflow-hidden"
                   >
                     <div className="grid grid-cols-4 gap-x-2 gap-y-4 p-5 items-start content-start">
                       {[
@@ -603,7 +603,7 @@ export function FolderWindowContent() {
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.2 }}
-                    className="h-auto lg:h-[660px] overflow-hidden origin-top-left"
+                    className="h-auto lg:h-[800px] overflow-hidden origin-top-left"
                     style={isMobile ? { transform: "scale(0.48)", width: "208%", height: "auto" } : undefined}
                   >
                     <DesktopWidgets />
@@ -615,7 +615,7 @@ export function FolderWindowContent() {
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.2 }}
-                    className="h-auto lg:h-[660px] overflow-hidden origin-top-left"
+                    className="h-auto lg:h-[800px] overflow-hidden origin-top-left"
                     style={isMobile ? { transform: "scale(0.48)", width: "208%", height: "auto" } : undefined}
                   >
                     <RecentStatus />
@@ -627,7 +627,7 @@ export function FolderWindowContent() {
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.2 }}
-                    className="h-[660px]"
+                    className="h-[800px]"
                   />
                 )}
               </AnimatePresence>

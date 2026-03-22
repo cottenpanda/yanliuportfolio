@@ -509,7 +509,18 @@ function DockIcon({ tool, mouseX }: {
   );
 }
 
-function JourneyTimeline({ steps }: { steps: string[] }) {
+const journeyData = [
+  { step: "Studied law", tag: "LAW" },
+  { step: "Worked in robotics", tag: "GLOBAL LAUNCH" },
+  { step: "Became a product designer", tag: "TECH" },
+  { step: "Designing AI products", tag: "AI" },
+  { step: "Building with AI", tag: "AI" },
+  { step: "Won Claude vibe-coding challenge", tag: "AI" },
+  { step: "Shipped a chrome extension", tag: "AI" },
+  { step: "AI native designer", tag: "NOW", hollow: true, pulse: true },
+];
+
+function JourneyTimeline() {
   const [hovered, setHovered] = useState(false);
   const [visibleCount, setVisibleCount] = useState(0);
 
@@ -518,37 +529,75 @@ function JourneyTimeline({ steps }: { steps: string[] }) {
       setVisibleCount(0);
       return;
     }
-    if (visibleCount >= steps.length) return;
+    if (visibleCount >= journeyData.length) return;
     const timer = setTimeout(() => setVisibleCount((c) => c + 1), 150);
     return () => clearTimeout(timer);
-  }, [hovered, visibleCount, steps.length]);
+  }, [hovered, visibleCount]);
 
   return (
     <motion.div
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.25 }}
-      className="bg-white/80 rounded-xl p-3 flex-1 cursor-default"
+      className="rounded-xl p-4 flex-1 cursor-default"
+      style={{ background: "rgba(255,255,255,0.8)" }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
-      <div className="text-[9px] text-stone-400 uppercase tracking-wider mb-3">My Journey</div>
+      <div className="text-[9px] text-stone-400 uppercase tracking-[0.2em] mb-4 font-mono">My Journey</div>
       <div className="space-y-0">
-        {steps.map((step, i) => (
-          <div
-            key={i}
-            className="flex items-start gap-2 transition-opacity duration-300"
-            style={{ opacity: hovered ? (i < visibleCount ? 1 : 0) : 1 }}
-          >
-            <div className="flex flex-col items-center shrink-0">
-              <div className="w-1.5 h-1.5 rounded-full bg-stone-400 mt-[5px]" />
-              {i < steps.length - 1 && (
-                <div className="w-0 flex-1 border-l border-dashed border-stone-300 min-h-[16px]" />
-              )}
+        {journeyData.map((item, i) => {
+          const isLast = i === journeyData.length - 1;
+          if (isLast) return null;
+          return (
+            <div
+              key={i}
+              className="flex items-center gap-3 py-[10px] transition-opacity duration-300"
+              style={{
+                opacity: hovered ? (i < visibleCount ? 1 : 0) : 1,
+                borderBottom: i < journeyData.length - 2 ? "1px solid rgba(214,211,209,0.5)" : "none",
+              }}
+            >
+              <span className="text-[11px] text-stone-400 font-mono w-[20px] shrink-0">
+                {String(i + 1).padStart(2, "0")}
+              </span>
+              <div className="shrink-0 w-[8px] h-[8px] rounded-full bg-stone-300" />
+              <span className="text-[12px] text-stone-400 flex-1">{item.step}</span>
+              <span
+                className="text-[8px] font-medium tracking-wider px-2 py-0.5 rounded-full shrink-0"
+                style={{ background: "#f5f5f4", color: "#a8a29e" }}
+              >
+                {item.tag}
+              </span>
             </div>
-            <span className="text-[11px] text-stone-600 pb-1.5">{step}</span>
-          </div>
-        ))}
+          );
+        })}
+      </div>
+      {/* Highlighted last item */}
+      <div
+        className="mt-3 rounded-xl px-5 py-4 flex items-center gap-3 transition-opacity duration-300"
+        style={{
+          background: "#f5f5f4",
+          border: "1px solid rgba(214,211,209,0.6)",
+          opacity: hovered ? (journeyData.length - 1 < visibleCount ? 1 : 0) : 1,
+        }}
+      >
+        <span className="text-[11px] text-stone-400 font-mono w-[20px] shrink-0">
+          {String(journeyData.length).padStart(2, "0")}
+        </span>
+        <div className="relative shrink-0 w-[10px] h-[10px]">
+          <div className="absolute inset-0 rounded-full bg-emerald-500 animate-ping opacity-30" />
+          <div className="w-[10px] h-[10px] rounded-full bg-emerald-500 relative" />
+        </div>
+        <div className="flex-1">
+          <span className="text-[15px] text-stone-800 font-semibold block leading-tight whitespace-nowrap">{journeyData[journeyData.length - 1].step}</span>
+        </div>
+        <span
+          className="text-[10px] font-medium tracking-wider px-3 py-1.5 rounded-full shrink-0"
+          style={{ background: "#ecfdf5", color: "#059669" }}
+        >
+          NOW
+        </span>
       </div>
     </motion.div>
   );
@@ -596,19 +645,6 @@ export function DesktopWidgets() {
   const monthName = today.toLocaleString("default", { month: "short" });
   const year = today.getFullYear();
 
-  const journeySteps = [
-    "Studied law",
-    "Worked in robotics",
-    "Moved to Seattle",
-    "Became a product designer",
-    "Designing AI products",
-    "Building with AI",
-    "Won a vibe-coding challenge",
-    "Launched my first Chrome extension",
-    "Still exploring",
-  ];
-
-
 
   return (
     <div className="p-3 flex flex-col gap-3">
@@ -625,7 +661,7 @@ export function DesktopWidgets() {
       <div className="grid grid-cols-3 gap-3">
         {/* Left column: Weather + To-Do stacked */}
         <div className="flex flex-col gap-3">
-          <JourneyTimeline steps={journeySteps} />
+          <JourneyTimeline />
         </div>
 
         {/* Goals - spans 2 columns, matches height of weather + todo */}
