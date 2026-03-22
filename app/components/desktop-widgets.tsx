@@ -73,7 +73,7 @@ const funFacts = [
 ];
 
 const stackRotations = [3, -2, 5];
-const spreadX = [-190, 0, 190];
+const spreadX = [-200, 0, 200];
 
 function PolaroidCard({ fact, index, spread, isFlipped, onFlip, onHoverCard }: {
   fact: typeof funFacts[0]; index: number; spread: boolean; isFlipped: boolean; onFlip: (i: number) => void; onHoverCard: () => void;
@@ -88,7 +88,7 @@ function PolaroidCard({ fact, index, spread, isFlipped, onFlip, onHoverCard }: {
       }}
       transition={{ type: "spring", stiffness: 200, damping: 22 }}
       className="absolute cursor-pointer"
-      style={{ width: 155, perspective: 800 }}
+      style={{ width: 185, perspective: 800 }}
       onMouseEnter={onHoverCard}
       onClick={(e) => { e.stopPropagation(); if (spread) onFlip(index); }}
     >
@@ -99,10 +99,10 @@ function PolaroidCard({ fact, index, spread, isFlipped, onFlip, onHoverCard }: {
       >
         {/* Front */}
         <div
-          className="rounded-sm bg-[#fafaf8] shadow-[0_2px_10px_rgba(0,0,0,0.12),0_1px_3px_rgba(0,0,0,0.08)] flex flex-col p-[6px] pb-[20px]"
+          className="rounded-xl bg-[#fafaf8] shadow-[0_2px_10px_rgba(0,0,0,0.12),0_1px_3px_rgba(0,0,0,0.08)] flex flex-col p-[8px] pb-[22px]"
           style={{ backfaceVisibility: "hidden" }}
         >
-          <div className="bg-stone-100 flex items-center justify-center overflow-hidden" style={{ aspectRatio: "4/5" }}>
+          <div className="bg-stone-100 rounded-lg flex items-center justify-center overflow-hidden" style={{ aspectRatio: "4/5" }}>
             {fact.image ? (
               <img src={fact.image} alt={fact.front} className="w-full h-full object-contain p-2" />
             ) : (
@@ -112,11 +112,11 @@ function PolaroidCard({ fact, index, spread, isFlipped, onFlip, onHoverCard }: {
         </div>
         {/* Back */}
         <div
-          className="rounded-sm bg-stone-800 shadow-[0_2px_10px_rgba(0,0,0,0.15)] p-4 absolute inset-0 flex flex-col justify-center"
+          className="rounded-xl bg-stone-800 shadow-[0_2px_10px_rgba(0,0,0,0.15)] p-4 absolute inset-0 flex flex-col justify-center"
           style={{ backfaceVisibility: "hidden", transform: "rotateY(180deg)" }}
         >
-          <div className="text-[10px] text-stone-400 uppercase tracking-wider mb-2">{fact.front}</div>
-          <p className="text-[11px] text-stone-200 leading-relaxed">{fact.back}</p>
+          <div className="text-[12px] text-stone-400 uppercase tracking-wider mb-2">{fact.front}</div>
+          <p className="text-[12px] text-stone-200 leading-relaxed">{fact.back}</p>
         </div>
       </motion.div>
     </motion.div>
