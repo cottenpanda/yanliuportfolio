@@ -668,8 +668,8 @@ export function DesktopWidgets() {
         <FunFactsWidget />
       </div>
 
-      {/* Dock: tool icons with magnification */}
-      <DockBar />
+      {/* Dock: hidden for now to reduce window height */}
+      {/* <DockBar /> */}
     </div>
   );
 }

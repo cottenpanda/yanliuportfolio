@@ -354,7 +354,7 @@ export function FolderWindowContent() {
             ))}
           </div>
 
-          <div className="relative h-[500px] lg:h-[820px] lg:min-w-[1200px] overflow-hidden flex w-full">
+          <div className="relative h-[500px] lg:h-[700px] lg:min-w-[1200px] overflow-hidden flex w-full">
             {/* Desktop sidebar */}
             <div className="hidden lg:block w-[170px] shrink-0 bg-[#F0EFED]/60 backdrop-blur-sm border-r border-stone-200/60 py-3 px-2">
               <p className="text-[11px] font-medium text-stone-400 px-2 mb-1">Favorites</p>
@@ -374,7 +374,7 @@ export function FolderWindowContent() {
               ))}
             </div>
 
-            <div className="relative flex-1 min-h-[500px] lg:min-h-[820px] overflow-hidden min-w-0 w-full">
+            <div className="relative flex-1 min-h-[500px] lg:min-h-[700px] overflow-hidden min-w-0 w-full">
               <AnimatePresence>
                 {!unlocked && (
                   <motion.div
@@ -424,7 +424,7 @@ export function FolderWindowContent() {
                       {openFolder !== null && (
                         <motion.div
                           key="preview"
-                          className="absolute lg:relative inset-0 lg:inset-auto border-l-0 lg:border-l border-stone-200/60 h-full lg:h-[820px] w-full lg:w-[580px] shrink-0 ml-auto flex flex-col z-10"
+                          className="absolute lg:relative inset-0 lg:inset-auto border-l-0 lg:border-l border-stone-200/60 h-full lg:h-[700px] w-full lg:w-[580px] shrink-0 ml-auto flex flex-col z-10"
                           initial={{ opacity: 0, x: 40 }}
                           animate={{ opacity: 1, x: 0 }}
                           exit={{ opacity: 0, x: 40 }}
@@ -506,29 +506,29 @@ export function FolderWindowContent() {
                                       {renderBold(para)}
                                     </p>
                                   ))}
+                                  {folderContent[openFolder]?.cta && (() => {
+                                    const cta = folderContent[openFolder].cta;
+                                    const links = Array.isArray(cta) ? cta.flat() : [cta];
+                                    return (
+                                      <div className="flex gap-4 flex-wrap pt-2">
+                                        {links.map((link, li) => (
+                                          <a
+                                            key={li}
+                                            href={(link as {label: string; url: string}).url}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="inline-block text-[13px] px-4 py-1.5 rounded-md border border-stone-700 text-stone-700 hover:bg-stone-700 hover:text-white transition-colors"
+                                          >
+                                            {(link as {label: string; url: string}).label}
+                                          </a>
+                                        ))}
+                                      </div>
+                                    );
+                                  })()}
                                 </div>
                               </motion.div>
                             </AnimatePresence>
                           </div>
-                          {openFolder !== null && folderContent[openFolder]?.cta && (() => {
-                            const cta = folderContent[openFolder].cta;
-                            const links = Array.isArray(cta) ? cta.flat() : [cta];
-                            return (
-                            <div className="flex gap-4 flex-wrap px-5 py-4 border-t border-stone-200/60">
-                              {links.map((link, i) => (
-                                <a
-                                  key={i}
-                                  href={(link as {label: string; url: string}).url}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="inline-block text-[13px] px-4 py-1.5 rounded-md border border-stone-700 text-stone-700 hover:bg-stone-700 hover:text-white transition-colors"
-                                >
-                                  {(link as {label: string; url: string}).label}
-                                </a>
-                              ))}
-                            </div>
-                            );
-                          })()}
                         </motion.div>
                       )}
                     </AnimatePresence>
@@ -558,7 +558,7 @@ export function FolderWindowContent() {
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.2 }}
-                    className="h-[820px] overflow-hidden"
+                    className="h-[700px] overflow-hidden"
                   >
                     <div className="grid grid-cols-4 gap-x-2 gap-y-4 p-5 items-start content-start">
                       {[
@@ -603,7 +603,7 @@ export function FolderWindowContent() {
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.2 }}
-                    className="h-auto lg:h-[820px] overflow-hidden origin-top-left"
+                    className="h-auto lg:h-[700px] overflow-hidden origin-top-left"
                     style={isMobile ? { transform: "scale(0.48)", width: "208%", height: "auto" } : undefined}
                   >
                     <DesktopWidgets />
@@ -615,7 +615,7 @@ export function FolderWindowContent() {
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.2 }}
-                    className="h-auto lg:h-[820px] overflow-hidden origin-top-left"
+                    className="h-auto lg:h-[700px] overflow-hidden origin-top-left"
                     style={isMobile ? { transform: "scale(0.48)", width: "208%", height: "auto" } : undefined}
                   >
                     <RecentStatus />
@@ -627,7 +627,7 @@ export function FolderWindowContent() {
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.2 }}
-                    className="h-[820px]"
+                    className="h-[700px]"
                   />
                 )}
               </AnimatePresence>
