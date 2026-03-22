@@ -166,31 +166,31 @@ function EnergyCircle() {
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.1 }}
-      className="bg-white/80 rounded-xl p-3 flex flex-col items-center cursor-pointer"
+      className="bg-white/80 rounded-xl p-3 flex flex-col items-center justify-center cursor-pointer"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
-      <div className="text-[9px] text-stone-400 uppercase tracking-wider self-start mb-4">Energy Level</div>
-      <div className="relative w-[80px] h-[80px]">
-        <svg width="80" height="80" viewBox="0 0 80 80">
-          <circle cx="40" cy="40" r="32" fill="none" stroke="#e7e5e4" strokeWidth="6" />
+      <div className="text-[9px] text-stone-400 uppercase tracking-wider self-start mb-3">Energy Level</div>
+      <div className="relative w-[110px] h-[110px]">
+        <svg width="110" height="110" viewBox="0 0 110 110">
+          <circle cx="55" cy="55" r="44" fill="none" stroke="#e7e5e4" strokeWidth="7" />
           <motion.circle
             key={hovered ? "active" : "idle"}
-            cx="40" cy="40" r="32"
-            fill="none" stroke="#10b981" strokeWidth="6"
+            cx="55" cy="55" r="44"
+            fill="none" stroke="#10b981" strokeWidth="7"
             strokeLinecap="butt"
-            strokeDasharray={circumference}
-            initial={hovered ? { strokeDashoffset: circumference } : false}
-            animate={{ strokeDashoffset: circumference * (1 - 0.95) }}
+            strokeDasharray={Math.PI * 2 * 44}
+            initial={hovered ? { strokeDashoffset: Math.PI * 2 * 44 } : false}
+            animate={{ strokeDashoffset: Math.PI * 2 * 44 * (1 - 0.95) }}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            transform="rotate(-90 40 40)"
+            transform="rotate(-90 55 55)"
           />
         </svg>
         <div className="absolute inset-0 flex flex-col items-center justify-center">
-          <span className="text-[18px] font-semibold text-stone-700 leading-none">95%</span>
+          <span className="text-[22px] font-semibold text-stone-700 leading-none">95%</span>
         </div>
       </div>
-      <div className="text-[10px] text-stone-600 mt-1">Feeling great</div>
+      <div className="text-[11px] text-stone-600 mt-2">Feeling great</div>
     </motion.div>
   );
 }
