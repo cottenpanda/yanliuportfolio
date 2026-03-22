@@ -190,7 +190,7 @@ function EnergyCircle() {
           <span className="text-[22px] font-semibold text-stone-700 leading-none">95%</span>
         </div>
       </div>
-      <div className="text-[11px] text-stone-600 mt-2">Feeling great</div>
+      <div className="text-[12px] text-stone-600 mt-2">Feeling great</div>
     </motion.div>
   );
 }
@@ -203,7 +203,7 @@ const radarStats = [
   { label: "Curiosity", value: 100 },
   { label: "Ideas", value: 95 },
 ];
-const radarCx = 65, radarCy = 62, radarMaxR = 45, radarLevels = 4, radarN = radarStats.length;
+const radarCx = 85, radarCy = 82, radarMaxR = 60, radarLevels = 4, radarN = radarStats.length;
 const radarAngle = (i: number) => (Math.PI * 2 * i) / radarN - Math.PI / 2;
 const radarPt = (i: number, r: number) => `${radarCx + r * Math.cos(radarAngle(i))},${radarCy + r * Math.sin(radarAngle(i))}`;
 
@@ -235,7 +235,7 @@ function FuelMixRadar() {
       onMouseLeave={stopReveal}
     >
       <div className="text-[9px] text-stone-400 uppercase tracking-wider self-start mb-1">Fuel Mix</div>
-      <svg width="170" height="150" viewBox="-20 -10 170 150">
+      <svg width="210" height="200" viewBox="-10 -5 200 190">
         {[...Array(radarLevels)].map((_, l) => {
           const r = radarMaxR * ((l + 1) / radarLevels);
           const pts = radarStats.map((_, i) => radarPt(i, r)).join(" ");
@@ -263,10 +263,10 @@ function FuelMixRadar() {
           );
         })}
         {radarStats.map((s, i) => {
-          const lR = radarMaxR + 18;
+          const lR = radarMaxR + 22;
           const x = radarCx + lR * Math.cos(radarAngle(i));
           const y = radarCy + lR * Math.sin(radarAngle(i));
-          return <text key={i} x={x} y={y} textAnchor="middle" dominantBaseline="middle" className="text-[10px] fill-stone-600">{s.label}</text>;
+          return <text key={i} x={x} y={y} textAnchor="middle" dominantBaseline="middle" className="text-[12px] fill-stone-600">{s.label}</text>;
         })}
       </svg>
     </motion.div>
