@@ -177,6 +177,7 @@ export function ScrollRevealText() {
         style={{
           opacity: visible ? 1 : 0,
           transform: visible ? "translateY(0)" : "translateY(20px)",
+          transitionDelay: "0.3s",
         }}
       >
         I turn ambiguity{" "}
@@ -202,11 +203,11 @@ export function ScrollRevealText() {
         </span>
       </p>
       <p
-        className="font-[family-name:var(--font-courier-prime)] text-[17px] md:text-[20px] text-stone-600 leading-relaxed mt-6 transition-all duration-700 ease-out delay-500"
+        className="font-[family-name:var(--font-courier-prime)] text-[17px] md:text-[20px] text-stone-600 leading-relaxed mt-6 transition-all duration-700 ease-out"
         style={{
           opacity: visible ? 1 : 0,
           transform: visible ? "translateY(0)" : "translateY(20px)",
-          transitionDelay: "0.5s",
+          transitionDelay: "1s",
         }}
       >
         <img
@@ -214,6 +215,11 @@ export function ScrollRevealText() {
           alt=""
           className="inline-block w-[36px] h-auto align-middle -ml-0.5 mr-1 -mt-1"
           draggable={false}
+          style={{
+            opacity: visible ? 1 : 0,
+            transform: visible ? "scale(1) rotate(0deg)" : "scale(0) rotate(-180deg)",
+            transition: "opacity 0.5s ease-out 1.2s, transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 1.2s",
+          }}
         />
         <span className="inline-flex items-center border border-stone-500 pl-2.5 pr-2 pt-[2px] pb-[0px] rounded-sm">
           <TypedText text="I build with AI," start={visible} delay={1400} />

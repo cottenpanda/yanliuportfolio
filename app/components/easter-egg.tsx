@@ -155,7 +155,7 @@ export function EasterEggCell({ containerRef, col, row, animIdx, cardOffset, car
   const cardH = 160;
   const cellRef = useRef<HTMLDivElement>(null);
 
-  // Scroll-triggered reveal
+  // Scroll-triggered reveal — show dashed cell + cross, card stays hidden until click
   useEffect(() => {
     const el = cellRef.current;
     if (!el) return;
@@ -163,8 +163,6 @@ export function EasterEggCell({ containerRef, col, row, animIdx, cardOffset, car
       if (entry.isIntersecting) {
         setTimeout(() => {
           setRevealed(true);
-          setOpen(true);
-          // Blink the grid cell
           setBlinking(true);
           setTimeout(() => setBlinking(false), 1200);
         }, animIdx * 300);
