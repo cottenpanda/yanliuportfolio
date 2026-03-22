@@ -134,9 +134,10 @@ export function RecentStatus() {
           <motion.div
             key={i}
             {...fadeIn(0.15 + i * 0.05)}
-            className="flex gap-4 py-3"
+            className="flex gap-4 py-3 pl-3 -ml-3 rounded-lg relative cursor-default transition-all duration-200 hover:bg-stone-100/80 hover:pl-5 group"
             style={{ borderBottom: "1px solid rgba(214,211,209,0.4)" }}
           >
+            <div className="absolute left-0 top-[12px] bottom-[12px] w-[3px] rounded-full bg-stone-400 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
             <span className="text-[11px] text-stone-400 font-mono w-[36px] shrink-0 pt-[2px]">{item.year}</span>
             <div className="flex-1 min-w-0">
               <div className="text-[14px] text-stone-800 font-semibold leading-snug">{item.title}</div>
@@ -166,9 +167,10 @@ export function RecentStatus() {
           <motion.div
             key={i}
             {...fadeIn(0.55 + i * 0.05)}
-            className="flex gap-4 py-3"
+            className="flex gap-4 py-3 pl-3 -ml-3 rounded-lg relative cursor-default transition-all duration-200 hover:bg-stone-100/80 hover:pl-5 group"
             style={{ borderBottom: i < additionalAchievements.length - 1 ? "1px solid rgba(214,211,209,0.4)" : "none" }}
           >
+            <div className="absolute left-0 top-[12px] bottom-[12px] w-[3px] rounded-full bg-stone-400 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
             <span className="text-[11px] text-stone-400 font-mono w-[36px] shrink-0 pt-[2px]">{item.year}</span>
             <div className="flex-1 min-w-0">
               <div className="text-[14px] text-stone-800 font-semibold leading-snug">{item.title}</div>

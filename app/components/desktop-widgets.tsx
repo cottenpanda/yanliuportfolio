@@ -288,12 +288,12 @@ const AREA_W = 280;
 const AREA_H = 155;
 
 /* Organized grid positions for hover state */
-const organizedPositions = (() => {
+const chipWidths = [85, 78, 95, 82, 100, 110];
+function getOrganizedPositions(areaH: number) {
   const gap = 6;
   const rows: { x: number; y: number }[][] = [];
   let row: { x: number; y: number }[] = [];
   let cx = 0;
-  const chipWidths = [85, 78, 95, 82, 100, 110];
   designChips.forEach((_, i) => {
     const w = chipWidths[i];
     if (cx + w > AREA_W && row.length > 0) {
@@ -306,19 +306,19 @@ const organizedPositions = (() => {
   });
   if (row.length) rows.push(row);
   const totalH = rows.length * (CHIP_H + gap) - gap;
-  const startY = (AREA_H - totalH) / 2;
+  const startY = (areaH - totalH) / 2;
   const result: { x: number; y: number }[] = [];
   let idx = 0;
   rows.forEach((r, ri) => {
     const rowW = r.length > 0 ? r[r.length - 1].x + (chipWidths[idx + r.length - 1] || CHIP_W) : 0;
-    const offsetX = (AREA_W - rowW) / 2;
+    const offsetX = (AREA_W - rowW) / 2 + 15;
     r.forEach((pos) => {
       result.push({ x: pos.x + offsetX, y: startY + ri * (CHIP_H + gap) });
       idx++;
     });
   });
   return result;
-})();
+}
 
 function ReminderCard() {
   const [hovered, setHovered] = useState(false);
@@ -329,17 +329,20 @@ function ReminderCard() {
   const engineRef = useRef<Matter.Engine | null>(null);
   const rafRef = useRef<number>(0);
   const hasLandedRef = useRef(false);
+  const chipAreaRef = useRef<HTMLDivElement>(null);
 
   const startPhysics = useCallback(() => {
     if (engineRef.current) Matter.Engine.clear(engineRef.current);
     if (rafRef.current) cancelAnimationFrame(rafRef.current);
 
+    const areaH = chipAreaRef.current ? chipAreaRef.current.clientHeight : AREA_H;
+
     const engine = Matter.Engine.create({ gravity: { x: 0, y: 0.56 } });
     engineRef.current = engine;
 
-    const floor = Matter.Bodies.rectangle(AREA_W / 2, AREA_H + 10, AREA_W + 40, 20, { isStatic: true });
-    const wallL = Matter.Bodies.rectangle(-10, AREA_H / 2, 20, AREA_H * 2, { isStatic: true });
-    const wallR = Matter.Bodies.rectangle(AREA_W + 10, AREA_H / 2, 20, AREA_H * 2, { isStatic: true });
+    const floor = Matter.Bodies.rectangle(AREA_W / 2, areaH + 10, AREA_W + 40, 20, { isStatic: true });
+    const wallL = Matter.Bodies.rectangle(-10, areaH / 2, 20, areaH * 2, { isStatic: true });
+    const wallR = Matter.Bodies.rectangle(AREA_W + 10, areaH / 2, 20, areaH * 2, { isStatic: true });
     Matter.Composite.add(engine.world, [floor, wallL, wallR]);
 
     const startXs = [35, 110, 190, 55, 160, 240];
@@ -398,24 +401,17 @@ function ReminderCard() {
         startPhysics();
       }}
     >
-      {/* Binder clip */}
-      <div className="flex justify-center -mb-[6px] relative z-10">
-        <svg width="28" height="14" viewBox="0 0 28 14" fill="none">
-          <rect x="8" y="0" width="12" height="10" rx="2" fill="#57534e" />
-          <rect x="10" y="2" width="8" height="6" rx="1" fill="#44403c" />
-          <path d="M6 10 C6 6, 10 4, 14 4 C18 4, 22 6, 22 10" stroke="#78716c" strokeWidth="2" fill="none" />
-        </svg>
-      </div>
-      <div className="relative">
+      <div className="relative flex-1">
         <div className="absolute top-[4px] left-[3px] right-[-6px] bottom-[-6px] bg-stone-700 rounded-[4px]" />
-      <div className="bg-white rounded-[3px] shadow-[0_1px_4px_rgba(0,0,0,0.08)] relative overflow-hidden">
-        <div className="h-[3px] w-full" style={{ background: "repeating-linear-gradient(90deg, #e7e5e4 0px, #e7e5e4 3px, transparent 3px, transparent 6px)" }} />
-        <div className="p-3 pt-2 pb-5">
+      <div className="bg-white rounded-[3px] shadow-[0_1px_4px_rgba(0,0,0,0.08)] relative overflow-hidden h-full flex flex-col">
+        <div className="h-[6px] w-full shrink-0" style={{ background: "repeating-linear-gradient(90deg, #d6d3d1 0px, #d6d3d1 6px, transparent 6px, transparent 14px)" }} />
+        <div className="p-3 pt-2 pb-5 flex flex-col flex-1">
           <div className="text-[9px] text-stone-400 uppercase tracking-wider mb-3 font-medium">Design Notes</div>
-          <div className="relative" style={{ width: AREA_W, height: AREA_H }}>
+          <div ref={chipAreaRef} className="relative flex-1" style={{ width: AREA_W }}>
             {designChips.map((chip, i) => {
+              const orgPositions = getOrganizedPositions(chipAreaRef.current?.clientHeight || AREA_H);
               const target = hovered && !physicsActive
-                ? { x: organizedPositions[i].x, y: organizedPositions[i].y, angle: 0 }
+                ? { x: orgPositions[i].x, y: orgPositions[i].y, angle: 0 }
                 : chipStates[i];
               return (
                 <span
