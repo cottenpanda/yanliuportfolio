@@ -77,7 +77,7 @@ const appTools = [
 const sidebarItems = [
   { id: "yanliu", label: "Projects", icon: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2196F3" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg> },
   { id: "desktop", label: "Snapshot", icon: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2196F3" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg> },
-  { id: "recents", label: "Recents", icon: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2196F3" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> },
+  { id: "recents", label: "Highlights", icon: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2196F3" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg> },
 ];
 
 function FolderIcon({ color, title, onClick, isSelected, icon }: {
@@ -330,7 +330,7 @@ export function FolderWindowContent() {
             </div>
             <div className="flex-1 text-center">
               <span className="text-[11px] text-stone-400">
-                ~/yanliu/{activeSidebar === "yanliu" ? "project" : activeSidebar === "desktop" ? "snapshot" : "recent"}
+                ~/yanliu/{activeSidebar === "yanliu" ? "project" : activeSidebar === "desktop" ? "snapshot" : "highlights"}
               </span>
             </div>
             <div className="w-[52px]" />

@@ -3,138 +3,180 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 
-const statusItems = [
-  { action: "Designing", detail: "AI products", color: "#10b981" },
-  { action: "Building", detail: "small tools", color: "#3b82f6" },
-  { action: "Exploring", detail: "vibe coding and AI", color: "#a78bfa" },
-  { action: "Collecting", detail: "ideas & thoughts", color: "#f59e0b" },
-  { action: "Drinking", detail: "Matcha from Yan tea", color: "#6ee7b7" },
-  { action: "Listening", detail: "Charlie Puth - Home (feat. Hikaru Utada)", color: "#f472b6" },
+const impactStats = [
+  { endNum: 19, suffix: "M+", label: "UNSPLASH PHOTO VIEWS" },
+  { endNum: 500, suffix: "K+", label: "FIGMA FILE USES" },
+  { endNum: 40, suffix: "K", label: "IMPRESSIONS, ONE POST" },
 ];
 
-function TypewriterText({ text, delay }: { text: string; delay: number }) {
-  const [displayed, setDisplayed] = useState("");
+function CountUp({ end, suffix, duration = 1500, autoStart = false }: { end: number; suffix: string; duration?: number; autoStart?: boolean }) {
+  const [count, setCount] = useState(0);
+  const [key, setKey] = useState(0);
+
   useEffect(() => {
-    let i = 0;
-    let intervalId: ReturnType<typeof setInterval> | null = null;
-    const timeout = setTimeout(() => {
-      intervalId = setInterval(() => {
-        i++;
-        setDisplayed(text.slice(0, i));
-        if (i >= text.length && intervalId) clearInterval(intervalId);
-      }, 35);
-    }, delay);
-    return () => {
-      clearTimeout(timeout);
-      if (intervalId) clearInterval(intervalId);
-    };
-  }, [text, delay]);
+    if (!autoStart && key === 0) return;
+    setCount(0);
+    let startTime: number | null = null;
+    let raf: number;
+
+    function tick(ts: number) {
+      if (!startTime) startTime = ts;
+      const progress = Math.min((ts - startTime) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      setCount(Math.round(eased * end));
+      if (progress < 1) raf = requestAnimationFrame(tick);
+    }
+
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [autoStart, key, end, duration]);
+
   return (
-    <span className="text-stone-700">
-      {displayed}
-      {displayed.length < text.length && (
-        <motion.span
-          animate={{ opacity: [1, 0] }}
-          transition={{ duration: 0.5, repeat: Infinity }}
-          className="text-stone-400"
-        >
-          |
-        </motion.span>
-      )}
+    <span onMouseEnter={() => setKey(k => k + 1)} className="cursor-default">
+      {count}{suffix}
     </span>
   );
 }
 
+const aiProjects = [
+  {
+    year: "2026",
+    title: "CSSDesign Award",
+    detail: "Vibe-coded portfolio recognized with Special Kudos (March 18)",
+    tags: [{ label: "AWARD", color: "#92400e", bg: "#fef3c7" }],
+  },
+  {
+    year: "2026",
+    title: "Figma Makeathon — Anonymous Letters Across Time",
+    detail: "15K impressions · 550 likes on X",
+    tags: [
+      { label: "15K IMPRESSIONS", color: "#065f46", bg: "#d1fae5" },
+      { label: "SHIPPED", color: "#9a3412", bg: "#fed7aa" },
+    ],
+  },
+  {
+    year: "2026",
+    title: "Vibe Coding Playlist",
+    detail: "20+ AI experiments using Claude Code, Cursor, Figma Make, Google AI Studio",
+    tags: [{ label: "20+ EXPERIMENTS", color: "#065f46", bg: "#d1fae5" }, { label: "SHIPPED", color: "#9a3412", bg: "#fed7aa" }],
+  },
+  {
+    year: "2025",
+    title: "Cozy Journaling",
+    detail: "Built with Claude Sonnet 4.5",
+    tags: [{ label: "KEEP CREATING AWARD", color: "#92400e", bg: "#fef3c7" }, { label: "SHIPPED", color: "#9a3412", bg: "#fed7aa" }],
+  },
+  {
+    year: "2025",
+    title: "Focus Now Chrome Extension",
+    detail: "Built with Claude Code · Shipped on Chrome Web Store",
+    tags: [{ label: "CHROME WEB STORE", color: "#065f46", bg: "#d1fae5" }, { label: "SHIPPED", color: "#9a3412", bg: "#fed7aa" }],
+  },
+  {
+    year: "2025",
+    title: "yanliu Desktop OS",
+    detail: "Fully functional desktop environment · 40K impressions · 1K engagements on X",
+    tags: [
+      { label: "40K IMPRESSIONS", color: "#065f46", bg: "#d1fae5" },
+      { label: "1K ENGAGEMENTS", color: "#065f46", bg: "#d1fae5" },
+      { label: "SHIPPED", color: "#9a3412", bg: "#fed7aa" },
+    ],
+  },
+];
+
+const additionalAchievements = [
+  { year: "2022", title: "Figma Community", detail: "500K+ uses · Finalist, Favorite Graphic Resources" },
+  { year: "–", title: "Unsplash", detail: "19M+ views · 150K downloads" },
+  { year: "2018", title: "Google Startup Weekend", detail: "Excellence in Execution" },
+  { year: "2018", title: "UW Dubstech Protothon", detail: "1st place, UX Competition" },
+  { year: "2017", title: "Darby Smart IIT Program", detail: "1st place, video-creation · 150K+ views" },
+  { year: "2016", title: "CommLead — #doyouseeme", detail: "Top 5 Capstone, UW MCDM Master's program" },
+];
+
 export function RecentStatus() {
-  const [count, setCount] = useState(0);
+  const [visible, setVisible] = useState(false);
+  const [countStarted, setCountStarted] = useState(false);
   useEffect(() => {
-    setCount(0);
-    const t = statusItems.map((_, i) => setTimeout(() => setCount(i + 1), 600 + i * 500));
-    return () => t.forEach(clearTimeout);
+    setVisible(true);
+    const t = setTimeout(() => setCountStarted(true), 300);
+    return () => clearTimeout(t);
   }, []);
 
+  const fadeIn = (delay: number) => ({
+    initial: { opacity: 0, y: 6 },
+    animate: visible ? { opacity: 1, y: 0 } : { opacity: 0, y: 6 },
+    transition: { duration: 0.3, delay },
+  });
+
   return (
-    <div className="flex flex-col items-center pt-32">
-      <motion.div
-        initial={{ opacity: 0, y: -10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="text-[11px] text-stone-400 uppercase tracking-[0.2em] mb-8 relative"
-      >
-        System Status
-        <motion.div
-          className="absolute -bottom-2 left-0 right-0 h-[1px]"
-          style={{ background: "linear-gradient(90deg, transparent, #a8a29e, transparent)" }}
-          animate={{ opacity: [0, 1, 0] }}
-          transition={{ duration: 3, repeat: Infinity }}
-        />
+    <div className="p-5 overflow-y-auto h-full font-[family-name:var(--font-noto)]">
+      {/* Impact at a Glance */}
+      <motion.div {...fadeIn(0)} className="text-[11px] text-stone-400 uppercase tracking-[0.2em] font-mono mb-4">
+        Impact at a Glance
       </motion.div>
-      <div className="space-y-3">
-        {statusItems.slice(0, count).map((s, i) => (
+      <motion.div {...fadeIn(0.05)} className="grid grid-cols-3 gap-3 mb-8">
+        {impactStats.map((stat, i) => (
+          <div key={i} className="rounded-lg border border-stone-300/50 px-3 py-3" style={{ background: "#EDECE5" }}>
+            <div className="text-[22px] font-semibold text-stone-800 leading-tight">
+              <CountUp end={stat.endNum} suffix={stat.suffix} autoStart={countStarted} />
+            </div>
+            <div className="text-[10px] text-stone-400 uppercase tracking-[0.1em] mt-1 font-mono">{stat.label}</div>
+          </div>
+        ))}
+      </motion.div>
+
+      {/* AI Projects & Builds */}
+      <motion.div {...fadeIn(0.1)} className="text-[11px] text-stone-400 uppercase tracking-[0.2em] font-mono mb-3 pb-2 border-b border-stone-200/50">
+        AI Projects & Builds
+      </motion.div>
+      <div className="space-y-0">
+        {aiProjects.map((item, i) => (
           <motion.div
-            key={s.action}
-            initial={{ opacity: 0, x: -30, filter: "blur(4px)" }}
-            animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
-            transition={{ type: "spring", stiffness: 180, damping: 18 }}
-            className="flex items-center gap-3 text-[14px]"
+            key={i}
+            {...fadeIn(0.15 + i * 0.05)}
+            className="flex gap-4 py-3"
+            style={{ borderBottom: "1px solid rgba(214,211,209,0.4)" }}
           >
-            <motion.span
-              animate={{
-                boxShadow: [
-                  `0 0 0px ${s.color}`,
-                  `0 0 8px ${s.color}`,
-                  `0 0 0px ${s.color}`,
-                ],
-              }}
-              transition={{ duration: 2, repeat: Infinity, delay: i * 0.3 }}
-              className="inline-block w-1.5 h-1.5 rounded-full flex-shrink-0"
-              style={{ backgroundColor: s.color }}
-            />
-            <span className="text-stone-400 w-[80px] flex-shrink-0">{s.action}</span>
-            <motion.span
-              animate={{ x: [0, 3, 0] }}
-              transition={{ duration: 1.5, repeat: Infinity, delay: i * 0.2 }}
-              className="text-stone-300"
-            >
-              →
-            </motion.span>
-            <TypewriterText text={s.detail} delay={i * 500 + 300} />
+            <span className="text-[11px] text-stone-400 font-mono w-[36px] shrink-0 pt-[2px]">{item.year}</span>
+            <div className="flex-1 min-w-0">
+              <div className="text-[14px] text-stone-800 font-semibold leading-snug">{item.title}</div>
+              <div className="text-[12px] text-stone-500 mt-0.5 leading-relaxed">{item.detail}</div>
+              <div className="flex gap-1.5 mt-1.5 flex-wrap">
+                {item.tags.map((tag, ti) => (
+                  <span
+                    key={ti}
+                    className="text-[10px] font-mono font-medium tracking-[0.08em] uppercase px-2 py-0.5 rounded"
+                    style={{ color: tag.color, background: tag.bg }}
+                  >
+                    {tag.label}
+                  </span>
+                ))}
+              </div>
+            </div>
           </motion.div>
         ))}
       </div>
-      {count >= statusItems.length && (
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4, type: "spring" }}
-          className="mt-10 flex flex-col items-center gap-3"
-        >
+
+      {/* Additional Achievements */}
+      <motion.div {...fadeIn(0.5)} className="text-[11px] text-stone-400 uppercase tracking-[0.2em] font-mono mt-8 mb-3 pb-2 border-b border-stone-200/50">
+        Additional Achievements
+      </motion.div>
+      <div className="space-y-0">
+        {additionalAchievements.map((item, i) => (
           <motion.div
-            className="w-40 h-[3px] rounded-full overflow-hidden bg-stone-200"
+            key={i}
+            {...fadeIn(0.55 + i * 0.05)}
+            className="flex gap-4 py-3"
+            style={{ borderBottom: i < additionalAchievements.length - 1 ? "1px solid rgba(214,211,209,0.4)" : "none" }}
           >
-            <motion.div
-              className="h-full rounded-full"
-              style={{ background: "linear-gradient(90deg, #10b981, #3b82f6, #a78bfa, #f472b6)" }}
-              initial={{ width: "0%" }}
-              animate={{ width: "100%" }}
-              transition={{ duration: 1.5, ease: "easeOut" }}
-            />
+            <span className="text-[11px] text-stone-400 font-mono w-[36px] shrink-0 pt-[2px]">{item.year}</span>
+            <div className="flex-1 min-w-0">
+              <div className="text-[14px] text-stone-800 font-semibold leading-snug">{item.title}</div>
+              <div className="text-[12px] text-stone-500 mt-0.5">{item.detail}</div>
+            </div>
           </motion.div>
-          <motion.span
-            animate={{ opacity: [0.5, 1, 0.5] }}
-            transition={{ duration: 3, repeat: Infinity }}
-            className="text-emerald-500 text-[11px] tracking-wide flex items-center gap-2"
-          >
-            <motion.span
-              animate={{ scale: [1, 1.3, 1] }}
-              transition={{ duration: 2, repeat: Infinity }}
-            >
-              ●
-            </motion.span>
-            All systems nominal
-          </motion.span>
-        </motion.div>
-      )}
+        ))}
+      </div>
     </div>
   );
 }
