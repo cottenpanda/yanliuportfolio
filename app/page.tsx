@@ -193,7 +193,7 @@ export default function Home() {
       <PortfolioViewer />
 
       {/* Bulletin board */}
-      <div id="playground" className="mt-12 lg:mt-32 scroll-mt-16" />
+      <div id="playground" className="mt-8 lg:mt-12 scroll-mt-16" />
       <ScatterBoard
         imgZIndex={imgZIndex}
         setImgZIndex={setImgZIndex}

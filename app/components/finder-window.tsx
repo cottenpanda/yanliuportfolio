@@ -647,7 +647,7 @@ export function PortfolioViewer() {
     target: ref,
     offset: ["start end", "end start"],
   });
-  const y = useTransform(scrollYProgress, [0, 1], [200, -200]);
+  const y = useTransform(scrollYProgress, [0, 1], [80, -80]);
   const scale = useTransform(scrollYProgress, [0, 0.5], [0.9, 1]);
   const rotate = useTransform(scrollYProgress, [0, 0.5], [2, 0]);
 
