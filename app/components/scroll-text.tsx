@@ -215,11 +215,10 @@ export function ScrollRevealText() {
           className="inline-block w-[36px] h-auto align-middle -ml-0.5 mr-1 -mt-1"
           draggable={false}
         />
-        Outside work,{" "}
         <span className="inline-flex items-center border border-stone-500 pl-2.5 pr-2 pt-[2px] pb-[0px] rounded-sm">
           <TypedText text="I build with AI," start={visible} delay={1400} />
         </span>{" "}
-        prototyping ideas and exploring the edge of design and technology.
+        prototyping ideas and exploring<br />the edge of design and technology.
       </p>
     </div>
   );

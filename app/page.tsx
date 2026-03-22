@@ -229,7 +229,7 @@ export default function Home() {
         <div className="flex items-center gap-3">
           <img src="/star.svg" alt="" className="w-5 h-5 brightness-0 opacity-70 animate-spin" style={{ animationDuration: "4s" }} draggable={false} />
           <p className="font-[family-name:var(--font-noto)] text-[13px] tracking-wide" style={{ color: "#212121" }}>
-            Built by Yan Liu · with AI
+            Build with Claude Code · Shipped on Vercel
           </p>
           <img src="/star.svg" alt="" className="w-5 h-5 brightness-0 opacity-70 animate-spin" style={{ animationDuration: "4s" }} draggable={false} />
         </div>
@@ -300,7 +300,7 @@ export default function Home() {
         {/* Footer */}
         <footer className="mt-24 text-center">
           <p className="font-mono text-xs text-text-muted">
-            &copy; {siteConfig.footer.copyright} {siteConfig.footer.domain}
+            Build with Claude Code · Shipped on Vercel
           </p>
         </footer>
       </div>
