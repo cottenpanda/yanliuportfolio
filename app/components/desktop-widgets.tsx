@@ -507,7 +507,7 @@ function DockIcon({ tool, mouseX }: {
 
 const journeyData = [
   { step: "Studied law", tag: "LAW" },
-  { step: "Worked in robotics", tag: "GLOBAL LAUNCH" },
+  { step: "Worked in robotics", tag: "AUTOMATION" },
   { step: "Became a product designer", tag: "TECH" },
   { step: "Designing AI products", tag: "AI" },
   { step: "Building with AI", tag: "AI" },
