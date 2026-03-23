@@ -80,9 +80,7 @@ export function Garden() {
           </div>
         </div>
         {!loading && (
-          <div className="text-[12px] text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-full animate-pulse">
-            Click to plant
-          </div>
+          <span className="text-[12px] text-stone-400">Click to plant</span>
         )}
       </div>
 
