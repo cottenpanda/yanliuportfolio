@@ -134,9 +134,9 @@ export const gridAnimations = [
 ];
 
 export const easterEggCells = [
-  { col: -1, row: -3, animIdx: 0, cardOffset: [60, -50] as [number, number], cardRotate: 2 },
+  { col: -1, row: -4, animIdx: 0, cardOffset: [60, -50] as [number, number], cardRotate: 2 },
   { col: -2, row: 5, animIdx: 1, cardOffset: [60, -50] as [number, number], cardRotate: -2 },
-  { col: 16, row: -3, animIdx: 2, cardOffset: [-170, -50] as [number, number], cardRotate: -2 },
+  { col: 16, row: -4, animIdx: 2, cardOffset: [-170, -50] as [number, number], cardRotate: -2 },
   { col: 17, row: 5, animIdx: 3, cardOffset: [-170, -50] as [number, number], cardRotate: 2 },
 ];
 
