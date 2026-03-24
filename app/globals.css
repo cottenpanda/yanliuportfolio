@@ -147,6 +147,11 @@ body::before {
   to { opacity: 1; scale: 1; }
 }
 
+@keyframes flower-grow {
+  0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+  100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+}
+
 @keyframes hero-blur-in {
   from { opacity: 0; filter: blur(12px); scale: 0.95; }
   to { opacity: 1; filter: blur(0px); scale: 1; }

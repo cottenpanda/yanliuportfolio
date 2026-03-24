@@ -332,7 +332,7 @@ export function FolderWindowContent() {
             </div>
             <div className="flex-1 text-center">
               <span className="text-[11px] text-stone-400">
-                ~/yanliu/{activeSidebar === "yanliu" ? "project" : activeSidebar === "desktop" ? "snapshot" : activeSidebar === "garden" ? "garden" : "achievements"}
+                ~/yanliu/{{ yanliu: "project", desktop: "snapshot", garden: "garden", recents: "achievements" }[activeSidebar] || activeSidebar}
               </span>
             </div>
             <div className="w-[52px]" />

@@ -8,7 +8,6 @@ interface Flower {
   x: number;
   y: number;
   flower_type: number;
-  color: string;
 }
 
 function PixelFlower({ flower, isNew }: { flower: Flower; isNew: boolean }) {
@@ -38,18 +37,26 @@ export function Garden() {
   const [newFlowerId, setNewFlowerId] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
 
-  // Load flowers
   useEffect(() => {
     const load = async () => {
       const { data } = await supabase
         .from("flowers")
-        .select("*")
-        .order("created_at", { ascending: true });
+        .select("id, x, y, flower_type")
+        .order("created_at", { ascending: true })
+        .limit(1000);
       if (data) setFlowers(data);
       setLoading(false);
     };
     load();
   }, []);
+
+  // Clear animation state after it completes
+  useEffect(() => {
+    if (newFlowerId) {
+      const timer = setTimeout(() => setNewFlowerId(null), 600);
+      return () => clearTimeout(timer);
+    }
+  }, [newFlowerId]);
 
   const plantFlower = useCallback(async (e: React.MouseEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
@@ -60,7 +67,7 @@ export function Garden() {
     const { data, error } = await supabase
       .from("flowers")
       .insert({ x, y, flower_type, color: "#1e1e1e" })
-      .select()
+      .select("id, x, y, flower_type")
       .single();
 
     if (!error && data) {
@@ -71,7 +78,6 @@ export function Garden() {
 
   return (
     <div className="h-full flex flex-col">
-      {/* Header */}
       <div className="flex items-center justify-between px-4 py-3">
         <div>
           <div className="text-[12px] text-stone-400 uppercase tracking-[0.2em] font-mono">Community Garden</div>
@@ -84,17 +90,11 @@ export function Garden() {
         )}
       </div>
 
-      {/* Garden area */}
       <div
         className="flex-1 relative mx-3 mb-3 rounded-lg overflow-hidden"
-        style={{
-          background: "#FAF8F5",
-          cursor: "crosshair",
-        }}
+        style={{ background: "#FAF8F5", cursor: "crosshair" }}
         onClick={plantFlower}
       >
-
-        {/* Flowers */}
         {flowers.map((flower) => (
           <PixelFlower
             key={flower.id}
@@ -103,20 +103,12 @@ export function Garden() {
           />
         ))}
 
-        {/* Empty state */}
         {flowers.length === 0 && !loading && (
           <div className="absolute inset-0 flex items-center justify-center">
             <p className="text-[14px] text-stone-400">Be the first to plant a flower</p>
           </div>
         )}
       </div>
-
-      <style jsx>{`
-        @keyframes flower-grow {
-          0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
-          100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
-        }
-      `}</style>
     </div>
   );
 }
