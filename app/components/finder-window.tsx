@@ -606,9 +606,8 @@ export function FolderWindowContent() {
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.2 }}
                     className="h-auto lg:h-[700px] overflow-hidden origin-top-left"
-                    style={isMobile ? { transform: "scale(0.48)", width: "208%", height: "auto" } : undefined}
                   >
-                    <DesktopWidgets />
+                    <DesktopWidgets isMobile={isMobile} />
                   </motion.div>
                 ) : activeSidebar === "recents" ? (
                   <motion.div
@@ -617,8 +616,7 @@ export function FolderWindowContent() {
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.2 }}
-                    className="h-auto lg:h-[700px] overflow-hidden origin-top-left"
-                    style={isMobile ? { transform: "scale(0.48)", width: "208%", height: "auto" } : undefined}
+                    className="h-[500px] lg:h-[700px] overflow-y-auto origin-top-left"
                   >
                     <RecentStatus />
                   </motion.div>
@@ -629,9 +627,9 @@ export function FolderWindowContent() {
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.2 }}
-                    className="h-auto lg:h-[700px] overflow-hidden"
+                    className="h-[500px] lg:h-[700px] overflow-hidden"
                   >
-                    <Garden />
+                    <Garden isMobile={isMobile} />
                   </motion.div>
                 ) : (
                   <motion.div

@@ -633,14 +633,178 @@ function WeatherCard() {
   );
 }
 
-export function DesktopWidgets() {
-  const today = new Date();
-  const currentDay = today.getDate();
-  const daysInMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate();
-  const firstDayOfWeek = new Date(today.getFullYear(), today.getMonth(), 1).getDay();
-  const monthName = today.toLocaleString("default", { month: "short" });
-  const year = today.getFullYear();
+/* ── Mobile list versions of widgets ── */
 
+function MobileDesignNotes() {
+  return (
+    <div className="bg-white/80 rounded-xl p-4">
+      <div className="text-[10px] text-stone-400 uppercase tracking-wider mb-3 font-medium">Design Notes</div>
+      <div className="flex flex-wrap gap-2">
+        {designChips.map((chip) => (
+          <span
+            key={chip.label}
+            className="px-3 py-1.5 rounded-full text-[11px] font-medium text-white"
+            style={{ backgroundColor: chip.color }}
+          >
+            {chip.label}
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function MobileEnergyLevel() {
+  return (
+    <div className="bg-white/80 rounded-xl p-4 flex items-center gap-4">
+      <div className="relative w-[72px] h-[72px] shrink-0">
+        <svg width="72" height="72" viewBox="0 0 72 72">
+          <circle cx="36" cy="36" r="30" fill="none" stroke="#e7e5e4" strokeWidth="5" />
+          <circle
+            cx="36" cy="36" r="30"
+            fill="none" stroke="#10b981" strokeWidth="5"
+            strokeLinecap="butt"
+            strokeDasharray={Math.PI * 2 * 30}
+            strokeDashoffset={Math.PI * 2 * 30 * (1 - 0.95)}
+            transform="rotate(-90 36 36)"
+          />
+        </svg>
+        <div className="absolute inset-0 flex items-center justify-center">
+          <span className="text-[16px] font-semibold text-stone-700">95%</span>
+        </div>
+      </div>
+      <div>
+        <div className="text-[10px] text-stone-400 uppercase tracking-wider mb-1">Energy Level</div>
+        <div className="text-[13px] text-stone-600">Feeling great</div>
+      </div>
+    </div>
+  );
+}
+
+function MobileFuelMix() {
+  return (
+    <div className="bg-white/80 rounded-xl p-4">
+      <div className="text-[10px] text-stone-400 uppercase tracking-wider mb-3">Fuel Mix</div>
+      <div className="space-y-2.5">
+        {radarStats.map((s) => (
+          <div key={s.label} className="flex items-center gap-3">
+            <span className="text-[12px] text-stone-500 w-[64px] shrink-0">{s.label}</span>
+            <div className="flex-1 h-[6px] bg-stone-100 rounded-full overflow-hidden">
+              <div
+                className="h-full bg-blue-500 rounded-full"
+                style={{ width: `${s.value}%` }}
+              />
+            </div>
+            <span className="text-[11px] text-stone-400 w-[28px] text-right">{s.value}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function MobileJourney() {
+  return (
+    <div className="bg-white/80 rounded-xl p-4">
+      <div className="text-[10px] text-stone-400 uppercase tracking-[0.2em] mb-3 font-mono">My Journey</div>
+      <div className="space-y-0">
+        {journeyData.map((item, i) => {
+          const isLast = i === journeyData.length - 1;
+          return (
+            <div
+              key={i}
+              className={`flex items-center gap-2.5 py-2 ${isLast ? "mt-2 rounded-lg px-3 py-3" : ""}`}
+              style={{
+                borderBottom: !isLast && i < journeyData.length - 2 ? "1px solid rgba(214,211,209,0.5)" : "none",
+                ...(isLast ? { background: "#f5f5f4", border: "1px solid rgba(214,211,209,0.6)" } : {}),
+              }}
+            >
+              <span className="text-[10px] text-stone-400 font-mono w-[16px] shrink-0">
+                {String(i + 1).padStart(2, "0")}
+              </span>
+              <div className={`shrink-0 rounded-full ${isLast ? "w-[8px] h-[8px] bg-emerald-500" : "w-[6px] h-[6px] bg-stone-300"}`} />
+              <span className={`flex-1 ${isLast ? "text-[13px] text-stone-800 font-semibold" : "text-[11px] text-stone-500"}`}>
+                {item.step}
+              </span>
+              <span
+                className="text-[8px] font-medium tracking-wider px-2 py-0.5 rounded-full shrink-0"
+                style={isLast ? { background: "#ecfdf5", color: "#059669" } : { background: "#f5f5f4", color: "#a8a29e" }}
+              >
+                {item.tag}
+              </span>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+function MobileFunFacts() {
+  const [flippedSet, setFlippedSet] = useState<Set<number>>(new Set());
+
+  return (
+    <div className="bg-white/80 rounded-xl p-4">
+      <div className="text-[10px] text-stone-400 uppercase tracking-wider mb-3">Fun Facts</div>
+      <div className="flex gap-3 overflow-x-auto pb-1">
+        {funFacts.map((fact, i) => (
+          <div
+            key={fact.front}
+            className="shrink-0 cursor-pointer"
+            style={{ width: 130, perspective: 600 }}
+            onClick={() => setFlippedSet(prev => {
+              const next = new Set(prev);
+              if (next.has(i)) next.delete(i); else next.add(i);
+              return next;
+            })}
+          >
+            <motion.div
+              animate={{ rotateY: flippedSet.has(i) ? 180 : 0 }}
+              transition={{ duration: 0.5, ease: "easeOut" }}
+              style={{ transformStyle: "preserve-3d", position: "relative" }}
+            >
+              {/* Front */}
+              <div
+                className="rounded-lg bg-[#fafaf8] shadow-sm p-[6px] pb-[16px]"
+                style={{ backfaceVisibility: "hidden" }}
+              >
+                <div className="bg-stone-100 rounded-md flex items-center justify-center overflow-hidden" style={{ aspectRatio: "4/5" }}>
+                  {fact.image ? (
+                    <img src={fact.image} alt={fact.front} className="w-full h-full object-contain p-1.5" />
+                  ) : (
+                    <span className="text-[28px]">{fact.emoji}</span>
+                  )}
+                </div>
+              </div>
+              {/* Back */}
+              <div
+                className="rounded-lg bg-stone-800 shadow-sm p-3 absolute inset-0 flex flex-col justify-center"
+                style={{ backfaceVisibility: "hidden", transform: "rotateY(180deg)" }}
+              >
+                <div className="text-[10px] text-stone-400 uppercase tracking-wider mb-1.5">{fact.front}</div>
+                <p className="text-[10px] text-stone-200 leading-relaxed">{fact.back}</p>
+              </div>
+            </motion.div>
+          </div>
+        ))}
+      </div>
+      <div className="text-[10px] text-stone-400 text-center mt-2">Tap to flip</div>
+    </div>
+  );
+}
+
+export function DesktopWidgets({ isMobile = false }: { isMobile?: boolean }) {
+  if (isMobile) {
+    return (
+      <div className="p-3 flex flex-col gap-3 overflow-y-auto" style={{ maxHeight: 500 }}>
+        <MobileDesignNotes />
+        <MobileEnergyLevel />
+        <MobileFuelMix />
+        <MobileJourney />
+        <MobileFunFacts />
+      </div>
+    );
+  }
 
   return (
     <div className="p-3 flex flex-col gap-3">

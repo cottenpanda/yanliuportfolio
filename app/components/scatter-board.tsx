@@ -207,7 +207,7 @@ export function ScatterBoard({
             borderRight: "1px solid rgba(0,0,0,0.08)",
             borderBottom: "2px solid rgba(0,0,0,0.12)",
           }}>
-          <div ref={boardRef} className="min-h-[750px] rounded-xl relative overflow-hidden" style={{
+          <div ref={boardRef} className={`${isMobile ? "min-h-[420px]" : "min-h-[750px]"} rounded-xl relative overflow-hidden`} style={{
             background: "#F7F1E8",
             boxShadow: "inset 0 2px 6px rgba(0,0,0,0.06)",
           }}>
@@ -229,6 +229,16 @@ export function ScatterBoard({
                 </span>
               ))}
             </div>
+            {/* Scaled inner wrapper for mobile */}
+            <div
+              className="absolute inset-0"
+              style={isMobile ? {
+                transform: "scale(0.55)",
+                transformOrigin: "top left",
+                width: `${100 / 0.55}%`,
+                height: `${100 / 0.55}%`,
+              } : undefined}
+            >
             {/* Showcase images — scatter animation */}
             {BOARD_IMAGES.map((img, i) =>
               isMobile ? (
@@ -272,6 +282,7 @@ export function ScatterBoard({
                 />
               )
             )}
+            </div>
             {/* Click burst particles */}
             {bursts.map((b) => (
               <ClickBurst key={b.id} x={b.x} y={b.y} onDone={() => setBursts((prev) => prev.filter((p) => p.id !== b.id))} />

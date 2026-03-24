@@ -10,7 +10,7 @@ interface Flower {
   flower_type: number;
 }
 
-function PixelFlower({ flower, isNew }: { flower: Flower; isNew: boolean }) {
+function PixelFlower({ flower, isNew, size = 32 }: { flower: Flower; isNew: boolean; size?: number }) {
   const { x, y } = flower;
 
   return (
@@ -22,8 +22,8 @@ function PixelFlower({ flower, isNew }: { flower: Flower; isNew: boolean }) {
       style={{
         left: `${x}%`,
         top: `${y}%`,
-        width: 32,
-        height: 32,
+        width: size,
+        height: size,
         transform: "translate(-50%, -50%)",
         animation: isNew ? "flower-grow 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both" : undefined,
         imageRendering: "pixelated",
@@ -32,7 +32,7 @@ function PixelFlower({ flower, isNew }: { flower: Flower; isNew: boolean }) {
   );
 }
 
-export function Garden() {
+export function Garden({ isMobile = false }: { isMobile?: boolean }) {
   const [flowers, setFlowers] = useState<Flower[]>([]);
   const [newFlowerId, setNewFlowerId] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
@@ -58,10 +58,19 @@ export function Garden() {
     }
   }, [newFlowerId]);
 
-  const plantFlower = useCallback(async (e: React.MouseEvent<HTMLDivElement>) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = ((e.clientX - rect.left) / rect.width) * 100;
-    const y = ((e.clientY - rect.top) / rect.height) * 100;
+  const plantFlower = useCallback(async (e: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    const rect = (e.currentTarget as HTMLDivElement).getBoundingClientRect();
+    let clientX: number, clientY: number;
+    if ("touches" in e) {
+      clientX = e.touches[0].clientX;
+      clientY = e.touches[0].clientY;
+    } else {
+      clientX = e.clientX;
+      clientY = e.clientY;
+    }
+    const x = ((clientX - rect.left) / rect.width) * 100;
+    const y = ((clientY - rect.top) / rect.height) * 100;
     const flower_type = Math.floor(Math.random() * 6);
 
     const { data, error } = await supabase
@@ -86,7 +95,7 @@ export function Garden() {
           </div>
         </div>
         {!loading && (
-          <span className="text-[12px] text-stone-400">Click to plant</span>
+          <span className="text-[12px] text-stone-400">{isMobile ? "Tap to plant" : "Click to plant"}</span>
         )}
       </div>
 
@@ -94,12 +103,14 @@ export function Garden() {
         className="flex-1 relative mx-3 mb-3 rounded-lg overflow-hidden"
         style={{ background: "#FAF8F5", cursor: "crosshair" }}
         onClick={plantFlower}
+        onTouchStart={plantFlower}
       >
         {flowers.map((flower) => (
           <PixelFlower
             key={flower.id}
             flower={flower}
             isNew={flower.id === newFlowerId}
+            size={isMobile ? 20 : 32}
           />
         ))}
 
