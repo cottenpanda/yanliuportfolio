@@ -407,7 +407,7 @@ export function FolderWindowContent() {
                       className="pt-6 lg:pt-8 pl-4 lg:pl-8 pr-4 lg:pr-6 w-full lg:shrink-0 lg:transition-[width] lg:duration-[350ms] lg:ease-out"
                       style={!isMobile ? { width: openFolder !== null ? 420 : "100%" } : undefined}
                     >
-                      <div className={`grid grid-cols-3 ${openFolder !== null ? "lg:grid-cols-3" : "lg:grid-cols-5"} gap-x-4 lg:gap-x-10 gap-y-4 lg:gap-y-6 content-start w-fit mx-auto lg:mx-0`}>
+                      <div className={`grid grid-cols-3 ${openFolder !== null ? "lg:grid-cols-3" : "lg:grid-cols-5"} gap-x-4 lg:gap-x-10 gap-y-4 lg:gap-y-6 content-start w-fit`}>
                         {siteConfig.sections.map((section, i) => (
                           <FolderIcon
                             key={section.id}
