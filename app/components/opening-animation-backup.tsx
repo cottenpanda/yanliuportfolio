@@ -37,8 +37,7 @@ function delay(ms: number) { return new Promise(r => setTimeout(r, ms)); }
 
 export function OpeningAnimation({ onComplete }: { onComplete: () => void }) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [maskCircle, setMaskCircle] = useState<{ x: number; y: number } | null>(null);
-  const [maskExpand, setMaskExpand] = useState(false);
+  const [fadeOut, setFadeOut] = useState(false);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -61,7 +60,7 @@ export function OpeningAnimation({ onComplete }: { onComplete: () => void }) {
     const iDot = document.createElement("div");
     Object.assign(iDot.style, {
       position: "absolute", width: "22px", height: "22px",
-      borderRadius: "50%", background: "#FBBF24", boxShadow: "0 0 12px 4px rgba(251,191,36,0.4)", opacity: "0", willChange: "transform, opacity",
+      borderRadius: "50%", background: "#ffffff", opacity: "0", willChange: "transform, opacity",
     });
     container.appendChild(iDot);
 
@@ -216,19 +215,10 @@ export function OpeningAnimation({ onComplete }: { onComplete: () => void }) {
         200, easeInQuad
       );
 
-      // Glow intensifies and immediately triggers mask reveal
-      const dotCenterX = dotFinalX + 11;
-      const dotCenterY = dotFinalY + 11;
-
-      iDot.style.transition = "box-shadow 0.6s ease-out";
-      iDot.style.boxShadow = "0 0 30px 12px rgba(251,191,36,0.7), 0 0 60px 24px rgba(251,191,36,0.3)";
-
-      // Start mask while glow is still expanding
-      await delay(150);
-      setMaskCircle({ x: dotCenterX, y: dotCenterY });
-      await delay(30);
-      setMaskExpand(true);
-      setTimeout(onComplete, 900);
+      // Done — slide out
+      await delay(400);
+      setFadeOut(true);
+      setTimeout(onComplete, 700);
     }
 
     const timer = setTimeout(run, 100);
@@ -241,13 +231,9 @@ export function OpeningAnimation({ onComplete }: { onComplete: () => void }) {
       className="fixed inset-0 z-[100] flex items-center justify-center overflow-hidden"
       style={{
         backgroundColor: "#1e1e1e",
+        transform: fadeOut ? "translateY(100%)" : "translateY(0)",
+        transition: "transform 0.7s cubic-bezier(0.4, 0, 0.2, 1)",
         fontFamily: "'Noto Sans', sans-serif",
-        ...(maskCircle ? {
-          clipPath: maskExpand
-            ? `circle(0% at ${maskCircle.x}px ${maskCircle.y}px)`
-            : `circle(150% at ${maskCircle.x}px ${maskCircle.y}px)`,
-          transition: "clip-path 0.85s cubic-bezier(0.4, 0, 0.2, 1)",
-        } : {}),
       }}
     >
       <style>{`
