@@ -553,7 +553,7 @@ function JourneyTimeline() {
           const isLast = i === journeyData.length - 1;
           if (isLast) return null;
           const total = journeyData.length - 1;
-          const fadeOpacity = 0.35 + (i / (total - 1)) * 0.65;
+          const fadeOpacity = 0.5 + (i / (total - 1)) * 0.5;
           return (
             <div
               key={i}
@@ -563,11 +563,11 @@ function JourneyTimeline() {
                 borderBottom: i < journeyData.length - 2 ? "1px solid rgba(214,211,209,0.5)" : "none",
               }}
             >
-              <span className="text-[11px] text-stone-400 font-mono w-[20px] shrink-0">
+              <span className="text-[11px] text-stone-500 font-mono w-[20px] shrink-0">
                 {String(i + 1).padStart(2, "0")}
               </span>
               <div className="shrink-0 w-[8px] h-[8px] rounded-full bg-stone-300" />
-              <span className="text-[12px] text-stone-400 flex-1">{item.step}</span>
+              <span className="text-[12px] text-stone-600 flex-1">{item.step}</span>
               <span
                 className="text-[8px] font-medium tracking-wider px-2 py-0.5 rounded-full shrink-0"
                 style={{ background: "#f5f5f4", color: "#a8a29e" }}
