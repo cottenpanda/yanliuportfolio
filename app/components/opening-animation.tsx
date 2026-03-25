@@ -239,7 +239,11 @@ export function OpeningAnimation({ onComplete }: { onComplete: () => void }) {
     }
 
     const timer = setTimeout(run, 100);
-    return () => clearTimeout(timer);
+    return () => {
+      clearTimeout(timer);
+      if (container.contains(lettersWrapper)) container.removeChild(lettersWrapper);
+      if (container.contains(flash)) container.removeChild(flash);
+    };
   }, [onComplete]);
 
   return (
