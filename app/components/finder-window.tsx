@@ -10,11 +10,11 @@ import { RecentStatus } from "./recents";
 import { Garden } from "./garden";
 
 const folderColors = [
-  { bg: "#9FB8CC", tab: "#8DA6BA", label: "white" },
-  { bg: "#E6C9A8", tab: "#D4B796", label: "white" },
-  { bg: "#AFCFC0", tab: "#9DBDAE", label: "white" },
-  { bg: "#E3A6A1", tab: "#D1948F", label: "white" },
-  { bg: "#B8A6D9", tab: "#A694C7", label: "white" },
+  { bg: "#8EB4CE", tab: "#7EA4BE", label: "white" },
+  { bg: "#DEBB8E", tab: "#CEAB7E", label: "white" },
+  { bg: "#8DC4AB", tab: "#7DB49B", label: "white" },
+  { bg: "#E09D98", tab: "#D08D88", label: "white" },
+  { bg: "#B09AD0", tab: "#A08AC0", label: "white" },
 ];
 
 const folderImages = [
