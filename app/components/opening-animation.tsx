@@ -197,7 +197,7 @@ export function OpeningAnimation({ onComplete }: { onComplete: () => void }) {
       const iEl = els[4].el;
       const iRect = iEl.getBoundingClientRect();
       const dotFinalX = iRect.left + iRect.width / 2 - 11;
-      const dotFinalY = iRect.top + 8;
+      const dotFinalY = iRect.top - 2;
 
       await animate(iDot,
         { x: dotFinalX, y: -50, scale: 1, opacity: 1 },
