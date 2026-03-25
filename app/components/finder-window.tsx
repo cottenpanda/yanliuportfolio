@@ -119,7 +119,7 @@ function FolderIcon({ color, title, onClick, isSelected, icon }: {
           style={{ filter: "brightness(0) saturate(0)", opacity: 0.1, mixBlendMode: "multiply" }}
         />
       </div>
-      <span className={`text-[11px] leading-tight text-center max-w-[100px] min-h-[28px] transition-colors duration-200 ${
+      <span className={`text-[11px] leading-tight text-center whitespace-nowrap min-h-[28px] transition-colors duration-200 ${
         isSelected ? "text-stone-900 font-medium" : "text-stone-500 group-hover:text-stone-700"
       }`}>
         {title}
