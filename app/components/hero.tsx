@@ -187,7 +187,7 @@ export function MacFolder() {
 /* ── Hanging name badge ── */
 export function NameBadge() {
   return (
-    <div className="hidden lg:flex flex-col items-center absolute left-[40px] top-[-80px] z-20">
+    <div className="hidden lg:flex flex-col items-center absolute left-[65px] top-[-80px] z-20">
      <a href="https://www.linkedin.com/in/uwyanliudesign" target="_blank" rel="noopener noreferrer" className="badge-swing flex flex-col items-center cursor-pointer group/badge">
       {/* Lanyard strap — extra tall to avoid gap when swinging */}
       <div className="w-[26px] h-[240px] bg-stone-800 relative shadow-sm z-0">

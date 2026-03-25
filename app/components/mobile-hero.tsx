@@ -152,7 +152,7 @@ export function MobileHero() {
       >
         {/* Name badge — tap to toggle video */}
         <div
-          className="flex flex-col items-center shrink-0 transition-transform duration-300 badge-swing -mt-10 -ml-4"
+          className="flex flex-col items-center shrink-0 transition-transform duration-300 badge-swing -mt-10 ml-1"
           style={{ transform: badgeTapped ? "scale(1.05) rotate(1deg)" : "scale(1)" }}
           onPointerDown={(e) => { e.stopPropagation(); setBadgeTapped(t => !t); }}
         >
