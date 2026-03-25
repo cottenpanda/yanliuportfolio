@@ -275,6 +275,17 @@ export function OpeningAnimation({ onComplete }: { onComplete: () => void }) {
           90% { transform: translate(-2px, -1px); }
         }
       `}</style>
+      {/* Paper texture overlay */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          backgroundImage: "url(/paper-texture.jpg)",
+          backgroundSize: "600px",
+          backgroundRepeat: "repeat",
+          mixBlendMode: "soft-light",
+          opacity: 0.35,
+        }}
+      />
     </div>
   );
 }
