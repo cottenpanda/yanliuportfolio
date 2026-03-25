@@ -43,44 +43,37 @@ const aiProjects = [
     year: "2026",
     title: "CSSDesign Award",
     detail: "Vibe-coded portfolio recognized with Special Kudos (March 18)",
-    tags: [{ label: "AWARD", color: "#92400e", bg: "#fef3c7" }],
+    tags: [{ label: "AWARD", color: "#9a8058", bg: "#f2ead8" }],
   },
   {
     year: "2026",
     title: "Figma Makeathon — Anonymous Letters Across Time",
     detail: "15K impressions · 550 likes on X",
-    tags: [
-      { label: "15K IMPRESSIONS", color: "#065f46", bg: "#d1fae5" },
-      { label: "SHIPPED", color: "#9a3412", bg: "#fed7aa" },
-    ],
+    tags: [{ label: "SHIPPED", color: "#a08060", bg: "#f0e4d6" }],
   },
   {
     year: "2026",
     title: "Vibe Coding Playlist",
     detail: "20+ AI experiments using Claude Code, Cursor, Figma Make, Google AI Studio",
-    tags: [{ label: "20+ EXPERIMENTS", color: "#065f46", bg: "#d1fae5" }, { label: "SHIPPED", color: "#9a3412", bg: "#fed7aa" }],
+    tags: [{ label: "SHIPPED", color: "#a08060", bg: "#f0e4d6" }],
   },
   {
     year: "2025",
     title: "Cozy Journaling",
     detail: "Built with Claude Sonnet 4.5",
-    tags: [{ label: "KEEP CREATING AWARD", color: "#92400e", bg: "#fef3c7" }, { label: "SHIPPED", color: "#9a3412", bg: "#fed7aa" }],
+    tags: [{ label: "AWARD", color: "#9a8058", bg: "#f2ead8" }],
   },
   {
     year: "2025",
     title: "Focus Now Chrome Extension",
     detail: "Built with Claude Code · Shipped on Chrome Web Store",
-    tags: [{ label: "CHROME WEB STORE", color: "#065f46", bg: "#d1fae5" }, { label: "SHIPPED", color: "#9a3412", bg: "#fed7aa" }],
+    tags: [{ label: "SHIPPED", color: "#a08060", bg: "#f0e4d6" }],
   },
   {
     year: "2025",
     title: "yanliu Desktop OS",
     detail: "Fully functional desktop environment · 40K impressions · 1K engagements on X",
-    tags: [
-      { label: "40K IMPRESSIONS", color: "#065f46", bg: "#d1fae5" },
-      { label: "1K ENGAGEMENTS", color: "#065f46", bg: "#d1fae5" },
-      { label: "SHIPPED", color: "#9a3412", bg: "#fed7aa" },
-    ],
+    tags: [{ label: "SHIPPED", color: "#a08060", bg: "#f0e4d6" }],
   },
 ];
 
@@ -141,12 +134,12 @@ export function RecentStatus() {
             <span className="text-[11px] text-stone-400 font-mono w-[36px] shrink-0 pt-[2px]">{item.year}</span>
             <div className="flex-1 min-w-0">
               <div className="text-[14px] text-stone-800 font-semibold leading-snug">{item.title}</div>
-              <div className="text-[12px] text-stone-500 mt-0.5 leading-relaxed">{item.detail}</div>
-              <div className="flex gap-1.5 mt-1.5 flex-wrap">
+              <div className="text-[12px] text-stone-500 mt-0.5 leading-relaxed inline">
+                {item.detail}
                 {item.tags.map((tag, ti) => (
                   <span
                     key={ti}
-                    className="text-[10px] font-mono font-medium tracking-[0.08em] uppercase px-2 py-0.5 rounded"
+                    className="text-[10px] font-mono font-medium tracking-[0.08em] uppercase px-2 py-0.5 rounded ml-1.5 inline-block align-middle"
                     style={{ color: tag.color, background: tag.bg }}
                   >
                     {tag.label}

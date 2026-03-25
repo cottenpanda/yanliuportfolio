@@ -10,11 +10,11 @@ import { RecentStatus } from "./recents";
 import { Garden } from "./garden";
 
 const folderColors = [
-  { bg: "#4A9EE8", tab: "#3B8AD4", label: "white" },
-  { bg: "#E8A44A", tab: "#D49236", label: "white" },
-  { bg: "#5ABE7A", tab: "#48A866", label: "white" },
-  { bg: "#E86B6B", tab: "#D45555", label: "white" },
-  { bg: "#A87ADB", tab: "#9466C4", label: "white" },
+  { bg: "#9FB8CC", tab: "#8DA6BA", label: "white" },
+  { bg: "#E6C9A8", tab: "#D4B796", label: "white" },
+  { bg: "#AFCFC0", tab: "#9DBDAE", label: "white" },
+  { bg: "#E3A6A1", tab: "#D1948F", label: "white" },
+  { bg: "#B8A6D9", tab: "#A694C7", label: "white" },
 ];
 
 const folderImages = [
@@ -89,15 +89,21 @@ function FolderIcon({ color, title, onClick, isSelected, icon }: {
   isSelected: boolean;
   icon: string;
 }) {
+  const [hovered, setHovered] = useState(false);
+
   return (
     <motion.button
       onClick={onClick}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
       className="flex flex-col items-center gap-2.5 group cursor-pointer w-[100px]"
-      whileHover={{ scale: 1.08 }}
       whileTap={{ scale: 0.95 }}
       transition={{ duration: 0.2 }}
     >
-      <div className="relative w-[96px] h-[80px]" style={{ filter: isSelected ? `drop-shadow(0 2px 8px ${color.bg}66)` : "drop-shadow(0 2px 4px rgba(0,0,0,0.1))" }}>
+      <div className="relative w-[96px] h-[80px]" style={{
+        filter: isSelected ? `drop-shadow(0 2px 8px ${color.bg}66)` : "drop-shadow(0 2px 4px rgba(0,0,0,0.1))",
+        perspective: "200px",
+      }}>
         <svg viewBox="0 0 96 80" className="absolute inset-0 w-full h-full" xmlns="http://www.w3.org/2000/svg">
           <rect x="0" y="12" width="96" height="68" rx="8" fill={color.tab} />
           <path
@@ -105,19 +111,34 @@ function FolderIcon({ color, title, onClick, isSelected, icon }: {
             fill={color.tab}
           />
         </svg>
+        {/* Inner "papers" visible when folder opens */}
         <div
-          className="absolute left-[1px] right-[1px] bottom-[1px] h-[62px] rounded-[7px] transition-shadow duration-200"
+          className="absolute left-[6px] right-[6px] bottom-[6px] h-[50px] rounded-[4px] transition-opacity duration-200"
+          style={{
+            background: "rgba(255,255,255,0.5)",
+            opacity: hovered ? 1 : 0,
+          }}
+        />
+        {/* Front panel — tilts up on hover */}
+        <motion.div
+          className="absolute left-[1px] right-[1px] bottom-[1px] h-[62px] rounded-[7px]"
           style={{
             backgroundColor: color.bg,
             boxShadow: "inset 0 1px 0 rgba(255,255,255,0.3), 0 1px 2px rgba(0,0,0,0.06)",
+            transformOrigin: "bottom center",
           }}
-        />
-        <img
-          src={icon}
-          alt=""
-          className="absolute left-1/2 -translate-x-1/2 bottom-[10px] w-[44px] h-[44px] object-contain pointer-events-none"
-          style={{ filter: "brightness(0) saturate(0)", opacity: 0.1, mixBlendMode: "multiply" }}
-        />
+          animate={{
+            rotateX: hovered ? -18 : 0,
+          }}
+          transition={{ type: "spring", stiffness: 300, damping: 20 }}
+        >
+          <img
+            src={icon}
+            alt=""
+            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[44px] h-[44px] object-contain pointer-events-none"
+            style={{ filter: "brightness(0) saturate(0)", opacity: 0.1, mixBlendMode: "multiply" }}
+          />
+        </motion.div>
       </div>
       <span className={`text-[11px] leading-tight text-center whitespace-nowrap min-h-[28px] transition-colors duration-200 ${
         isSelected ? "text-stone-900 font-medium" : "text-stone-500 group-hover:text-stone-700"
@@ -323,8 +344,16 @@ export function FolderWindowContent() {
   return (
     <div className="flex justify-center px-4 lg:px-0">
       <div className="w-[calc(100vw-32px)] lg:w-full max-w-[1200px] font-[family-name:var(--font-noto)]">
-        <div className="relative bg-[#F5F5F4] border border-stone-200 rounded-xl shadow-lg overflow-hidden">
-          <div className="flex items-center gap-2 px-4 py-2.5 border-b border-stone-200 bg-gradient-to-b from-[#FAFAF9] to-[#F0EFED]">
+        <div className="relative bg-[#F5F5F4] rounded-2xl overflow-hidden border border-stone-300/40" style={{ boxShadow: "0 4px 24px rgba(0,0,0,0.08), 0 1px 3px rgba(0,0,0,0.04)" }}>
+          {/* Paper texture overlay */}
+          <div className="absolute inset-0 pointer-events-none z-[1] rounded-2xl overflow-hidden" style={{
+            backgroundImage: "url(/paper-texture.jpg)",
+            backgroundSize: "500px",
+            backgroundRepeat: "repeat",
+            mixBlendMode: "multiply",
+            opacity: 0.3,
+          }} />
+          <div className="relative z-[2] flex items-center gap-2 px-4 py-2.5 border-b border-stone-300/30 bg-[#F0EDE6]/80">
             <div className="flex gap-1.5">
               <div className="w-[11px] h-[11px] rounded-full bg-[#FF5F57] border border-[#E0443E]" />
               <div className="w-[11px] h-[11px] rounded-full bg-[#FEBC2E] border border-[#DEA123]" />
@@ -339,14 +368,14 @@ export function FolderWindowContent() {
           </div>
 
           {/* Mobile top tabs */}
-          <div className="lg:hidden flex border-b border-stone-200/60 bg-[#F0EFED]/60">
+          <div className="relative z-[2] lg:hidden flex border-b border-stone-300/30 bg-[#EDE9E2]/60">
             {sidebarItems.map((item) => (
               <button
                 key={item.id}
                 onClick={() => { setActiveSidebar(item.id); setOpenFolder(null); }}
                 className={`flex-1 flex items-center justify-center gap-1.5 px-2 py-2 text-[11px] cursor-pointer transition-colors ${
                   activeSidebar === item.id
-                    ? "bg-[#D4E4F7] text-stone-800 font-medium"
+                    ? "bg-[#E8E0D4] text-stone-800 font-medium"
                     : "text-stone-500"
                 }`}
               >
@@ -356,9 +385,9 @@ export function FolderWindowContent() {
             ))}
           </div>
 
-          <div className="relative h-[500px] lg:h-[700px] lg:min-w-[1200px] overflow-hidden flex w-full">
+          <div className="relative z-[2] h-[500px] lg:h-[700px] lg:min-w-[1200px] overflow-hidden flex w-full">
             {/* Desktop sidebar */}
-            <div className="hidden lg:block w-[170px] shrink-0 bg-[#F0EFED]/60 backdrop-blur-sm border-r border-stone-200/60 py-3 px-2">
+            <div className="hidden lg:block w-[170px] shrink-0 bg-[#EDE9E2]/60 backdrop-blur-sm border-r border-stone-300/30 py-3 px-2">
               <p className="text-[11px] font-medium text-stone-400 px-2 mb-1">Favorites</p>
               {sidebarItems.map((item) => (
                 <button
@@ -366,7 +395,7 @@ export function FolderWindowContent() {
                   onClick={() => { setActiveSidebar(item.id); setOpenFolder(null); }}
                   className={`w-full flex items-center gap-2 px-2 py-[5px] rounded-md text-[12px] text-left cursor-pointer transition-colors ${
                     activeSidebar === item.id
-                      ? "bg-[#D4E4F7] text-stone-800"
+                      ? "bg-[#E8E0D4] text-stone-800"
                       : "text-stone-600 hover:bg-stone-200/40"
                   }`}
                 >

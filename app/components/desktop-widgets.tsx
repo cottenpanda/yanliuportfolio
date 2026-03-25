@@ -132,10 +132,10 @@ function FunFactsWidget() {
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.25 }}
-      className="col-span-2 bg-white/80 rounded-xl p-3 flex flex-col"
+      className="col-span-2 bg-white/90 rounded-xl p-3 flex flex-col"
       onMouseLeave={() => { setSpread(false); setFlippedSet(new Set()); }}
     >
-      <div className="text-[9px] text-stone-400 uppercase tracking-wider mb-2">Fun Facts</div>
+      <div className="text-[10px] text-stone-400 uppercase tracking-wider mb-2 self-start">Fun Facts</div>
       <div className="flex-1 flex items-center justify-center relative" style={{ minHeight: 180 }}>
         {funFacts.map((fact, i) => (
           <PolaroidCard
@@ -166,31 +166,33 @@ function EnergyCircle() {
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.1 }}
-      className="bg-white/80 rounded-xl p-3 flex flex-col items-center justify-center cursor-pointer"
+      className="bg-white/90 rounded-xl p-3 flex flex-col items-start cursor-pointer"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
-      <div className="text-[9px] text-stone-400 uppercase tracking-wider self-start mb-3">Energy Level</div>
-      <div className="relative w-[110px] h-[110px]">
-        <svg width="110" height="110" viewBox="0 0 110 110">
-          <circle cx="55" cy="55" r="44" fill="none" stroke="#e7e5e4" strokeWidth="7" />
-          <motion.circle
-            key={hovered ? "active" : "idle"}
-            cx="55" cy="55" r="44"
-            fill="none" stroke="#10b981" strokeWidth="7"
-            strokeLinecap="butt"
-            strokeDasharray={Math.PI * 2 * 44}
-            initial={hovered ? { strokeDashoffset: Math.PI * 2 * 44 } : false}
-            animate={{ strokeDashoffset: Math.PI * 2 * 44 * (1 - 0.95) }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-            transform="rotate(-90 55 55)"
-          />
-        </svg>
-        <div className="absolute inset-0 flex flex-col items-center justify-center">
-          <span className="text-[22px] font-semibold text-stone-700 leading-none">95%</span>
+      <div className="text-[10px] text-stone-400 uppercase tracking-wider self-start mb-3">Energy Level</div>
+      <div className="flex-1 flex flex-col items-center justify-center w-full">
+        <div className="relative w-[110px] h-[110px]">
+          <svg width="110" height="110" viewBox="0 0 110 110">
+            <circle cx="55" cy="55" r="44" fill="none" stroke="#e7e5e4" strokeWidth="7" />
+            <motion.circle
+              key={hovered ? "active" : "idle"}
+              cx="55" cy="55" r="44"
+              fill="none" stroke="#5A9E82" strokeWidth="7"
+              strokeLinecap="butt"
+              strokeDasharray={Math.PI * 2 * 44}
+              initial={hovered ? { strokeDashoffset: Math.PI * 2 * 44 } : false}
+              animate={{ strokeDashoffset: Math.PI * 2 * 44 * (1 - 0.95) }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
+              transform="rotate(-90 55 55)"
+            />
+          </svg>
+          <div className="absolute inset-0 flex flex-col items-center justify-center">
+            <span className="text-[22px] font-semibold text-stone-700 leading-none">95%</span>
+          </div>
         </div>
+        <div className="text-[12px] text-stone-600 mt-2">Feeling great</div>
       </div>
-      <div className="text-[12px] text-stone-600 mt-2">Feeling great</div>
     </motion.div>
   );
 }
@@ -230,12 +232,12 @@ function FuelMixRadar() {
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.15 }}
-      className="bg-white/80 rounded-xl p-3 flex flex-col items-center cursor-pointer"
+      className="bg-white/90 rounded-xl p-3 flex flex-col items-start cursor-pointer"
       onMouseEnter={startReveal}
       onMouseLeave={stopReveal}
     >
-      <div className="text-[9px] text-stone-400 uppercase tracking-wider self-start mb-1">Fuel Mix</div>
-      <svg width="210" height="200" viewBox="-10 -5 200 190">
+      <div className="text-[10px] text-stone-400 uppercase tracking-wider self-start mb-1">Fuel Mix</div>
+      <svg className="self-center" width="240" height="200" viewBox="-40 -5 230 190">
         {[...Array(radarLevels)].map((_, l) => {
           const r = radarMaxR * ((l + 1) / radarLevels);
           const pts = radarStats.map((_, i) => radarPt(i, r)).join(" ");
@@ -247,8 +249,8 @@ function FuelMixRadar() {
         <motion.polygon
           animate={{ points: getPoints(revealCount) }}
           transition={{ duration: 0.3, ease: "easeOut" }}
-          fill="rgba(59,130,246,0.15)"
-          stroke="#3b82f6"
+          fill="rgba(106,158,192,0.2)"
+          stroke="#6A9EC0"
           strokeWidth="1.5"
         />
         {radarStats.map((_, i) => {
@@ -256,17 +258,23 @@ function FuelMixRadar() {
           return (
             <motion.circle
               key={i}
-              cx={x} cy={y} r="2" fill="#3b82f6"
+              cx={x} cy={y} r="2" fill="#6A9EC0"
               animate={{ opacity: i < revealCount ? 1 : 0 }}
               transition={{ duration: 0.2 }}
             />
           );
         })}
         {radarStats.map((s, i) => {
-          const lR = radarMaxR + 22;
-          const x = radarCx + lR * Math.cos(radarAngle(i));
-          const y = radarCy + lR * Math.sin(radarAngle(i));
-          return <text key={i} x={x} y={y} textAnchor="middle" dominantBaseline="middle" className="text-[12px] fill-stone-600">{s.label}</text>;
+          const angle = radarAngle(i);
+          const cos = Math.cos(angle);
+          const sin = Math.sin(angle);
+          const lR = radarMaxR + 14;
+          const x = radarCx + lR * cos;
+          const y = radarCy + lR * sin;
+          const anchor = cos < -0.1 ? "end" : cos > 0.1 ? "start" : "middle";
+          const dx = cos < -0.1 ? -4 : cos > 0.1 ? 4 : 0;
+          const dy = sin < -0.5 ? -4 : sin > 0.5 ? 8 : 0;
+          return <text key={i} x={x + dx} y={y + dy} textAnchor={anchor} dominantBaseline="middle" className="text-[12px] fill-stone-600">{s.label}</text>;
         })}
       </svg>
     </motion.div>
@@ -274,12 +282,12 @@ function FuelMixRadar() {
 }
 
 const designChips = [
-  { label: "Think deeply", color: "#10b981" },
-  { label: "Data-driven", color: "#3b82f6" },
-  { label: "Detail-focused", color: "#a78bfa" },
-  { label: "Stay curious", color: "#f59e0b" },
-  { label: "Exploring often", color: "#f472b6" },
-  { label: "Learn by building", color: "#06b6d4" },
+  { label: "Think deeply", color: "#5A9E82" },
+  { label: "Data-driven", color: "#6A9EC0" },
+  { label: "Detail-focused", color: "#9680C2" },
+  { label: "Stay curious", color: "#C9A060" },
+  { label: "Exploring often", color: "#D4746E" },
+  { label: "Learn by building", color: "#5A8FA0" },
 ];
 
 const CHIP_W = 95;
@@ -406,7 +414,7 @@ function ReminderCard() {
       <div className="bg-white rounded-[3px] shadow-[0_1px_4px_rgba(0,0,0,0.08)] relative overflow-hidden h-full flex flex-col">
         <div className="h-[6px] w-full shrink-0" style={{ background: "repeating-linear-gradient(90deg, #d6d3d1 0px, #d6d3d1 6px, transparent 6px, transparent 14px)" }} />
         <div className="p-3 pt-2 pb-5 flex flex-col flex-1">
-          <div className="text-[9px] text-stone-400 uppercase tracking-wider mb-3 font-medium">Design Notes</div>
+          <div className="text-[10px] text-stone-400 uppercase tracking-wider mb-3">Design Notes</div>
           <div ref={chipAreaRef} className="relative flex-1" style={{ width: AREA_W }}>
             {designChips.map((chip, i) => {
               const orgPositions = getOrganizedPositions(chipAreaRef.current?.clientHeight || AREA_H);
@@ -535,22 +543,23 @@ function JourneyTimeline() {
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.25 }}
-      className="rounded-xl p-4 flex-1 cursor-default"
-      style={{ background: "rgba(255,255,255,0.8)" }}
+      className="rounded-xl p-4 flex-1 cursor-default bg-white/90"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
-      <div className="text-[9px] text-stone-400 uppercase tracking-[0.2em] mb-4 font-mono">My Journey</div>
+      <div className="text-[10px] text-stone-400 uppercase tracking-wider mb-4">My Journey</div>
       <div className="space-y-0">
         {journeyData.map((item, i) => {
           const isLast = i === journeyData.length - 1;
           if (isLast) return null;
+          const total = journeyData.length - 1;
+          const fadeOpacity = 0.35 + (i / (total - 1)) * 0.65;
           return (
             <div
               key={i}
               className="flex items-center gap-3 py-[10px] transition-opacity duration-300"
               style={{
-                opacity: hovered ? (i < visibleCount ? 1 : 0) : 1,
+                opacity: hovered ? (i < visibleCount ? fadeOpacity : 0) : fadeOpacity,
                 borderBottom: i < journeyData.length - 2 ? "1px solid rgba(214,211,209,0.5)" : "none",
               }}
             >
@@ -607,7 +616,7 @@ function WeatherCard() {
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.2 }}
       style={{ boxShadow: hovered ? "0 4px 20px rgba(251,191,36,0.3), 0 0 40px rgba(251,191,36,0.12)" : "none" }}
-      className="bg-white/80 rounded-xl px-3 py-2.5 cursor-pointer overflow-hidden relative transition-all duration-300"
+      className="bg-white/90 rounded-xl px-3 py-2.5 cursor-pointer overflow-hidden relative transition-all duration-300"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
@@ -637,7 +646,7 @@ function WeatherCard() {
 
 function MobileDesignNotes() {
   return (
-    <div className="bg-white/80 rounded-xl p-4">
+    <div className="bg-white/90 rounded-xl p-4">
       <div className="text-[10px] text-stone-400 uppercase tracking-wider mb-3 font-medium">Design Notes</div>
       <div className="flex flex-wrap gap-2">
         {designChips.map((chip) => (
@@ -656,13 +665,13 @@ function MobileDesignNotes() {
 
 function MobileEnergyLevel() {
   return (
-    <div className="bg-white/80 rounded-xl p-4 flex items-center gap-4">
+    <div className="bg-white/90 rounded-xl p-4 flex items-center gap-4">
       <div className="relative w-[72px] h-[72px] shrink-0">
         <svg width="72" height="72" viewBox="0 0 72 72">
           <circle cx="36" cy="36" r="30" fill="none" stroke="#e7e5e4" strokeWidth="5" />
           <circle
             cx="36" cy="36" r="30"
-            fill="none" stroke="#10b981" strokeWidth="5"
+            fill="none" stroke="#5A9E82" strokeWidth="5"
             strokeLinecap="butt"
             strokeDasharray={Math.PI * 2 * 30}
             strokeDashoffset={Math.PI * 2 * 30 * (1 - 0.95)}
@@ -683,7 +692,7 @@ function MobileEnergyLevel() {
 
 function MobileFuelMix() {
   return (
-    <div className="bg-white/80 rounded-xl p-4">
+    <div className="bg-white/90 rounded-xl p-4">
       <div className="text-[10px] text-stone-400 uppercase tracking-wider mb-3">Fuel Mix</div>
       <div className="space-y-2.5">
         {radarStats.map((s) => (
@@ -691,7 +700,7 @@ function MobileFuelMix() {
             <span className="text-[12px] text-stone-500 w-[64px] shrink-0">{s.label}</span>
             <div className="flex-1 h-[6px] bg-stone-100 rounded-full overflow-hidden">
               <div
-                className="h-full bg-blue-500 rounded-full"
+                className="h-full bg-[#6A9EC0] rounded-full"
                 style={{ width: `${s.value}%` }}
               />
             </div>
@@ -705,16 +714,19 @@ function MobileFuelMix() {
 
 function MobileJourney() {
   return (
-    <div className="bg-white/80 rounded-xl p-4">
+    <div className="bg-white/90 rounded-xl p-4">
       <div className="text-[10px] text-stone-400 uppercase tracking-[0.2em] mb-3 font-mono">My Journey</div>
       <div className="space-y-0">
         {journeyData.map((item, i) => {
           const isLast = i === journeyData.length - 1;
+          const total = journeyData.length - 1;
+          const fadeOpacity = isLast ? 1 : 0.35 + (i / (total - 1)) * 0.65;
           return (
             <div
               key={i}
               className={`flex items-center gap-2.5 py-2 ${isLast ? "mt-2 rounded-lg px-3 py-3" : ""}`}
               style={{
+                opacity: fadeOpacity,
                 borderBottom: !isLast && i < journeyData.length - 2 ? "1px solid rgba(214,211,209,0.5)" : "none",
                 ...(isLast ? { background: "#f5f5f4", border: "1px solid rgba(214,211,209,0.6)" } : {}),
               }}
@@ -744,7 +756,7 @@ function MobileFunFacts() {
   const [flippedSet, setFlippedSet] = useState<Set<number>>(new Set());
 
   return (
-    <div className="bg-white/80 rounded-xl p-4">
+    <div className="bg-white/90 rounded-xl p-4">
       <div className="text-[10px] text-stone-400 uppercase tracking-wider mb-3">Fun Facts</div>
       <div className="flex gap-3 overflow-x-auto pb-1">
         {funFacts.map((fact, i) => (
