@@ -57,13 +57,20 @@ export function OpeningAnimation({ onComplete }: { onComplete: () => void }) {
       { char: "u", group: "second" },
     ];
 
+    // Inner wrapper for letters — shake applies here, not the background
+    const lettersWrapper = document.createElement("div");
+    Object.assign(lettersWrapper.style, {
+      position: "absolute", inset: "0", pointerEvents: "none",
+    });
+    container.appendChild(lettersWrapper);
+
     // Create dot for "i"
     const iDot = document.createElement("div");
     Object.assign(iDot.style, {
       position: "absolute", width: "22px", height: "22px",
       borderRadius: "50%", background: "#FBBF24", boxShadow: "0 0 12px 4px rgba(251,191,36,0.4)", opacity: "0", willChange: "transform, opacity",
     });
-    container.appendChild(iDot);
+    lettersWrapper.appendChild(iDot);
 
     // Create letter elements
     const els = letterDefs.map(def => {
@@ -74,7 +81,7 @@ export function OpeningAnimation({ onComplete }: { onComplete: () => void }) {
         userSelect: "none", lineHeight: "1", fontFamily: "'Noto Sans', sans-serif",
       });
       el.textContent = def.char === "i" ? "\u0131" : def.char;
-      container.appendChild(el);
+      lettersWrapper.appendChild(el);
       return { el, char: def.char, group: def.group };
     });
 
@@ -110,7 +117,7 @@ export function OpeningAnimation({ onComplete }: { onComplete: () => void }) {
       background: "radial-gradient(circle, rgba(200,160,120,0.6) 0%, transparent 70%)",
       pointerEvents: "none", opacity: "0",
     });
-    container.appendChild(flash);
+    lettersWrapper.appendChild(flash);
 
     async function run() {
       const yEl = els[0];
@@ -144,7 +151,7 @@ export function OpeningAnimation({ onComplete }: { onComplete: () => void }) {
       flash.style.left = CENTER_X - 5 + "px";
       flash.style.top = CENTER_Y - 5 + "px";
       flash.style.animation = "flashBurst 0.5s ease-out forwards";
-      container!.style.animation = "shake 0.4s ease-out";
+      lettersWrapper.style.animation = "shake 0.4s ease-out";
 
       await Promise.all([
         animate(yEl.el,
@@ -178,7 +185,7 @@ export function OpeningAnimation({ onComplete }: { onComplete: () => void }) {
         );
       });
       await Promise.all(burstPromises);
-      container!.style.animation = "";
+      lettersWrapper.style.animation = "";
       await delay(200);
 
       // STEP 5: Settle into final positions
