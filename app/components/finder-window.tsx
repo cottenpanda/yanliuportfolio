@@ -501,7 +501,7 @@ export function FolderWindowContent() {
                                     />
                                   ) : openFolder === 2 ? (
                                     <video
-                                      src="/design-impact.mp4"
+                                      src="/figma-community.mp4"
                                       autoPlay
                                       muted
                                       loop
