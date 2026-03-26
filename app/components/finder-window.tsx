@@ -36,7 +36,7 @@ const folderIcons = [
 const folderContent = [
   {
     title: "Projects at Work",
-    description: "From **multimodal conversational interfaces to search and AI modification**, turning complex ideas into intuitive product experiences.\n\nRecent work includes natural language search, search trend dashboards, contributor platform redesigns, internal search editing tools, and watermark systems for Getty Images and iStock.",
+    description: "From **multimodal conversational interfaces** to **natural language search** and **AI modifications**, I turn complex, ambiguous concepts into intuitive product experiences—taking ideas from 0→1 and shipping them.\n\nI also led work on search trend dashboards, contributor ingestion app redesigns, internal search editing tools, and watermark systems for Getty Images and iStock.",
     cta: { label: "Projects at work (password required)", url: "https://yanliu.design" },
   },
   {
@@ -46,7 +46,7 @@ const folderContent = [
   },
   {
     title: "Community Impact",
-    description: "My Figma Community files have over **500K+** uses.\n\n**100+ Abstract Shapes / Elements** was a finalist for Favorite Graphic Resources in the **2022 Figma Community Awards**.\n\n**50+ Abstract Geometric Shapes** was featured during the Day 2 virtual broadcast at **Config 2024**.",
+    description: "My Figma Community files have **500K+** uses. I design and share to help designers speed up workflows, explore ideas, and build faster.\n\n100+ Abstract Shapes / Elements was a finalist for Favorite Graphic Resources in the 2022 Figma Community Awards. 50+ Abstract Geometric Shapes was featured in the Day 2 virtual broadcast at Config 2024.",
     cta: { label: "Figma designs", url: "https://www.figma.com/@yanliu" },
   },
   {
@@ -56,7 +56,7 @@ const folderContent = [
   },
   {
     title: "From Sketch to Merch",
-    description: "I create illustrations and black-and-white doodles as a way to unwind and explore visual ideas.\n\nIn 2022, I collaborated with **SHEIN X Artist** to launch my merchandise collection, YANLIU.\n\nI share work on **Instagram and RedNote**.",
+    description: "I create illustrations and black-and-white doodles as a way to unwind and explore visual ideas.\n\nIn 2022, I collaborated with **SHEIN X Artist** to launch my merchandise collection, YANLIU. I share my work on Instagram and RedNote, where my illustrations have reached **50K+** likes, as a space to experiment, explore, and stay curious.",
     cta: [
       { label: "Instagram", url: "https://www.instagram.com/yanliudesign" },
       { label: "RedNote", url: "https://www.xiaohongshu.com/user/profile/5cf87836000000001803f1b3?xhsshare=CopyLink&appuid=5cf87836000000001803f1b3&apptime=1654372327" },
