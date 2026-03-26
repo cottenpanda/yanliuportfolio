@@ -8,7 +8,7 @@ import { ClickBurst } from "./click-burst";
 /* ── Board images data ── */
 const BOARD_IMAGES = [
   { src: "/bulletin/1.jpg", top: "1%", left: "8%", rotate: "-5deg", w: 220, z: 1, side: "left" as const, startVY: 0.1, label: "Search trend tools (GettyImages & iStock)" },
-  { src: "/bulletin/6.jpg", top: "3%", left: "32%", rotate: "-2deg", w: 210, z: 1, side: "left" as const, startVY: 0.05, label: "50 emojis (Figma design)" },
+  { src: "/bulletin/6.jpg", top: "3%", left: "32%", rotate: "-2deg", w: 250, z: 1, side: "left" as const, startVY: 0.05, label: "50 emojis (Figma design)" },
   { src: "/bulletin/2.jpg", top: "4%", left: "55%", rotate: "3deg", w: 210, z: 1, side: "right" as const, startVY: 0.15, label: "Contribution submission app (GettyImages & iStock)" },
   { src: "/bulletin/10.jpg", top: "2%", left: "80%", rotate: "6deg", w: 235, z: 1, side: "right" as const, startVY: 0.2, label: "Abstract poster/wallpaper (Figma design)" },
   { src: "/bulletin/11.jpg", top: "30%", left: "2%", rotate: "4deg", w: 215, z: 1, side: "left" as const, startVY: 0.4, label: "Anonymous Letters Across Time (Figma Make)" },
@@ -105,7 +105,11 @@ function ScatterImage({
         const evt = e as unknown as MouseEvent;
         setBursts((prev) => [...prev, { id: Date.now(), x: evt.clientX, y: evt.clientY }]);
       }}
-      onMouseEnter={() => setHovered(true)}
+      onMouseEnter={() => {
+        setHovered(true);
+        zCounterRef.current += 1;
+        setImgZIndex((prev) => { const next = [...prev]; next[index] = zCounterRef.current; return next; });
+      }}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       className="absolute cursor-grab active:cursor-grabbing"
@@ -128,7 +132,7 @@ function ScatterImage({
         animate={{
           rotateX: tilt.rotateX,
           rotateY: tilt.rotateY,
-          scale: tilt.rotateX !== 0 || tilt.rotateY !== 0 ? 1.05 : 1,
+          scale: tilt.rotateX !== 0 || tilt.rotateY !== 0 ? 1.3 : 1,
         }}
         transition={{ type: "spring", stiffness: 300, damping: 20 }}
         draggable={false}
