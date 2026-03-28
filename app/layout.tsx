@@ -31,7 +31,7 @@ const courierPrime = Courier_Prime({
 export const metadata: Metadata = {
   title: "Yan Liu — Product Designer",
   description:
-    "Design like a strategist. Ship like a builder. Senior Product Designer with 7+ years of experience.",
+    "I think, then I make. Senior Product Designer with 7+ years of experience.",
   icons: {
     icon: "/favicon.svg",
   },
