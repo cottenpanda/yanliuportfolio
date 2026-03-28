@@ -17,6 +17,7 @@ import { ClickBurst } from "./components/click-burst";
 import { NavHeader } from "./components/nav-header";
 import { CursorHint } from "./components/cursor-hint";
 import { OpeningAnimation } from "./components/opening-animation";
+import { YellowDotCursor } from "./components/yellow-dot-cursor";
 import { MobileBanner } from "./components/mobile-banner";
 import { MobileHero } from "./components/mobile-hero";
 
@@ -52,6 +53,7 @@ export default function Home() {
   return (
     <div className="relative" style={{ overflowX: "clip" }} onClick={handlePageClick}>
       {showOpening && <OpeningAnimation onComplete={() => setShowOpening(false)} />}
+      <YellowDotCursor active={!showOpening} />
       <div style={{ opacity: showOpening ? 0 : 1 }}><NavHeader /></div>
       <StarBackground />
       {pageBursts.map((b) => (
@@ -65,7 +67,7 @@ export default function Home() {
       <MobileHero />
 
       {/* Hero — full viewport, centered (desktop only) */}
-      <CursorHint label="Hover on items" delay={5}>
+      <CursorHint label="Hover on items" delay={5} duration={8}>
       <div className="hidden lg:flex min-h-screen items-center justify-center px-4 relative z-10">
       <div className="relative w-[1400px] h-[900px] overflow-visible" style={{ maxWidth: "100vw", transform: "translateX(-25px)" }}>
         <MacFolder />

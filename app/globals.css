@@ -6,6 +6,10 @@ html {
   scroll-behavior: smooth;
 }
 
+@media (min-width: 1024px) {
+  html, html * { cursor: none !important; }
+}
+
 body {
   background-color: #FAF8F5;
   color: #1C1917;

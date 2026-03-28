@@ -253,6 +253,7 @@ export function OpeningAnimation({ onComplete }: { onComplete: () => void }) {
       style={{
         backgroundColor: "#1e1e1e",
         fontFamily: "'Noto Sans', sans-serif",
+        cursor: "none",
         ...(maskCircle ? {
           clipPath: maskExpand
             ? `circle(0% at ${maskCircle.x}px ${maskCircle.y}px)`
