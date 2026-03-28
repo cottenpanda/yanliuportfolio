@@ -68,7 +68,7 @@ export function OpeningAnimation({ onComplete }: { onComplete: () => void }) {
     const iDot = document.createElement("div");
     Object.assign(iDot.style, {
       position: "absolute", width: "22px", height: "22px",
-      borderRadius: "50%", background: "#FBBF24", boxShadow: "0 0 12px 4px rgba(251,191,36,0.4)", opacity: "0", willChange: "transform, opacity",
+      borderRadius: "50%", background: "#FFFFFF", boxShadow: "0 0 12px 4px rgba(255,255,255,0.4)", opacity: "0", willChange: "transform, opacity",
     });
     lettersWrapper.appendChild(iDot);
 
@@ -228,7 +228,7 @@ export function OpeningAnimation({ onComplete }: { onComplete: () => void }) {
       const dotCenterY = dotFinalY + 11;
 
       iDot.style.transition = "box-shadow 0.6s ease-out";
-      iDot.style.boxShadow = "0 0 30px 12px rgba(251,191,36,0.7), 0 0 60px 24px rgba(251,191,36,0.3)";
+      iDot.style.boxShadow = "0 0 30px 12px rgba(255,255,255,0.7), 0 0 60px 24px rgba(255,255,255,0.3)";
 
       // Start mask while glow is still expanding
       await delay(150);

@@ -67,7 +67,7 @@ export default function Home() {
       <MobileHero />
 
       {/* Hero — full viewport, centered (desktop only) */}
-      <CursorHint label="Hover on items" delay={5} duration={8}>
+      <CursorHint label="Hover on items" delay={5} duration={5}>
       <div className="hidden lg:flex min-h-screen items-center justify-center px-4 relative z-10">
       <div className="relative w-[1400px] h-[900px] overflow-visible" style={{ maxWidth: "100vw", transform: "translateX(-25px)" }}>
         <MacFolder />

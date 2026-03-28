@@ -43,8 +43,8 @@ export function YellowDotCursor({ active }: { active: boolean }) {
         width: DOT_SIZE,
         height: DOT_SIZE,
         borderRadius: "50%",
-        background: "#FBBF24",
-        boxShadow: "0 0 12px 4px rgba(251,191,36,0.4)",
+        background: "#FFFFFF",
+        mixBlendMode: "difference",
         opacity: 0,
         willChange: "transform",
       }}
