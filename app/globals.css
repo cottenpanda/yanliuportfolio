@@ -33,6 +33,48 @@ body::before {
   color: #FFFFFF;
 }
 
+/* Social morph — text dissolves into icon */
+.social-morph {
+  position: relative;
+  padding: 4px 8px;
+  overflow: hidden;
+}
+
+.social-morph-text {
+  display: inline-block;
+  opacity: 1;
+  filter: blur(0px);
+  transform: scale(1);
+  transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+              filter 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+              transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.social-morph-icon {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  opacity: 0;
+  filter: blur(8px);
+  transform: scale(0.6);
+  pointer-events: none;
+  transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1) 0.1s,
+              filter 0.4s cubic-bezier(0.4, 0, 0.2, 1) 0.1s,
+              transform 0.4s cubic-bezier(0.4, 0, 0.2, 1) 0.1s;
+}
+
+.social-morph:hover .social-morph-text {
+  opacity: 0;
+  filter: blur(8px);
+  transform: scale(0.6);
+}
+
+.social-morph:hover .social-morph-icon {
+  opacity: 1;
+  filter: blur(0px);
+  transform: scale(1);
+}
+
 /* Plant bounce on hover — smooth continuous */
 @keyframes plant-bounce {
   0%, 100% { translate: 0 0; }
@@ -409,6 +451,15 @@ body::before {
 .group\/vinyl:hover .vinyl-spin,
 .vinyl-spin-active {
   animation: vinyl-spin 12s linear infinite;
+}
+
+/* Vinyl mini player progress */
+.vinyl-progress {
+  animation: vinyl-progress-grow 8s linear infinite;
+}
+@keyframes vinyl-progress-grow {
+  0% { width: 0%; }
+  100% { width: 100%; }
 }
 
 /* Name badge swing on hover */
