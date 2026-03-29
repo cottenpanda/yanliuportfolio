@@ -290,7 +290,7 @@ export function MobileHero() {
         <div className="flex flex-col items-center">
           <img src="/yan-liu.svg" alt="Yan Liu" className="h-[45px] mb-1.5" draggable={false} />
           <p className="font-[family-name:var(--font-noto)] text-[9px] text-stone-500 text-center tracking-[0.18em] uppercase" style={{ lineHeight: "1.8" }}>
-            I think, then I make
+            I think, then I build.
           </p>
         </div>
 
