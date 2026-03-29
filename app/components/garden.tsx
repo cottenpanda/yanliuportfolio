@@ -58,8 +58,17 @@ export function Garden({ isMobile = false }: { isMobile?: boolean }) {
     }
   }, [newFlowerId]);
 
+  const hasPlanted = typeof window !== "undefined" && localStorage.getItem("garden-planted") === "true";
+  const [planted, setPlanted] = useState(hasPlanted);
+
   const plantFlower = useCallback(async (e: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>) => {
     e.preventDefault();
+
+    if (localStorage.getItem("garden-planted") === "true") {
+      setPlanted(true);
+      return;
+    }
+
     const rect = (e.currentTarget as HTMLDivElement).getBoundingClientRect();
     let clientX: number, clientY: number;
     if ("touches" in e) {
@@ -82,6 +91,8 @@ export function Garden({ isMobile = false }: { isMobile?: boolean }) {
     if (!error && data) {
       setFlowers((prev) => [...prev, data]);
       setNewFlowerId(data.id);
+      localStorage.setItem("garden-planted", "true");
+      setPlanted(true);
     }
   }, []);
 
@@ -95,7 +106,7 @@ export function Garden({ isMobile = false }: { isMobile?: boolean }) {
           </div>
         </div>
         {!loading && (
-          <span className="text-[12px] text-stone-400">{isMobile ? "Tap to plant" : "Click to plant"}</span>
+          <span className="text-[12px] text-stone-400">{planted ? "You planted one 🌸" : isMobile ? "Tap to plant" : "Click to plant"}</span>
         )}
       </div>
 
