@@ -173,8 +173,8 @@ export default function Home() {
               }} />
             </div>
           </div>
-          <p className="font-[family-name:var(--font-noto)] text-xs md:text-base text-stone-500 text-center tracking-[0.2em] uppercase hero-entrance" style={{ lineHeight: "1.8", animation: "hero-fade-in 0.5s cubic-bezier(0.4,0,0.2,1) 1.9s both" }}>
-            I think, then I build.
+          <p className="font-[family-name:var(--font-noto)] text-xs md:text-base text-stone-500 text-center tracking-[0.2em] uppercase hero-entrance ml-3" style={{ lineHeight: "1.8", animation: "hero-fade-in 0.5s cubic-bezier(0.4,0,0.2,1) 1.9s both" }}>
+            I think, then I build
           </p>
         </div>
       </div>
