@@ -21,7 +21,6 @@ export function YellowDotCursor({ active }: { active: boolean }) {
     const el = ref.current;
     if (!el || !active) return;
 
-    // Show immediately at actual mouse position
     el.style.transform = `translate(${mouse.x - HALF}px, ${mouse.y - HALF}px)`;
     el.style.opacity = "1";
 

@@ -91,7 +91,7 @@ export function Garden({ isMobile = false }: { isMobile?: boolean }) {
         <div>
           <div className="text-[12px] text-stone-400 uppercase tracking-[0.2em] font-mono">Community Garden</div>
           <div className="text-[13px] text-stone-500 mt-0.5">
-            {flowers.length} flower{flowers.length !== 1 ? "s" : ""} planted by visitors
+            {loading ? "Loading flowers…" : `${flowers.length} flower${flowers.length !== 1 ? "s" : ""} planted by visitors`}
           </div>
         </div>
         {!loading && (
@@ -110,7 +110,7 @@ export function Garden({ isMobile = false }: { isMobile?: boolean }) {
             key={flower.id}
             flower={flower}
             isNew={flower.id === newFlowerId}
-            size={isMobile ? 20 : 32}
+            size={isMobile ? 16 : 24}
           />
         ))}
 
