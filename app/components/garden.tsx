@@ -121,7 +121,7 @@ export function Garden({ isMobile = false }: { isMobile?: boolean }) {
             key={flower.id}
             flower={flower}
             isNew={flower.id === newFlowerId}
-            size={isMobile ? 16 : 24}
+            size={isMobile ? 14 : 20}
           />
         ))}
 
