@@ -51,7 +51,7 @@ const folderContent = [
   },
   {
     title: "Through My Lens",
-    description: "Nature helps me step away from daily routines and reset my perspective.\n\nMy photography has reached **19M+ views** and **150K+ downloads**, and has been used across platforms including BuzzFeed, Notion, Trello, Mailchimp, Fever, and Figma.",
+    description: "Nature helps me step away from daily routines and reset my perspective.\n\nMy photography has reached **20M+ views** and **150K+ downloads**, and has been used across platforms including BuzzFeed, Notion, Trello, Mailchimp, Fever, and Figma.",
     cta: { label: "Photos on Unsplash", url: "https://unsplash.com/@yl1980s" },
   },
   {
