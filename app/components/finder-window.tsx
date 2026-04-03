@@ -46,7 +46,7 @@ const folderContent = [
   },
   {
     title: "Community Impact",
-    description: "My Figma Community files have **500K+** uses. I design and share to help designers speed up workflows, explore ideas, and build faster.\n\n100+ Abstract Shapes / Elements was a finalist for Favorite Graphic Resources in the 2022 Figma Community Awards. 50+ Abstract Geometric Shapes was featured in the Day 2 virtual broadcast at Config 2024.",
+    description: "My Figma Community files have **670K+** uses. I design and share to help designers speed up workflows, explore ideas, and build faster.\n\n100+ Abstract Shapes / Elements was a finalist for Favorite Graphic Resources in the 2022 Figma Community Awards. 50+ Abstract Geometric Shapes was featured in the Day 2 virtual broadcast at Config 2024.",
     cta: { label: "Figma designs", url: "https://www.figma.com/@yanliu" },
   },
   {

@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 
 const impactStats = [
   { endNum: 20, suffix: "M+", label: "UNSPLASH PHOTO VIEWS" },
-  { endNum: 500, suffix: "K+", label: "FIGMA FILE USES" },
+  { endNum: 670, suffix: "K+", label: "FIGMA FILE USES" },
   { endNum: 40, suffix: "K", label: "IMPRESSIONS, ONE POST" },
 ];
 
@@ -78,7 +78,7 @@ const aiProjects = [
 ];
 
 const additionalAchievements = [
-  { year: "2022", title: "Figma Community", detail: "500K+ uses · Finalist, Favorite Graphic Resources" },
+  { year: "2022", title: "Figma Community", detail: "670K+ uses · Finalist, Favorite Graphic Resources" },
   { year: "–", title: "Unsplash", detail: "20M+ views · 150K downloads" },
   { year: "2018", title: "Google Startup Weekend", detail: "Excellence in Execution" },
   { year: "2018", title: "UW Dubstech Protothon", detail: "1st place, UX Competition" },

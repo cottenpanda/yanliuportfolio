@@ -56,7 +56,7 @@ export const siteConfig = {
       id: "community-impact",
       title: "Community Impact",
       description:
-        "Learning, practicing, and sharing have become my habit, bringing fulfillment and growth. My Design files on Figma community has over **500K+** uses.",
+        "Learning, practicing, and sharing have become my habit, bringing fulfillment and growth. My Design files on Figma community has over **670K+** uses.",
       highlights: [
         {
           text: '100+ abstract shapes/elements was nominated as a **finalist for the "Favorite graphic resources for Figma"** category in the **2022 Figma Community Awards**.',
