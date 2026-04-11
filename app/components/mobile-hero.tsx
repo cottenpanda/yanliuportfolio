@@ -43,7 +43,7 @@ figmaDotOrder.forEach((dotIndex, seqIndex) => dotSequenceMap.set(dotIndex, seqIn
 /* ── Terminal typing ── */
 const terminalLines = [
   { prompt: "$ whoami", output: "Senior Product Designer with 7+ years experience" },
-  { prompt: "$ ls interests/", output: "AI/  designs/  doodles/  photography/" },
+  { prompt: "$ ls interests/", output: "AI/designs/doodles/photography" },
 ];
 
 function MobileTerminal() {

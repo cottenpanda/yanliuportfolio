@@ -5,7 +5,7 @@ import React, { useState, useEffect } from "react";
 
 const terminalLines = [
   { prompt: "$ whoami", output: "Senior Product Designer with 7+ years experience" },
-  { prompt: "$ ls interests/", output: "AI/  designs/  doodles/  photography/" },
+  { prompt: "$ ls interests/", output: "AI/designs/doodles/photography" },
 ];
 
 export function RetroWindows() {
