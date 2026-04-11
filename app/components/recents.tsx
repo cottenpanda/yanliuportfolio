@@ -41,6 +41,12 @@ function CountUp({ end, suffix, duration = 1500, autoStart = false }: { end: num
 const aiProjects = [
   {
     year: "2026",
+    title: "Bestfolios",
+    detail: "Vibe-coded portfolio featured on Bestfolios",
+    tags: [{ label: "AWARD", color: "#9a8058", bg: "#f2ead8" }],
+  },
+  {
+    year: "2026",
     title: "Wall of Portfolios",
     detail: "Vibe-coded portfolio featured on Wall of Portfolios",
     tags: [{ label: "AWARD", color: "#9a8058", bg: "#f2ead8" }],
