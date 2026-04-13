@@ -286,7 +286,7 @@ export default function Home() {
               transition={{ duration: 0.25 }}
               className="space-y-6"
             >
-              <h2 className="font-hand text-4xl md:text-5xl text-text-primary">
+              <h2 className="font-sans text-4xl md:text-5xl text-text-primary">
                 {activeSection.title}
               </h2>
               <p className="text-text-secondary leading-relaxed text-base md:text-lg">
