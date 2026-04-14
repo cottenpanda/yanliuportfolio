@@ -480,7 +480,7 @@ export function FolderWindowContent() {
                                 exit={{ opacity: 0 }}
                                 transition={{ duration: 0.2 }}
                               >
-                                <div className="relative w-full h-[340px] overflow-hidden">
+                                <div className="relative w-full aspect-video lg:aspect-auto lg:h-[340px] overflow-hidden">
                                   {openFolder === 0 ? (
                                     <video
                                       src="/projects-at-work.mp4"
