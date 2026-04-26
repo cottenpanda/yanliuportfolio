@@ -42,7 +42,7 @@ const folderContent = [
   {
     title: "Design with AI and beyond",
     description: "Experimenting and building with AI tools — prototyping ideas quickly and shipping projects along the way.\n\nHighlights include launching my first **Chrome extension Focus Now** to park extra tabs and reduce clutter, and Cozy Journaling, winner of the **Built with Claude Sonnet 4.5 \"Keep Creating\" Award**.",
-    cta: { label: "Vibe coding projects", url: "https://cottenpanda.github.io/vibecodingplaylist" },
+    cta: { label: "Vibe coding projects", url: "https://vibecodingplaylist.vercel.app/" },
   },
   {
     title: "Community Impact",
