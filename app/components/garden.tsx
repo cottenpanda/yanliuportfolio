@@ -11,7 +11,8 @@ interface Flower {
 }
 
 function PixelFlower({ flower, isNew, size = 32 }: { flower: Flower; isNew: boolean; size?: number }) {
-  const { x, y } = flower;
+  const { x, y, id } = flower;
+  const rotation = (((id * 2654435761) >>> 0) % 1000) / 1000 * 16 - 8;
 
   return (
     <img
@@ -24,7 +25,7 @@ function PixelFlower({ flower, isNew, size = 32 }: { flower: Flower; isNew: bool
         top: `${y}%`,
         width: size,
         height: size,
-        transform: "translate(-50%, -50%)",
+        transform: `translate(-50%, -50%) rotate(${rotation}deg)`,
         animation: isNew ? "flower-grow 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both" : undefined,
         imageRendering: "pixelated",
       }}
@@ -121,7 +122,7 @@ export function Garden({ isMobile = false }: { isMobile?: boolean }) {
             key={flower.id}
             flower={flower}
             isNew={flower.id === newFlowerId}
-            size={isMobile ? 14 : 20}
+            size={isMobile ? 14 : 15}
           />
         ))}
 
