@@ -37,7 +37,7 @@ const folderContent = [
   {
     title: "Projects at Work",
     description: "From **multimodal conversational interfaces** to **natural language search** and **AI modifications**, I turn complex, ambiguous concepts into intuitive product experiences—taking ideas from 0→1 and shipping them.\n\nI also led work on search trend dashboards, contributor ingestion app redesigns, internal search editing tools, and watermark systems for Getty Images and iStock.",
-    cta: { label: "Projects at work (password required)", url: "https://yanliu.design" },
+    note: "Feel free to reach out if you'd like to hear more about what I'm working on.",
   },
   {
     title: "Design with AI and beyond",
@@ -236,6 +236,11 @@ function FolderSideSheet({ folderIndex, onClose, onNavigate }: {
                     {renderBold(para)}
                   </p>
                 ))}
+                {"note" in content && content.note && (
+                  <p className="text-stone-500 italic text-[13px] leading-relaxed">
+                    {content.note}
+                  </p>
+                )}
                 {content.cta && (
                   <div className="flex gap-4">
                     {(Array.isArray(content.cta) ? content.cta : [content.cta]).map((link, i) => (
@@ -537,6 +542,11 @@ export function FolderWindowContent() {
                                       {renderBold(para)}
                                     </p>
                                   ))}
+                                  {"note" in folderContent[openFolder] && folderContent[openFolder].note && (
+                                    <p className="text-stone-500 italic text-[13px] leading-relaxed">
+                                      {folderContent[openFolder].note}
+                                    </p>
+                                  )}
                                   {folderContent[openFolder]?.cta && (() => {
                                     const cta = folderContent[openFolder].cta;
                                     const links = Array.isArray(cta) ? cta.flat() : [cta];

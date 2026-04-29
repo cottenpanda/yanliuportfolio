@@ -37,6 +37,7 @@ export function Garden({ isMobile = false }: { isMobile?: boolean }) {
   const [flowers, setFlowers] = useState<Flower[]>([]);
   const [newFlowerId, setNewFlowerId] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
+  const [showThanks, setShowThanks] = useState(false);
 
   useEffect(() => {
     const load = async () => {
@@ -58,6 +59,13 @@ export function Garden({ isMobile = false }: { isMobile?: boolean }) {
       return () => clearTimeout(timer);
     }
   }, [newFlowerId]);
+
+  useEffect(() => {
+    if (showThanks) {
+      const timer = setTimeout(() => setShowThanks(false), 2500);
+      return () => clearTimeout(timer);
+    }
+  }, [showThanks]);
 
   const hasPlanted = typeof window !== "undefined" && localStorage.getItem("garden-planted") === "true";
   const [planted, setPlanted] = useState(hasPlanted);
@@ -94,6 +102,7 @@ export function Garden({ isMobile = false }: { isMobile?: boolean }) {
       setNewFlowerId(data.id);
       localStorage.setItem("garden-planted", "true");
       setPlanted(true);
+      setShowThanks(true);
     }
   }, []);
 
@@ -107,7 +116,15 @@ export function Garden({ isMobile = false }: { isMobile?: boolean }) {
           </div>
         </div>
         {!loading && (
-          <span className="text-[12px] text-stone-400">{planted ? "You planted one 🌸" : isMobile ? "Tap to plant" : "Click to plant"}</span>
+          <div className="flex items-center gap-2">
+            <span
+              className="text-[12px] text-stone-800 bg-stone-200 border border-stone-300 px-3 py-1 rounded-full shadow-sm transition-opacity duration-500"
+              style={{ opacity: showThanks ? 1 : 0 }}
+            >
+              Thanks for planting!
+            </span>
+            <span className="text-[12px] text-stone-400">{planted ? "You planted one 🌸" : isMobile ? "Tap to plant" : "Click to plant"}</span>
+          </div>
         )}
       </div>
 
