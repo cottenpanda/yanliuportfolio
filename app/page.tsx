@@ -171,7 +171,7 @@ export default function Home() {
               style={{ willChange: "transform, opacity" }}
             />
             <img
-              src="/image-collage.png"
+              src="/image-collage.jpg"
               alt="Photo collage"
               className="w-[340px] rounded-xl shadow-lg relative z-10"
             />

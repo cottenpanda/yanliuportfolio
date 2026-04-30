@@ -21,7 +21,7 @@ const folderImages = [
   "/sheet-work.jpg",
   "/sheet-ai.jpg",
   "/sheet-community.jpg",
-  "/through-my-lens.png",
+  "/through-my-lens.jpg",
   "/sheet-sketch.jpg",
 ];
 
