@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { siteConfig } from "@/lib/siteConfig";
 import { renderBold } from "@/lib/renderBold";
@@ -20,6 +20,31 @@ import { OpeningAnimation } from "./components/opening-animation";
 import { YellowDotCursor } from "./components/yellow-dot-cursor";
 import { MobileBanner } from "./components/mobile-banner";
 import { MobileHero } from "./components/mobile-hero";
+
+/* ── Isolated click-burst layer — owns its own state so page-wide clicks don't re-render the whole tree ── */
+function PageBurstLayer() {
+  const [bursts, setBursts] = useState<{ id: number; x: number; y: number }[]>([]);
+  const counter = useRef(0);
+
+  useEffect(() => {
+    const onClick = (e: MouseEvent) => {
+      const target = e.target as HTMLElement | null;
+      if (!target || target.closest("a, button, iframe")) return;
+      const id = counter.current++;
+      setBursts((prev) => [...prev, { id, x: e.clientX, y: e.clientY }]);
+    };
+    document.addEventListener("click", onClick);
+    return () => document.removeEventListener("click", onClick);
+  }, []);
+
+  return (
+    <>
+      {bursts.map((b) => (
+        <ClickBurst key={b.id} x={b.x} y={b.y} onDone={() => setBursts((prev) => prev.filter((p) => p.id !== b.id))} />
+      ))}
+    </>
+  );
+}
 
 /* ── Tab definitions ── */
 const tabs = siteConfig.sections.map((s) => ({
@@ -41,24 +66,14 @@ export default function Home() {
   const [arrowVisible, setArrowVisible] = useState(false);
   const onArrowVisible = useRef(() => setArrowVisible(true)).current;
   const [showOpening, setShowOpening] = useState(true);
-  const [pageBursts, setPageBursts] = useState<{ id: number; x: number; y: number }[]>([]);
-  const burstCounter = useRef(0);
-  const handlePageClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    const target = e.target as HTMLElement;
-    if (target.closest("a, button, iframe")) return;
-    const id = burstCounter.current++;
-    setPageBursts((prev) => [...prev, { id, x: e.clientX, y: e.clientY }]);
-  };
 
   return (
-    <div className="relative" style={{ overflowX: "clip" }} onClick={handlePageClick}>
+    <div className="relative" style={{ overflowX: "clip" }}>
       {showOpening && <OpeningAnimation onComplete={() => setShowOpening(false)} />}
       <YellowDotCursor active={!showOpening} />
       <div style={{ opacity: showOpening ? 0 : 1 }}><NavHeader /></div>
       <StarBackground />
-      {pageBursts.map((b) => (
-        <ClickBurst key={b.id} x={b.x} y={b.y} onDone={() => setPageBursts((prev) => prev.filter((p) => p.id !== b.id))} />
-      ))}
+      <PageBurstLayer />
 
       {/* Mobile banner — only visible on small screens */}
       {!showOpening && <MobileBanner />}

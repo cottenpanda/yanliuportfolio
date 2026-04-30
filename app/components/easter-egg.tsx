@@ -174,6 +174,7 @@ export function EasterEggCell({ containerRef, col, row, animIdx, cardOffset, car
   }, [animIdx]);
 
   useEffect(() => {
+    let raf: number | null = null;
     const compute = () => {
       if (!containerRef.current) return;
       const rect = containerRef.current.getBoundingClientRect();
@@ -184,9 +185,17 @@ export function EasterEggCell({ containerRef, col, row, animIdx, cardOffset, car
       const offY = ((bodyY % GRID) + GRID) % GRID;
       setSnapOffset({ x: -offX, y: -offY });
     };
+    const onResize = () => {
+      if (raf != null) return;
+      raf = requestAnimationFrame(() => { raf = null; compute(); });
+    };
     const timers = [100, 500, 1000, 2000].map(ms => setTimeout(compute, ms));
-    window.addEventListener("resize", compute);
-    return () => { timers.forEach(clearTimeout); window.removeEventListener("resize", compute); };
+    window.addEventListener("resize", onResize, { passive: true });
+    return () => {
+      timers.forEach(clearTimeout);
+      window.removeEventListener("resize", onResize);
+      if (raf != null) cancelAnimationFrame(raf);
+    };
   }, [containerRef]);
 
   const cellX = snapOffset.x + col * GRID;

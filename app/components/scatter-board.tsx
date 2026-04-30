@@ -72,23 +72,45 @@ function ScatterImage({
   const dragX = useMotionValue(0);
   const dragY = useMotionValue(0);
   const imgRef = useRef<HTMLDivElement>(null);
+  const tooltipRef = useRef<HTMLDivElement>(null);
+  const cachedRect = useRef<DOMRect | null>(null);
+  const tiltRaf = useRef<number | null>(null);
   const [tilt, setTilt] = useState({ rotateX: 0, rotateY: 0 });
   const [hovered, setHovered] = useState(false);
-  const [tooltipPos, setTooltipPos] = useState({ x: 0, y: 0 });
+
+  const handleMouseEnter = useCallback(() => {
+    setHovered(true);
+    zCounterRef.current += 1;
+    setImgZIndex((prev) => { const next = [...prev]; next[index] = zCounterRef.current; return next; });
+    if (imgRef.current) cachedRect.current = imgRef.current.getBoundingClientRect();
+  }, [index, setImgZIndex, zCounterRef]);
 
   const handleMouseMove = useCallback((e: React.MouseEvent) => {
-    const el = imgRef.current;
-    if (!el) return;
-    const rect = el.getBoundingClientRect();
-    const x = (e.clientX - rect.left) / rect.width - 0.5;
-    const y = (e.clientY - rect.top) / rect.height - 0.5;
-    setTilt({ rotateX: -y * 20, rotateY: x * 20 });
-    setTooltipPos({ x: e.clientX + 14, y: e.clientY + 14 });
+    const rect = cachedRect.current;
+    if (!rect) return;
+    const clientX = e.clientX;
+    const clientY = e.clientY;
+    if (tooltipRef.current) {
+      tooltipRef.current.style.transform = `translate3d(${clientX + 14}px, ${clientY + 14}px, 0)`;
+    }
+    if (tiltRaf.current != null) return;
+    tiltRaf.current = requestAnimationFrame(() => {
+      tiltRaf.current = null;
+      const x = (clientX - rect.left) / rect.width - 0.5;
+      const y = (clientY - rect.top) / rect.height - 0.5;
+      setTilt({ rotateX: -y * 20, rotateY: x * 20 });
+    });
   }, []);
 
   const handleMouseLeave = useCallback(() => {
+    if (tiltRaf.current != null) { cancelAnimationFrame(tiltRaf.current); tiltRaf.current = null; }
     setTilt({ rotateX: 0, rotateY: 0 });
     setHovered(false);
+    cachedRect.current = null;
+  }, []);
+
+  useEffect(() => () => {
+    if (tiltRaf.current != null) cancelAnimationFrame(tiltRaf.current);
   }, []);
 
   return (
@@ -105,11 +127,7 @@ function ScatterImage({
         const evt = e as unknown as MouseEvent;
         setBursts((prev) => [...prev, { id: Date.now(), x: evt.clientX, y: evt.clientY }]);
       }}
-      onMouseEnter={() => {
-        setHovered(true);
-        zCounterRef.current += 1;
-        setImgZIndex((prev) => { const next = [...prev]; next[index] = zCounterRef.current; return next; });
-      }}
+      onMouseEnter={handleMouseEnter}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       className="absolute cursor-grab active:cursor-grabbing"
@@ -141,16 +159,21 @@ function ScatterImage({
       {typeof document !== "undefined" && createPortal(
         <AnimatePresence>
           {hovered && (
-            <motion.div
-              className="fixed pointer-events-none px-3 py-1.5 rounded-full bg-stone-900 text-white text-[11px] font-[family-name:var(--font-noto)] whitespace-nowrap"
-              style={{ left: tooltipPos.x, top: tooltipPos.y, zIndex: 9999 }}
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.9 }}
-              transition={{ duration: 0.15 }}
+            <div
+              ref={tooltipRef}
+              className="fixed top-0 left-0 pointer-events-none"
+              style={{ zIndex: 9999, willChange: "transform" }}
             >
-              {img.label}
-            </motion.div>
+              <motion.div
+                className="px-3 py-1.5 rounded-full bg-stone-900 text-white text-[11px] font-[family-name:var(--font-noto)] whitespace-nowrap"
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.9 }}
+                transition={{ duration: 0.15 }}
+              >
+                {img.label}
+              </motion.div>
+            </div>
           )}
         </AnimatePresence>,
         document.body

@@ -22,10 +22,10 @@ function animate(el: HTMLElement, from: AnimProps, to: AnimProps, duration: numb
       const scale = (from.scale ?? 1) + ((to.scale ?? 1) - (from.scale ?? 1)) * e;
       const opacity = (from.opacity ?? 1) + ((to.opacity ?? 1) - (from.opacity ?? 1)) * e;
       const rotate = (from.rotate ?? 0) + ((to.rotate ?? 0) - (from.rotate ?? 0)) * e;
-      el.style.left = x + "px";
-      el.style.top = y + "px";
       el.style.opacity = String(opacity);
-      el.style.transform = `scale(${scale}) rotate(${rotate}deg)`;
+      el.style.transform = `translate3d(${x}px, ${y}px, 0) scale(${scale}) rotate(${rotate}deg)`;
+      el.dataset.posX = String(x);
+      el.dataset.posY = String(y);
       if (t < 1) requestAnimationFrame(tick);
       else resolve();
     }
@@ -190,10 +190,11 @@ export function OpeningAnimation({ onComplete }: { onComplete: () => void }) {
 
       // STEP 5: Settle into final positions
       const settlePromises = els.map((obj, i) => {
-        const currentX = parseFloat(obj.el.style.left) || 0;
-        const currentY = parseFloat(obj.el.style.top) || 0;
+        const currentX = parseFloat(obj.el.dataset.posX || "0");
+        const currentY = parseFloat(obj.el.dataset.posY || "0");
+        const currentScale = parseFloat(obj.el.style.transform?.match(/scale\(([^)]+)\)/)?.[1] || "1");
         return animate(obj.el,
-          { x: currentX, y: currentY, scale: parseFloat(obj.el.style.transform?.match(/scale\(([^)]+)\)/)?.[1] || "1"), opacity: 1, rotate: 0 },
+          { x: currentX, y: currentY, scale: currentScale, opacity: 1, rotate: 0 },
           { x: finalPos[i].x, y: finalPos[i].y, scale: 1, opacity: 1, rotate: 0 },
           800, easeOutBack
         );

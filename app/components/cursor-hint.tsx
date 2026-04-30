@@ -17,9 +17,11 @@ export function CursorHint({
   duration?: number;
 }) {
   const [visible, setVisible] = useState(false);
-  const [pos, setPos] = useState({ x: 0, y: 0 });
+  const [posReady, setPosReady] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
-  const posReady = useRef(false);
+  const tooltipRef = useRef<HTMLDivElement>(null);
+  const rafRef = useRef<number | null>(null);
+  const pendingPos = useRef<{ x: number; y: number } | null>(null);
 
   useEffect(() => {
     const showTimer = setTimeout(() => setVisible(true), delay * 1000);
@@ -28,12 +30,23 @@ export function CursorHint({
   }, [delay, duration]);
 
   const handleMouseMove = (e: React.MouseEvent) => {
-    if (ref.current) {
-      const rect = ref.current.getBoundingClientRect();
-      setPos({ x: e.clientX - rect.left + 14, y: e.clientY - rect.top + 14 });
-      posReady.current = true;
-    }
+    if (!ref.current) return;
+    const rect = ref.current.getBoundingClientRect();
+    pendingPos.current = { x: e.clientX - rect.left + 14, y: e.clientY - rect.top + 14 };
+    if (!posReady) setPosReady(true);
+    if (rafRef.current != null) return;
+    rafRef.current = requestAnimationFrame(() => {
+      rafRef.current = null;
+      const p = pendingPos.current;
+      if (p && tooltipRef.current) {
+        tooltipRef.current.style.transform = `translate3d(${p.x}px, ${p.y}px, 0)`;
+      }
+    });
   };
+
+  useEffect(() => () => {
+    if (rafRef.current != null) cancelAnimationFrame(rafRef.current);
+  }, []);
 
   return (
     <div
@@ -43,17 +56,22 @@ export function CursorHint({
     >
       {children}
       <AnimatePresence>
-        {visible && posReady.current && (
-          <motion.div
-            className="absolute z-50 pointer-events-none px-3 py-1.5 rounded-full bg-stone-900 text-white text-[11px] font-[family-name:var(--font-noto)] whitespace-nowrap"
-            style={{ left: pos.x, top: pos.y }}
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.9 }}
-            transition={{ duration: 0.15 }}
+        {visible && posReady && (
+          <div
+            ref={tooltipRef}
+            className="absolute top-0 left-0 z-50 pointer-events-none"
+            style={{ willChange: "transform" }}
           >
-            {label}
-          </motion.div>
+            <motion.div
+              className="px-3 py-1.5 rounded-full bg-stone-900 text-white text-[11px] font-[family-name:var(--font-noto)] whitespace-nowrap"
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+              transition={{ duration: 0.15 }}
+            >
+              {label}
+            </motion.div>
+          </div>
         )}
       </AnimatePresence>
     </div>
