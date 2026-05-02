@@ -38,7 +38,7 @@ export function VinylCard() {
           <div className="relative z-[1] mt-4 text-center">
             <p className="font-[family-name:var(--font-noto)] text-[10px] text-text-primary uppercase tracking-widest mb-1">Playlist</p>
             <h3 className="font-[family-name:var(--font-noto)] text-text-primary font-bold text-lg leading-tight mb-1">Vibe Coding</h3>
-            <p className="font-[family-name:var(--font-noto)] text-text-primary text-[11px] mb-1">21 projects and counting</p>
+            <p className="font-[family-name:var(--font-noto)] text-text-primary text-[11px] mb-1">20+ projects and counting</p>
             <p className="font-[family-name:var(--font-noto)] text-stone-400 text-[13px] font-medium leading-snug">Learning by building</p>
           </div>
         </div>
