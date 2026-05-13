@@ -224,8 +224,39 @@ export function OpeningAnimation({ onComplete }: { onComplete: () => void }) {
         200, easeInQuad
       );
 
+      // STEP 7: "Liu" leans into italic (dot shifts with the lean to stay over the i)
+      await delay(120);
+      const liuEls = [els[3].el, els[4].el, els[5].el];
+      const iElRect = els[4].el.getBoundingClientRect();
+      const iCenterY = iElRect.top + iElRect.height / 2;
+      const dotCenterYNow = dotFinalY + 11;
+      const dotYOffsetFromICenter = dotCenterYNow - iCenterY; // negative (dot above center)
+      const targetSkew = -13;
+      const maxDotShiftX = Math.tan((-targetSkew * Math.PI) / 180) * -dotYOffsetFromICenter;
+
+      await new Promise<void>((resolve) => {
+        const startTime = performance.now();
+        const duration = 550;
+        function tick(now: number) {
+          const t = Math.min((now - startTime) / duration, 1);
+          const e = easeOutCubic(t);
+          const skew = targetSkew * e;
+          const dotShiftX = maxDotShiftX * e;
+          liuEls.forEach((el) => {
+            const px = el.dataset.posX || "0";
+            const py = el.dataset.posY || "0";
+            el.style.transform = `translate3d(${px}px, ${py}px, 0) skewX(${skew}deg)`;
+          });
+          iDot.style.transform = `translate3d(${dotFinalX + dotShiftX}px, ${dotFinalY}px, 0)`;
+          if (t < 1) requestAnimationFrame(tick);
+          else resolve();
+        }
+        requestAnimationFrame(tick);
+      });
+      await delay(200);
+
       // Glow intensifies and immediately triggers mask reveal
-      const dotCenterX = dotFinalX + 11;
+      const dotCenterX = dotFinalX + maxDotShiftX + 11;
       const dotCenterY = dotFinalY + 11;
 
       iDot.style.transition = "box-shadow 0.6s ease-out";
