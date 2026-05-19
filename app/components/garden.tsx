@@ -84,15 +84,13 @@ export function Garden({ isMobile = false }: { isMobile?: boolean }) {
   // One draped string per row (a swag), each segment sagging between blooms.
   const garlandPaths = useMemo(() => {
     const SAG = 4; // how far the string dips between two blooms (viewBox units)
-    const rows = new Map<number, BigBloom[]>();
+    const rows: BigBloom[][] = [];
     for (const b of bigBlooms) {
-      const arr = rows.get(b.row) ?? [];
-      arr.push(b);
-      rows.set(b.row, arr);
+      (rows[b.row] ||= []).push(b);
     }
     const paths: string[] = [];
-    for (const arr of rows.values()) {
-      if (arr.length < 2) continue;
+    for (const arr of rows) {
+      if (!arr || arr.length < 2) continue;
       let d = `M ${arr[0].x} ${arr[0].y}`;
       for (let i = 1; i < arr.length; i++) {
         const a = arr[i - 1];
