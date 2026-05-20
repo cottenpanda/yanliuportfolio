@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { motion } from "framer-motion";
 
 /* ── Typing effect hook ── */
 export function useTypingEffect(text: string, speed = 28) {
@@ -187,7 +188,27 @@ export function MacFolder() {
 /* ── Hanging name badge ── */
 export function NameBadge() {
   return (
-    <div className="hidden lg:flex flex-col items-center absolute left-[65px] top-[-80px] z-20">
+    <motion.div
+      className="hidden lg:flex flex-col items-center absolute left-[65px] top-[-80px] z-20"
+      initial={{ y: -450, opacity: 0 }}
+      animate={{
+        // Bouncing-ball physics: falls fast, then every rebound goes UP from
+        // rest only (never below 0). Each upward arc gets smaller. Driven by
+        // framer-motion keyframes + per-segment easing for a fluid feel that
+        // CSS can't quite match.
+        y: [-450, 0, -48, 0, -18, 0, -6, 0],
+        opacity: 1,
+      }}
+      transition={{
+        y: {
+          duration: 1.4,
+          times: [0, 0.43, 0.52, 0.62, 0.71, 0.79, 0.87, 1],
+          ease: ["easeIn", "easeOut", "easeIn", "easeOut", "easeIn", "easeOut", "linear"],
+          delay: 6.5,
+        },
+        opacity: { duration: 0.05, delay: 6.5 },
+      }}
+    >
      <a href="https://www.linkedin.com/in/uwyanliudesign" target="_blank" rel="noopener noreferrer" className="badge-swing flex flex-col items-center cursor-pointer group/badge">
       {/* Lanyard strap — extra tall to avoid gap when swinging */}
       <div className="w-[26px] h-[240px] bg-stone-800 relative shadow-sm z-0">
@@ -272,6 +293,6 @@ export function NameBadge() {
        </div>
       </div>
      </a>
-    </div>
+    </motion.div>
   );
 }
