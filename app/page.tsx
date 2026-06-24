@@ -230,11 +230,6 @@ export default function Home() {
           <span className="social-morph-text">{`{X}`}</span>
           <svg className="social-morph-icon w-[16px] h-[16px]" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
         </motion.a>
-        {/* LinkedIn */}
-        <motion.a variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0 } }} transition={{ duration: 0.4 }} href="https://www.linkedin.com/in/uwyanliudesign" target="_blank" rel="noopener noreferrer" className="relative font-[family-name:var(--font-noto)] text-[14px] text-stone-500 flex items-center justify-center social-morph">
-          <span className="social-morph-text">{`{LinkedIn}`}</span>
-          <svg className="social-morph-icon w-[16px] h-[16px]" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-        </motion.a>
         {/* Figma */}
         <motion.a variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0 } }} transition={{ duration: 0.4 }} href="https://www.figma.com/@yanliu" target="_blank" rel="noopener noreferrer" className="relative font-[family-name:var(--font-noto)] text-[14px] text-stone-500 flex items-center justify-center social-morph">
           <span className="social-morph-text">{`{Figma}`}</span>
@@ -245,10 +240,20 @@ export default function Home() {
           <span className="social-morph-text">{`{Github}`}</span>
           <svg className="social-morph-icon w-[16px] h-[16px]" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
         </motion.a>
+        {/* LinkedIn */}
+        <motion.a variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0 } }} transition={{ duration: 0.4 }} href="https://www.linkedin.com/in/uwyanliudesign" target="_blank" rel="noopener noreferrer" className="relative font-[family-name:var(--font-noto)] text-[14px] text-stone-500 flex items-center justify-center social-morph">
+          <span className="social-morph-text">{`{LinkedIn}`}</span>
+          <svg className="social-morph-icon w-[16px] h-[16px]" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        </motion.a>
         {/* Unsplash */}
         <motion.a variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0 } }} transition={{ duration: 0.4 }} href="https://unsplash.com/@yanliudesign" target="_blank" rel="noopener noreferrer" className="relative font-[family-name:var(--font-noto)] text-[14px] text-stone-500 flex items-center justify-center social-morph">
           <span className="social-morph-text">{`{Unsplash}`}</span>
           <svg className="social-morph-icon w-[16px] h-[16px]" viewBox="0 0 24 24" fill="currentColor"><path d="M7.5 6.75V0h9v6.75h-9zm9 3.75H24V24H0V10.5h7.5v6.75h9V10.5z"/></svg>
+        </motion.a>
+        {/* Threads */}
+        <motion.a variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0 } }} transition={{ duration: 0.4 }} href="https://www.threads.com/@yanliudesign" target="_blank" rel="noopener noreferrer" className="relative font-[family-name:var(--font-noto)] text-[14px] text-stone-500 flex items-center justify-center social-morph">
+          <span className="social-morph-text">{`{Threads}`}</span>
+          <svg className="social-morph-icon w-[16px] h-[16px]" viewBox="0 0 24 24" fill="currentColor"><path d="M12.186 24h-.007c-3.581-.024-6.334-1.205-8.184-3.509C2.35 18.44 1.5 15.586 1.472 12.01v-.017c.03-3.579.879-6.43 2.525-8.482C5.845 1.205 8.6.024 12.18 0h.014c2.746.02 5.043.725 6.826 2.098 1.677 1.29 2.858 3.13 3.509 5.467l-2.04.569c-1.104-3.96-3.898-5.984-8.304-6.015-2.91.022-5.11.936-6.54 2.717C4.307 6.504 3.616 8.914 3.589 12c.027 3.086.718 5.496 2.057 7.164 1.43 1.781 3.631 2.695 6.54 2.717 2.623-.02 4.358-.631 5.8-2.045 1.647-1.613 1.618-3.593 1.09-4.798-.31-.71-.873-1.3-1.634-1.75-.192 1.352-.622 2.446-1.284 3.272-.886 1.102-2.14 1.704-3.73 1.79-1.202.065-2.36-.218-3.259-.801-1.063-.689-1.685-1.74-1.752-2.964-.065-1.19.408-2.285 1.331-3.082.881-.76 2.119-1.207 3.583-1.291a13.853 13.853 0 0 1 3.02.142c-.126-.742-.375-1.332-.747-1.756-.503-.572-1.281-.863-2.312-.87h-.028c-.815 0-1.94.225-2.661 1.318L9.359 7.183c.96-1.428 2.519-2.214 4.39-2.214h.04c3.131.02 4.996 1.957 5.183 5.329.107.046.214.092.32.142 1.5.704 2.596 1.771 3.17 3.084.8 1.834.874 4.824-1.55 7.193-1.852 1.81-4.1 2.628-7.277 2.65h-.052zm-1.582-10.038c-.124 0-.25.004-.376.01-1.103.063-1.85.443-1.85 1.232 0 .788.75 1.187 1.605 1.142.96-.05 1.69-.45 1.96-1.518a4.43 4.43 0 0 0-1.339-.866z"/></svg>
         </motion.a>
       </motion.div>
 
